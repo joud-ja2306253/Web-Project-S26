@@ -5,9 +5,7 @@
 
 /* ===== CSS Variables (provided) ===== */
 :root {
-
-    /* Must Change these colors */
-
+  /* Must Change these colors */
 
   --color-primary: #e65100;
   --color-primary-dark: #bf360c;
@@ -33,7 +31,7 @@
 }
 
 /* ===== Reset & Base Styles ===== */
-/* TODO: Add box-sizing reset, body font, base img and link styles */
+/* TODO: Add box-sizing reset, body font */
 *,
 *::before,
 *::after {
@@ -43,5 +41,47 @@
 }
 
 body {
-  
+}
+
+.container {
+  margin: var(--spacing-lg);
+}
+
+
+/* profile page */
+
+.profile-info {
+  border-left: var(--spacing-sm) solid #d34aa8;
+  border-radius: var(--spacing-md);
+  padding: 2rem;
+  background-color: #f8e9f8;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas:
+    "profile-pic username username"
+    "profile-pic profile-data profile-data"
+    "bio bio bio";
+}
+.username {
+  margin-top: 10px;
+  margin-bottom: 0;
+  grid-area: username;
+}
+
+.profile-pic {
+  aspect-ratio: 1/1;
+  width: 100px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  grid-area: profile-pic;
+}
+
+.profile-data {
+  display: flex;
+  justify-content: space-between;
+  grid-area: profile-data;
+}
+
+.bio {
+  grid-area: bio;
 }
