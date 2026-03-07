@@ -1,0 +1,47 @@
+/* ========================================
+   Social Media - Stylesheet
+   Mobile-First Responsive Design
+   ======================================== */
+
+/* ===== CSS Variables (provided) ===== */
+:root {
+
+    /* Must Change these colors */
+
+
+  --color-primary: #e65100;
+  --color-primary-dark: #bf360c;
+  --color-secondary: #ff8f00;
+  --color-accent: #2e7d32;
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-bg: #fff8f0;
+  --color-white: #ffffff;
+  --color-border: #eed9c4;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+/* ===== Reset & Base Styles ===== */
+/* TODO: Add box-sizing reset, body font, base img and link styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  
+}
