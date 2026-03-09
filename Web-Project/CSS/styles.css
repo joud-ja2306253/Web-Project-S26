@@ -47,7 +47,6 @@ body {
   margin: var(--spacing-lg);
 }
 
-
 /* profile page */
 
 .profile-info {
@@ -55,33 +54,70 @@ body {
   border-radius: var(--spacing-md);
   padding: 2rem;
   background-color: #f8e9f8;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas:
-    "profile-pic username username"
-    "profile-pic profile-data profile-data"
-    "bio bio bio";
+  max-width: 700px;
+  width: 100%;
 }
-.username {
-  margin-top: 10px;
-  margin-bottom: 0;
-  grid-area: username;
+
+/* profile pic + profile info */
+.top-row {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 
 .profile-pic {
   aspect-ratio: 1/1;
   width: 100px;
   border-radius: 50%;
-  margin-bottom: 20px;
-  grid-area: profile-pic;
+  border: 4px solid #ffffff;
+}
+
+/* username + profile data */
+.top-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+
+  padding: var(--spacing-md);
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+}
+
+.username {
+  margin-top: 10px;
 }
 
 .profile-data {
   display: flex;
-  justify-content: space-between;
-  grid-area: profile-data;
+  gap: var(--spacing-lg);
 }
 
 .bio {
-  grid-area: bio;
+  padding: var(--spacing-md);
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+}
+
+/* nav bar */
+nav {
+  border-radius: 50px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+background-color: #ffffff;
+  padding: var(--spacing-sm);
+  display: flex;
+  justify-content: space-around;
+
+  margin-top: 10px;
+/*  removes it from normal layout and pins it to the viewport (screen), not the page flow. */
+position: fixed; 
+
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  
+}
+
+nav a {
+  text-decoration: none;
 }
