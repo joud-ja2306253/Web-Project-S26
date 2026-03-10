@@ -142,7 +142,12 @@ fieldset {
   border-radius: var(--radius-sm);
 }
 
+.required{
+  color: red;
+}
+
 h2 {
+  color: var(--color-primary-dark);
   text-align: center;
   margin: 10px;
 }
@@ -173,7 +178,8 @@ button {
 }
 
 button:hover {
-  
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
 }
 
 .switch {
@@ -182,10 +188,9 @@ button:hover {
 }
 
 .switch a {
-  color:var(--color-secondary);
+  color: var(--color-secondary);
   text-decoration: none;
 }
-.switch a:hover{
+.switch a:hover {
   text-decoration: underline;
 }
-
