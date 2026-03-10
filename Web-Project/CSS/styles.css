@@ -7,15 +7,15 @@
 :root {
   /* Must Change these colors */
 
-  --color-primary: #e65100;
-  --color-primary-dark: #bf360c;
-  --color-secondary: #ff8f00;
-  --color-accent: #2e7d32;
+  --color-primary: #ff5c8a;
+  --color-primary-dark: #d6336c;
+  --color-secondary: #ff8fb1;
+  --color-accent: #ec407a;
   --color-text: #333333;
-  --color-text-light: #666666;
-  --color-bg: #fff8f0;
+  --color-text-light: #777777;
+  --color-bg: #ffe4ec;
   --color-white: #ffffff;
-  --color-border: #eed9c4;
+  --color-border: #ffc1d3;
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
@@ -41,11 +41,15 @@
 }
 
 body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
 }
 
 .container {
   margin: var(--spacing-lg);
-  
 }
 
 /* profile page */
@@ -104,19 +108,18 @@ body {
 nav {
   border-radius: 50px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-background-color: #ffffff;
+  background-color: #ffffff;
   padding: var(--spacing-sm);
   display: flex;
   justify-content: space-around;
 
   margin-top: 10px;
-/*  removes it from normal layout and pins it to the viewport (screen), not the page flow. */
-position: fixed; 
+  /*  removes it from normal layout and pins it to the viewport (screen), not the page flow. */
+  position: fixed;
 
   bottom: 0;
   left: 0;
   width: 100%;
-  
 }
 
 nav a {
@@ -124,60 +127,65 @@ nav a {
 }
 /* login and registration*/
 form {
-    background: white;
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+  background: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 fieldset {
-    border: 1px solid var(--color-border);
-    padding: var(--spacing-md);
-    border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
 }
 
-h2{
-text-align: center;
-margin: 10px;
+h2 {
+  text-align: center;
+  margin: 10px;
 }
 
 label {
-    margin-top: var(--spacing-sm);
-    font-weight: bold;
+  margin-top: var(--spacing-sm);
+  font-weight: bold;
 }
 
-input{
-    width: 100%;
-    padding: var(--spacing-sm);
-    border-radius: var(--radius-sm);
-    border: 1px solid #e2cbb7;
-    background: #fff;
-    font-size: 0.95rem;
+input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  font-size: 0.95rem;
 }
 
-button{
-width: 100%;
-padding: 10px;
-background: #667eea;
-color: white;
-border: none;
-border-radius: 5px;
-font-size: 16px;
-cursor: pointer;
+button {
+  width: 100%;
+  padding: 10px;
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-button:hover{
-background: #5563d6;
+button:hover {
+  
 }
 
-.switch{
-text-align: center;
-margin-top: 10px;
+.switch {
+  text-align: center;
+  margin-top: 10px;
 }
 
-.switch a{
-color: #667eea;
-text-decoration: none;
+.switch a {
+  color:var(--color-secondary);
+  text-decoration: none;
 }
+.switch a:hover{
+  text-decoration: underline;
+}
+
