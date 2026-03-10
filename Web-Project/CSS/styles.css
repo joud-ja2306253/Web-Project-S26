@@ -125,7 +125,10 @@ nav {
 nav a {
   text-decoration: none;
 }
+
+/*//////////////////////////////////*/
 /* login and registration*/
+
 form {
   background: white;
   padding: var(--spacing-lg);
