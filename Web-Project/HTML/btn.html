@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../CSS/styles.css" />
+</head>
+
+<body>
+<div class="post_actions">
+  <button id="likeBtn" class="menu_btn">♡</button>
+  <p id="likeCount">0 likes</p>
+</div>
+
+<div class="menu">
+  <button id="menuBtn" class="menu_btn">⋮</button>
+
+  <ul id="menuList" style="display: none;">
+    <li > <button id="edit_post"  class="menu_btn" style="font-size: 15px;"> Edit post</button></li>
+    <li >  <button id="delte_post"  class="menu_btn" style="font-size: 15px;"> Delte post</button></li>
+  </ul>
+</div>
+
+<div >
+    <form style="display: none;" id="edit_post_form">
+  <fieldset  >
+    <legend>edit post</legend>
+    <label>Caption:</label>
+    <input type="text" placeholder="Enter the new caption..">
+  </fieldset>
+
+</form>
+</div>
+
+
+<script src="../JS/btn.js"></script>
+
+<div class="comment">
+
+</div>
+</body>
+</html>
