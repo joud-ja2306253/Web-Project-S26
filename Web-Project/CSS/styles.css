@@ -7,13 +7,16 @@
 :root {
   /* Must Change these colors */
 
-  --color-primary: #ff5c8a;
+  /* --color-primary: #ff5c8a;
   --color-primary-dark: #d6336c;
   --color-secondary: #ff8fb1;
   --color-accent: #ec407a;
   --color-text: #333333;
-  --color-text-light: #777777;
-  --color-bg: #ffe4ec;
+  --color-text-light: #777777; */
+
+  /* --color-bg: #ffe4ec; */
+  --color-bg: #ffffff;
+
   --color-white: #ffffff;
   --color-border: #ffc1d3;
 
@@ -28,6 +31,15 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+
+
+  --color-primary: #ac72bb;
+  --color-primary-dark: #ac72bb;
+  --color-secondary:  #ac72bb;
+  --color-accent:  #ac72bb;
+  --color-text: #333333;
+  --color-text-light: #777777;
+  
 }
 
 /* ===== Reset & Base Styles ===== */
@@ -114,6 +126,8 @@ nav {
   display: flex;
   justify-content: space-around;
 
+  background-color: var(--color-accent);
+
   margin-top: 10px;
   /*  removes it from normal layout and pins it to the viewport (screen), not the page flow. */
   position: fixed;
@@ -146,7 +160,7 @@ fieldset {
   border-radius: var(--radius-sm);
 }
 
-.required{
+.required {
   color: red;
 }
 
