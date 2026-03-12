@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="../CSS/styles.css" />
+</head>
+<body>
+    <div>
+  <form action="submit.php" method="post" id="post_form" >
+    <fieldset>
+      <legend>Create post</legend>
+      
+<!-- accept is for the type of file the user is allowed to enter -->
+      <input type="file" accept="image/*" id="imgInput">
+      <br><br>
+      <img id="preview" width="250" style="display:none;">
+      <br><br>
+      <label for="post_caption">Caption:</label>
+      <input id="post_caption" type="text" placeholder="Write the image caption...">
+    </fieldset>
+  </form>
+</div>
+</body>
+</html>

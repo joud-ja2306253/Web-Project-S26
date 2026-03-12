@@ -278,7 +278,7 @@ button:hover {
 } */
 /* ---like--- */
 .menu_btn {
-  color: black;
+  color:var(--color-primary-darker);
   font-size: 22px;
   margin-right: var(--spacing-md);
   background-color: transparent;
@@ -297,9 +297,34 @@ button:hover {
   margin: var(--spacing-xs);
 }
 
-.heart.liked {
+.liked {
   color: red;
 }
+/* keep it the same name as the js  */
+
+
 .dis_none {
   display: none;
 }
+
+.creat_box{
+  display: flex;
+  justify-content: center;
+background-color: var(--color-primary);
+border-top-right-radius:  var(--radius-md);
+border-top-left-radius:  var(--radius-md);
+padding: var(--spacing-xs);
+
+
+
+}
+.creatP{
+  background-color: var(--color-primary-dark);
+  border-radius: 20px;
+  padding: 2px 6px ;
+}
+
+ .creatP:hover{
+background-color: var(--color-primary-dark);
+ }
+
