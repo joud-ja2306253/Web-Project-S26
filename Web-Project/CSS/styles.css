@@ -177,9 +177,10 @@ nav a:hover {
 }
 
 .add-btn:hover {
-   background-color: var(--color-primary-dark);
+  background-color: var(--color-primary-dark);
   border: 3px solid var(--color-bg);
   color: var(--color-white);
+  text-decoration: none;
 }
 /*//////////////////////////////////*/
 /* login and registration*/
