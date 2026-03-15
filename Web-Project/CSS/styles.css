@@ -318,13 +318,72 @@ padding: var(--spacing-xs);
 
 
 }
-.creatP{
-  background-color: var(--color-primary-dark);
-  border-radius: 20px;
-  padding: 2px 6px ;
+
+
+/* comment  */
+.commentBox{
+  background-color: rgb(233, 216, 245);
+  width: 500px;
+  border-radius:var(--radius-md) ;
+  display: grid;
+  grid-template-columns:1fr auto ;
+ 
 }
 
- .creatP:hover{
-background-color: var(--color-primary-dark);
- }
+
+.sendComment, .enterComment {
+  border-radius:0px;
+  color: var(--color-primary-darkest);
+  
+}
+.sendComment{
+background-color: var(--color-primary);}
+
+.sendComment:hover{
+  transform: none;
+  box-shadow: none;
+}
+
+
+
+.comment_row{
+  display: flex;
+  justify-content: space-between; /* pushes button to the right */
+  align-items: center;
+}
+
+.box{
+  display: block;
+  padding-right:120px ;
+}
+
+
+
+.CommentBtn{
+  width: auto;
+   font-size: 14px;
+}
+
+
+.comment_row{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.box{
+  margin: 0;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px;
+  box-sizing: border-box;
+  /* word-break: break-word; */
+}
+
+
+
+
+
+ /* ================================================== */
 

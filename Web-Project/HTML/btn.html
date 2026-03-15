@@ -16,22 +16,55 @@
     />
 </head>
 
+<!-- like -->
 <body>
 <div class="post_actions">
   <button id="likeBtn" class="menu_btn">♡</button>
   <p id="likeCount">0 likes</p>
 </div>
 
+
+
+
+<!-- this is the comment/ edit commnt   -->
+<div>
+  <button id="commentBtn" class="menu_btn">🗨️</button>
+  
+</div>
+<div class="commentBox" style="display: none;" id="commentBox">
+  
+  <input class="enterComment" id="enterComment" type="text" placeholder="write your comment"> 
+  <button class="sendComment" id="sendComment">Send</button>
+  <p class="loadedCommnetText" id="loadedCommnetText"> comments will load here </p>
+   
+</div>
+
+<!-- <div>
+    <ul id="commentMenu" style="display: none;">
+    <li > <button id="edit_post"  class="" style="font-size: 15px;"> Edit comment</button></li>
+    <li >  <button id="delte_post"  class="menu_btn" style="font-size: 15px;"> Delte comment</button></li>
+  </ul>
+</div> -->
+
+
+
+
+
+ <!-- delet/ post  -->
 <div class="menu">
   <button id="menuBtn" class="menu_btn">⋮</button>
-
   <ul id="menuList" style="display: none;">
     <li > <button id="edit_post"  class="menu_btn" style="font-size: 15px;"> Edit post</button></li>
     <li >  <button id="delte_post"  class="menu_btn" style="font-size: 15px;"> Delte post</button></li>
   </ul>
 </div>
 
-<div >
+
+
+<!-- to edit post  -->
+
+
+ <div >
     <form style="display: none;" id="edit_post_form">
   <fieldset  >
     <legend>edit post</legend>
@@ -41,13 +74,6 @@
 
 </form>
 </div>
-
-
-
-
- <!-- <div class="creat_box">
-    <button id="create_post" class="menu_btn creatP">✚</button>
- </div> -->
 
        <footer>
         <nav>
