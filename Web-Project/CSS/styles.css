@@ -13,7 +13,7 @@
   --color-accent: #ec407a;
  */
   --color-primary: #8f0bf4;
-  --color-secondary: #F4E7FE;
+  --color-secondary: #f4e7fe;
   --color-primary-dark: #5c079c;
   --color-primary-darker: #420570;
   --color-primary-darkest: #280344;
@@ -26,13 +26,14 @@
   --color-text: #333333;
   --color-text-light: #777777;
   --color-black: #000000;
+  --color-light-grey: #b4b9b9;
+  --color-white: #ffffff;
 
   /* --color-bg: #ffe4ec; */
 
-  --color-bg: #ffffff;
+  /* --color-bg: #ffffff; */
 
-  --color-white: #ffffff;
-  --color-border: #ffc1d3;
+  /* --color-border: #ffc1d3;   */
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
@@ -42,6 +43,7 @@
 
   --radius-sm: 4px;
   --radius-md: 8px;
+  --radius-lg: 20px;
 
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -63,7 +65,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
-  background: var(--color-bg);
+  background: var(--color-white);
   color: var(--color-text);
   line-height: 1.6;
 }
@@ -76,53 +78,101 @@ body {
 /* profile page */
 
 .profile-info {
-  border-left: var(--spacing-sm) solid #d34aa8;
-  border-radius: var(--spacing-md);
-  padding: 2rem;
-  background-color: #f8e9f8;
+  padding: 1rem;
   max-width: 700px;
   width: 100%;
 }
 
-/* profile pic + profile info */
-.top-row {
+/* profile pic + username */
+.top-field {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-md);
 }
 
 .profile-pic {
   aspect-ratio: 1/1;
   width: 100px;
   border-radius: 50%;
-  border: 4px solid #ffffff;
+  padding: 2px;
+  border: 3px solid var(--color-primary);
 }
 
-/* username + profile data */
-.top-field {
+.top-row {
+  margin-top: 18px;
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-
-  padding: var(--spacing-md);
-  border: 2px solid #ffffff;
-  border-radius: 10px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .username {
-  margin-top: 10px;
+  font-size: 0.9rem;
 }
 
-.profile-data {
-  display: flex;
-  gap: var(--spacing-lg);
+.username > p {
+  color: var(--color-text-light);
 }
 
 .bio {
-  padding: var(--spacing-md);
-  border: 2px solid #ffffff;
-  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.follow-btn {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.follow-btn:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.follow-btn:active {
+    background-color: var(--color-light-grey);
+
+}
+
+.edit-profile-btn {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-light-grey);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+/* .follow-btn.following {
+  background-color: transparent;
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+} */
+
+.profile-data {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.profile-data > div {
+  line-height: var(--spacing-lg);
+  text-align: center;
+}
+
+.profile-data > div > p:first-of-type {
+  /* styles only for the first <p> in each box */
+  font-weight: bold;
+}
+
+.labeling {
+  color: var(--color-text-light);
+  font-size: 0.8rem;
 }
 
 /* nav bar */
@@ -132,7 +182,7 @@ nav {
   display: flex;
   justify-content: space-around;
 
-  background-color: var(--color-bg);
+  background-color: var(--color-white);
 
   /*  removes it from normal layout and pins it to the viewport (screen), not the page flow. */
   position: fixed;
@@ -171,14 +221,14 @@ nav a:hover {
   position: fixed;
   bottom: 40px; /* half the nav height to overlap */
   background-color: var(--color-primary);
-  border: 3px solid var(--color-bg);
+  border: 3px solid var(--color-white);
   color: var(--color-white);
   transition: background-color 0.2s;
 }
 
 .add-btn:hover {
   background-color: var(--color-primary-dark);
-  border: 3px solid var(--color-bg);
+  border: 3px solid var(--color-white);
   color: var(--color-white);
   text-decoration: none;
 }
@@ -236,6 +286,7 @@ button {
   cursor: pointer;
 }
 
+/* salsa change this because its affecting my buttons aswell - joud */
 button:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
@@ -279,7 +330,7 @@ button:hover {
 } */
 /* ---like--- */
 .menu_btn {
-  color:var(--color-primary-darker);
+  color: var(--color-primary-darker);
   font-size: 22px;
   margin-right: var(--spacing-md);
   background-color: transparent;
@@ -303,29 +354,24 @@ button:hover {
 }
 /* keep it the same name as the js  */
 
-
 .dis_none {
   display: none;
 }
 
-.creat_box{
+.creat_box {
   display: flex;
   justify-content: center;
-background-color: var(--color-primary);
-border-top-right-radius:  var(--radius-md);
-border-top-left-radius:  var(--radius-md);
-padding: var(--spacing-xs);
-
-
-
+  background-color: var(--color-primary);
+  border-top-right-radius: var(--radius-md);
+  border-top-left-radius: var(--radius-md);
+  padding: var(--spacing-xs);
 }
-.creatP{
+.creatP {
   background-color: var(--color-primary-dark);
   border-radius: 20px;
-  padding: 2px 6px ;
+  padding: 2px 6px;
 }
 
- .creatP:hover{
-background-color: var(--color-primary-dark);
- }
-
+.creatP:hover {
+  background-color: var(--color-primary-dark);
+}
