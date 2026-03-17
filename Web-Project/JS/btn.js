@@ -179,25 +179,26 @@ let liked = false;
 let count = 0;
 
 loadLikes();// because i always need it to load even if the user did not press any buttn 
-likeBtn.addEventListener('click', loadlikeButtn);
+likeBtn.addEventListener('click', addlike);
 
 async function loadLikes() {
     const response = await fetch(api_url_likes);
     const data = await response.json();
 
     count = data.length;
+    // display data 
     likeCount.textContent = count +' likes';
     likeBtn.textContent = "♡";
 }
 
-async function loadlikeButtn() {
+async function addlike() {
     if (!liked) {
         await fetch(api_url_likes, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userID: 1,
-                postID: 1
+            
+                postID: 1 // we are refering to one post only, should be changed dfter have multiple posts
             })
         });
 
