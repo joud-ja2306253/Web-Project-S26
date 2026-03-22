@@ -1,27 +1,27 @@
 // like ===================
 
-const likeBtn = document.getElementById("likeBtn");
-const likeCount = document.getElementById("likeCount");
+// const likeBtn = document.getElementById("likeBtn");
+// const likeCount = document.getElementById("likeCount");
 
-let liked = false;
-let count = 0;
+// let liked = false;
+// let count = 0;
 
-likeBtn.addEventListener("click", function(){
+// likeBtn.addEventListener("click", function(){
 
-    if(!liked){
-        likeBtn.classList.add("liked");
-        likeBtn.textContent = "♥"; 
-        count++;
-        liked = true;
-    } else {
-        likeBtn.classList.remove("liked");
-        likeBtn.textContent = "♡";
-        count--;
-        liked = false;
-    }
+//     if(!liked){
+//         likeBtn.classList.add("liked");
+//         likeBtn.textContent = "♥"; 
+//         count++;
+//         liked = true;
+//     } else {
+//         likeBtn.classList.remove("liked");
+//         likeBtn.textContent = "♡";
+//         count--;
+//         liked = false;
+//     }
 
-    likeCount.textContent = count;
-});
+//     likeCount.textContent = count;
+// });
 //=====================================
 
 //edit/delete menu
@@ -149,22 +149,6 @@ async function saveEdit(id) {
 
   loadComments();
 }
-  // const commentMenu = document.querySelector('#commentMenu');
-    // if (commentMenu.style.display === 'block'){
-    //   commentMenu.style.display = 'none';
-    // } else {
-    //   commentMenu.style.display = 'block';
-    // }
-
-
-
-
-
-
-
-
-
-
 
 // to add comment
 const sendCommentBtn = document.querySelector('#sendComment');
@@ -186,6 +170,52 @@ async function addComment(){
     enterComment.value = ""; // clear input
     loadComments(); // reload comments
 }
+// to like and remove like 
+const api_url_likes = 'https://69b5d54f583f543fbd9c755b.mockapi.io/api/likes';
+const likeBtn = document.querySelector('#likeBtn');
+const likeCount = document.getElementById("likeCount");
+
+let liked = false;
+let count = 0;
+
+loadLikes();// because i always need it to load even if the user did not press any buttn 
+likeBtn.addEventListener('click', addlike);
+
+async function loadLikes() {
+    const response = await fetch(api_url_likes);
+    const data = await response.json();
+
+    count = data.length;
+    // display data 
+    likeCount.textContent = count +' likes';
+    likeBtn.textContent = "♡";
+}
+
+async function addlike() {
+    if (!liked) {
+        await fetch(api_url_likes, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+            
+                postID: 1 // we are refering to one post only, should be changed dfter have multiple posts
+            })
+        });
+
+        liked = true;
+        count++;
+        likeBtn.classList.add("liked");
+        likeBtn.textContent = "♥";
+    } else {
+        liked = false;
+        count--;
+        likeBtn.classList.remove("liked");
+        likeBtn.textContent = "♡";
+    }
+
+    likeCount.textContent = count+' likes';
+}
+
 
 
 
