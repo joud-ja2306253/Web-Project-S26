@@ -187,21 +187,6 @@ async function addComment(){
     loadComments(); // reload comments
 }
 
-// ===================================
-//         Joud Profile Page
-//====================================
-/* Follow button toggle */
-const followBtn = document.getElementById("followBtn");
-let isFollowing = false;
-
-if (followBtn) {
-  followBtn.addEventListener("click", () => {
-    isFollowing = !isFollowing;
-    followBtn.textContent = isFollowing ? "Following" : "Follow";
-    followBtn.classList.toggle("following", isFollowing);
-  });
-
-
 
 
 

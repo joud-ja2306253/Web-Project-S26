@@ -96,7 +96,7 @@ body {
   width: 100px;
   border-radius: 50%;
   padding: 2px;
-  border: 3px solid var(--color-primary);
+  border: 3px solid var(--color-primary-dark);
 }
 
 .top-row {
@@ -118,27 +118,37 @@ body {
   margin-bottom: 20px;
 }
 
-.follow-btn {
+.follow-btn,
+.edit-profile-btn {
   display: flex;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-lg);
-  background-color: var(--color-primary);
-  color: var(--color-white);
   font-weight: 600;
   font-size: 0.9rem;
+  background-color: transparent;
+  color: var(--color-primary-dark);
+  border: 3px solid var(--color-primary-dark);
 }
 
-.follow-btn:hover {
+.follow-btn:hover,
+.edit-profile-btn:hover {
   background-color: var(--color-primary-dark);
+  color: var(--color-white);
 }
 
-.follow-btn:active {
-    background-color: var(--color-light-grey);
-
+.follow-btn:active,
+.edit-profile-btn:active,
+.follow-btn.following:active {
+  background-color: var(--color-primary-darker);
 }
 
-.edit-profile-btn {
+.follow-btn.following {
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+}
+
+/* .edit-profile-btn {
   display: flex;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
@@ -147,11 +157,6 @@ body {
   color: var(--color-white);
   font-weight: 600;
   font-size: 0.9rem;
-}
-/* .follow-btn.following {
-  background-color: transparent;
-  color: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
 } */
 
 .profile-data {
@@ -287,10 +292,10 @@ button {
 }
 
 /* salsa change this because its affecting my buttons aswell - joud */
-button:hover {
+/* button:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
-}
+} */
 
 .switch {
   text-align: center;
@@ -367,60 +372,53 @@ button:hover {
   padding: var(--spacing-xs);
 }
 
-
 /* comment  */
-.commentBox{
+.commentBox {
   background-color: rgb(233, 216, 245);
   width: 500px;
-  border-radius:var(--radius-md) ;
+  border-radius: var(--radius-md);
   display: grid;
-  grid-template-columns:1fr auto ;
- 
+  grid-template-columns: 1fr auto;
 }
 
-
-.sendComment, .enterComment {
-  border-radius:0px;
+.sendComment,
+.enterComment {
+  border-radius: 0px;
   color: var(--color-primary-darkest);
-  
 }
-.sendComment{
-background-color: var(--color-primary);}
+.sendComment {
+  background-color: var(--color-primary);
+}
 
-.sendComment:hover{
+.sendComment:hover {
   transform: none;
   box-shadow: none;
 }
 
-
-
-.comment_row{
+.comment_row {
   display: flex;
   justify-content: space-between; /* pushes button to the right */
   align-items: center;
 }
 
-.box{
+.box {
   display: block;
-  padding-right:120px ;
+  padding-right: 120px;
 }
 
-
-
-.CommentBtn{
+.CommentBtn {
   width: auto;
-   font-size: 14px;
+  font-size: 14px;
 }
 
-
-.comment_row{
+.comment_row {
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 8px;
 }
 
-.box{
+.box {
   margin: 0;
   width: 100%;
   min-height: 40px;
@@ -429,9 +427,4 @@ background-color: var(--color-primary);}
   /* word-break: break-word; */
 }
 
-
-
-
-
- /* ================================================== */
-
+/* ================================================== */
