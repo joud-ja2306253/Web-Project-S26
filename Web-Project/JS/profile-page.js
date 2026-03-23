@@ -7,7 +7,7 @@
 // ===================================
 
 const currentUserId = "123"; // Get from your auth system
-const profileUserId = "456"; // Get from URL/profile data
+const profileUserId = "23"; // Get from URL/profile data
 
 const editProfileBtn = document.querySelector("#editProfileBtn");
 const followBtn = document.querySelector("#followBtn");
@@ -15,7 +15,7 @@ const followBtn = document.querySelector("#followBtn");
 // Guard clauses
 if (!editProfileBtn && !followBtn) {
   console.log("Buttons not found - exiting Joud's script");
-  return;
+  //   return;
 }
 //this code only runs if both follow and edit are there (in profile page of browser/current user)
 
@@ -36,12 +36,13 @@ if (currentUserId === profileUserId) {
   // or
   //   followBtn.style.display = "";
 
+  const originalHTML = followBtn.innerHTML;
   let isFollowing = false;
 
   followBtn.addEventListener("click", () => {
     if (!followBtn) return;
     isFollowing = !isFollowing;
-    followBtn.textContent = isFollowing ? "Following" : "Follow";
+    followBtn.textContent = isFollowing ? "Following" : originalHTML;
     followBtn.classList.toggle("following", isFollowing);
   });
 }
