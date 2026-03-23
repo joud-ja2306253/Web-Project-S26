@@ -428,3 +428,83 @@ button {
 }
 
 /* ================================================== */
+
+
+/* ============================= */
+/* Feed (Girl 2) */
+/* ============================= */
+
+.feed-container {
+  max-width: 600px;
+  margin: auto;
+  padding: var(--spacing-md);
+}
+
+/* Create Post */
+.create-post {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.create-post textarea {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-light-grey);
+  resize: none;
+}
+
+.create-post button {
+  align-self: flex-end;
+  width: auto;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-md);
+}
+
+/* Post Card */
+.post-card {
+  background-color: var(--color-white);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Header */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Username */
+.post-header h4 {
+  color: var(--color-primary-dark);
+}
+
+/* Time */
+.time {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
+/* Content */
+.post-content {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Actions */
+.post-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .feed-container {
+    padding: var(--spacing-sm);
+  }
+}
