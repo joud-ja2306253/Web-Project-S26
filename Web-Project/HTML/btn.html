@@ -1,98 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
     <link rel="stylesheet" href="../CSS/styles.css" />
 
-          <link
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
       integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-</head>
+  </head>
 
-<!-- like -->
-<body>
-<div class="post_actions">
-  <button id="likeBtn" class="menu_btn">♡</button>
-  <p id="likeCount">0 likes</p>
-</div>
+  <!-- like -->
+  <body>
+    <div class="post_actions">
+      <button id="likeBtn" class="menu_btn">♡</button>
+      <p id="likeCount">0 likes</p>
+    </div>
 
+    <!-- this is the comment/ edit comment   -->
+    <div>
+      <button id="commentBtn" class="menu_btn">🗨️</button>
+    </div>
+    <div class="commentBox" style="display: none" id="commentBox">
+      <input
+        class="enterComment"
+        id="enterComment"
+        type="text"
+        placeholder="write your comment"
+      />
+      <button class="sendComment" id="sendComment">Send</button>
+      <p class="loadedCommnetText" id="loadedCommnetText">
+        comments will load here
+      </p>
+    </div>
 
-
-
-<!-- this is the comment/ edit comment   -->
-<div>
-  <button id="commentBtn" class="menu_btn">🗨️</button>
-  
-</div>
-<div class="commentBox" style="display: none;" id="commentBox">
-  
-  <input class="enterComment" id="enterComment" type="text" placeholder="write your comment"> 
-  <button class="sendComment" id="sendComment">Send</button>
-  <p class="loadedCommnetText" id="loadedCommnetText"> comments will load here </p>
-   
-</div>
-
-<!-- <div>
+    <!-- <div>
     <ul id="commentMenu" style="display: none;">
     <li > <button id="edit_post"  class="" style="font-size: 15px;"> Edit comment</button></li>
     <li >  <button id="delte_post"  class="menu_btn" style="font-size: 15px;"> Delte comment</button></li>
   </ul>
 </div> -->
 
+    <!-- delete/ post  -->
+    <div class="menu">
+      <button id="menuBtn" class="menu_btn">⋮</button>
+      <ul id="menuList" style="display: none">
+        <li>
+          <button id="edit_post" class="menu_btn" style="font-size: 15px">
+            Edit post
+          </button>
+        </li>
+        <li>
+          <button id="delte_post" class="menu_btn" style="font-size: 15px">
+            Delete post
+          </button>
+        </li>
+      </ul>
+    </div>
 
+    <!-- to edit post  -->
 
-
-
- <!-- delete/ post  -->
-<div class="menu">
-  <button id="menuBtn" class="menu_btn">⋮</button>
-  <ul id="menuList" style="display: none;">
-    <li > <button id="edit_post"  class="menu_btn" style="font-size: 15px;"> Edit post</button></li>
-    <li >  <button id="delte_post"  class="menu_btn" style="font-size: 15px;"> Delete post</button></li>
-  </ul>
-</div>
-
-
-
-<!-- to edit post  -->
-
-
- <div >
-    <form style="display: none;" id="edit_post_form">
-  <fieldset  >
-    <legend>edit post</legend>
-    <label>Caption:</label>
-    <input type="text" placeholder="Enter the new caption..">
-  </fieldset>
-
-</form>
-</div>
-<!-- copy here ---------------------------------------- -->
-       <footer>
-        <nav>
-          <a href="profile-page.html"
-            ><i class="fa-regular fa-house"></i>
-           
-          </a>
-          <a href="profile-page.html">
-            <i class="fa-regular fa-user"></i>
-           
-          </a>
-          <a href="index.html" class="add-btn" aria-label="Add post" id="create_post">
-            <i class="fas fa-plus"></i>
-          </a>
-        </nav>
-      </footer>
-<script src="../JS/btn.js"></script>
-
-
-
-</body>
+    <div>
+      <form style="display: none" id="edit_post_form">
+        <fieldset>
+          <legend>edit post</legend>
+          <label>Caption:</label>
+          <input type="text" placeholder="Enter the new caption.." />
+        </fieldset>
+      </form>
+    </div>
+    <!-- copy here ---------------------------------------- -->
+    <footer>
+      <nav>
+        <a href="feed.html"><i class="fa-regular fa-house"></i> </a>
+        <a
+          href="add-post.html"
+          class="add-btn"
+          aria-label="Add post"
+          id="create_post"
+        >
+          <i class="fas fa-plus"></i>
+        </a>
+        <a href="profile-page.html">
+          <i class="fa-regular fa-user"></i>
+        </a>
+      </nav>
+    </footer>
+    <script src="../JS/btn.js"></script>
+  </body>
 </html>
