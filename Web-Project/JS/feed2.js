@@ -78,11 +78,7 @@ function loadPost() {
   <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
 
   <ul id="menuList-${post.id}" style="display: none">
-    <li>
-      <button class="menu_btn" style="font-size: 15px" onclick ="editPost(${post.id}) id="edit-post-${post.id}">
-        Edit post
-      </button>
-    </li>
+  
     <li>
       <button class="menu_btn" onclick="deletePost(${post.id})" style="font-size: 15px">
         Delete post

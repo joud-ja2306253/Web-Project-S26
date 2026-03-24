@@ -571,21 +571,24 @@ form {
 /* comment  */
 .commentBox {
   background-color: rgb(233, 216, 245);
-  width: 500px;
+  width: 300px;
   border-radius: var(--radius-md);
   display: grid;
   grid-template-columns: 1fr auto;
+  padding: 0px ;
 }
 
 .enterComment{
   border-top-left-radius: var(--radius-sm);
   border-bottom-left-radius: var(--radius-sm);
+  width: 229px;
 }
 .sendComment,
 .enterComment {
 
   color: var(--color-primary-darkest);
   padding: 12px;
+  
 }
 .sendComment {
   background-color: var(--color-primary);
@@ -656,13 +659,16 @@ form {
 /* Create Post */
 .create-post {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
   
 }
 
+
+
 .create-post textarea {
+  width: 600px ;
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-light-grey);
@@ -672,7 +678,7 @@ form {
 .create-post button {
   align-self: flex-end;
   width: auto;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-md);
   background-color: var(--color-primary);
   color: var(--color-white);
   border-radius: var(--radius-md);
@@ -717,8 +723,24 @@ form {
 }
 
 /* Responsive */
-@media (max-width: 600px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .feed-container {
     padding: var(--spacing-sm);
+      
   }
+
+.feed-container {
+  max-width: 750px;}
+ 
+  } 
+
+
+@media (min-width: 1024px){
+
+  .feed-container {
+    max-width: 1200px;
+   
+  
+  }
+
 }
