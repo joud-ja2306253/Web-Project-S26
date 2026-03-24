@@ -52,7 +52,27 @@ function loadPost() {
             </button>
             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
           </div>
-<button class="menu_btn comment-btn">🗨️</button>
+
+
+
+    <div>
+      <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
+    </div>
+
+    <div class="commentBox" style="display: none" id="commentBox-${post.id}">
+      <input
+        class="enterComment"
+        id="enterComment-${post.id}"
+        type="text"
+        placeholder="write your comment"
+      />
+      <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
+      <p class="loadedCommnetText" id="loadedCommnetText-${post.id}">
+        comments will load here
+      </p>
+    </div>
+
+
 
 <div class="menu">
   <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
@@ -148,7 +168,7 @@ function reloadLikeButtons() {
     }
   });
 }
-
+//add like ===================
 function addlike(postID) {
   let likes = getLikes();
   const likeBtn = document.getElementById(`likeBtn-${postID}`);
@@ -185,8 +205,7 @@ function addlike(postID) {
 
 
 
-// btn.addEventListener("click", show_ED);
-
+//delete post 
 function deletePost(id) {
   let posts = getPost();
   let likes = getLikes();
@@ -199,6 +218,242 @@ function deletePost(id) {
 
   loadPost();
   reloadLikeButtons();
+}
+
+
+
+// comments ==================================================
+
+// const loadBtn_comment = document.querySelector("#commentBtn");
+// const enterComment = document.querySelector("#enterComment");
+// const loadedCommnetText = document.querySelector("#loadedCommnetText");
+// const sendCommentBtn = document.querySelector("#sendComment");
+
+
+
+
+
+// function toggleComments(id) {
+//   const box = document.getElementById(`commentBox-${id}`);
+
+//   if (box.style.display === "none") {
+//     box.style.display = "block";
+//     loadComments(id);
+//   } else {
+//     box.style.display = "none";
+//   }
+// }
+
+
+
+// // when comment button clicked -> load comments too
+
+// // add comment button
+// // sendCommentBtn.addEventListener("click", addComment);
+
+// // load comments from localStorage
+// function loadComments() {
+//   const data = getComments();
+
+//   const comment_data = data.map(t => `
+//     <div class="comment_row">
+//       <p class="box" id="comment-${t.id}" data-name="${t.name}">
+//         ${t.name}: ${t.comment}
+//       </p>
+
+//       <button class="menu_btn CommentBtn" onclick="deleteComment(${t.id})">Delete</button>
+//       <button class="menu_btn CommentBtn" id="editBtn-${t.id}" onclick="editComment(${t.id})">Edit</button>
+//       <button class="menu_btn CommentBtn" id="saveBtn-${t.id}" onclick="saveEdit(${t.id})" style="display:none;">Save</button>
+//     </div>
+//   `).join("");
+
+//   loadedCommnetText.innerHTML = comment_data;
+// }
+
+// // add comment
+// function addComment() {
+  
+//   const text = enterComment.value;
+// // this wont accept empty string
+//   if (text === "") {
+//     return;
+//   }
+
+//   const comments = getComments();
+
+//   const newComment = {
+//     id: Date.now(),
+//     name: "User",
+//     comment: text
+//   };
+
+//   comments.push(newComment);
+//   saveComments(comments);
+
+//   enterComment.value = "";
+//   loadComments();
+// }
+
+// // delete comment
+// function deleteComment(id) {
+//   let comments = getComments();
+
+//   comments = comments.filter(c => c.id !== id);
+
+//   saveComments(comments);
+//   loadComments();
+// }
+
+// // make comment editable
+// function editComment(id) {
+//   const commentText = document.querySelector(`#comment-${id}`);
+//   const saveBtn = document.querySelector(`#saveBtn-${id}`);
+//   const editBtn = document.querySelector(`#editBtn-${id}`);
+
+//   commentText.contentEditable = true;
+//   commentText.focus();
+
+//   saveBtn.style.display = "inline-block";
+//   editBtn.style.display = "none";
+// }
+
+// // save edited comment
+// function saveEdit(id) {
+//   const commentText = document.querySelector(`#comment-${id}`);
+//   const saveBtn = document.querySelector(`#saveBtn-${id}`);
+//   const editBtn = document.querySelector(`#editBtn-${id}`);
+
+//   const originalName = commentText.dataset.name;
+//   const fullText = commentText.textContent.trim();
+
+//   const updatedComment = fullText.replace(`${originalName}:`, "").trim();
+
+//   const comments = getComments();
+//   const index = comments.findIndex(c => c.id === id);
+
+//   if (index !== -1) {
+//     comments[index].comment = updatedComment;
+//     saveComments(comments);
+//   }
+
+//   commentText.contentEditable = false;
+//   saveBtn.style.display = "none";
+//   editBtn.style.display = "inline-block";
+
+//   loadComments();
+// }
+
+
+
+const comments_Key = "comments";
+
+function getComments() {
+  return JSON.parse(localStorage.getItem(comments_Key)) || [];
+}
+
+function saveComments(comments) {
+  localStorage.setItem(comments_Key, JSON.stringify(comments));
+}
+
+function toggleComments(postID) {
+  const box = document.getElementById(`commentBox-${postID}`);
+
+  if (box.style.display === "none" || box.style.display === "") {
+    box.style.display = "block";
+    loadComments(postID);
+  } else {
+    box.style.display = "none";
+  }
+}
+
+function loadComments(postID) {
+  const data = getComments();
+  const loadedCommnetText = document.getElementById(`loadedCommnetText-${postID}`);
+
+  const filteredComments = data.filter(comment => comment.postID === postID);
+
+  const comment_data = filteredComments.map(t => `
+    <div class="comment_row">
+      <p class="box" id="comment-${t.id}" data-name="${t.name}">
+        ${t.name}: ${t.comment}
+      </p>
+
+      <button class="menu_btn CommentBtn" onclick="deleteComment(${t.id}, ${postID})">Delete</button>
+      <button class="menu_btn CommentBtn" id="editBtn-${t.id}" onclick="editComment(${t.id})">Edit</button>
+      <button class="menu_btn CommentBtn" id="saveBtn-${t.id}" onclick="saveEdit(${t.id}, ${postID})" style="display:none;">Save</button>
+    </div>
+  `).join("");
+
+  loadedCommnetText.innerHTML = comment_data;
+}
+
+function addComment(postID) {
+  const enterComment = document.getElementById(`enterComment-${postID}`);
+  const text = enterComment.value.trim();
+
+  if (text === "") {
+    return;
+  }
+
+  const comments = getComments();
+
+  const newComment = {
+    id: Date.now(),
+    postID: postID,
+    name: "User",
+    comment: text
+  };
+
+  comments.push(newComment);
+  saveComments(comments);
+
+  enterComment.value = "";
+  loadComments(postID);
+}
+
+function deleteComment(id, postID) {
+  let comments = getComments();
+
+  comments = comments.filter(c => c.id !== id);
+
+  saveComments(comments);
+  loadComments(postID);
+}
+
+function editComment(id) {
+  const commentText = document.querySelector(`#comment-${id}`);
+  const saveBtn = document.querySelector(`#saveBtn-${id}`);
+  const editBtn = document.querySelector(`#editBtn-${id}`);
+
+  commentText.contentEditable = true;
+  commentText.focus();
+
+  saveBtn.style.display = "inline-block";
+  editBtn.style.display = "none";
+}
+
+function saveEdit(id, postID) {
+  const commentText = document.querySelector(`#comment-${id}`);
+  const saveBtn = document.querySelector(`#saveBtn-${id}`);
+  const editBtn = document.querySelector(`#editBtn-${id}`);
+
+  const originalName = commentText.dataset.name;
+  const fullText = commentText.textContent.trim();
+  const updatedComment = fullText.replace(`${originalName}:`, "").trim();
+
+  const comments = getComments();
+  const index = comments.findIndex(c => c.id === id);
+
+  if (index !== -1) {
+    comments[index].comment = updatedComment;
+    saveComments(comments);
+  }
+
+  commentText.contentEditable = false;
+  saveBtn.style.display = "none";
+  editBtn.style.display = "inline-block";
+
+  loadComments(postID);
 }
 loadPost();
 reloadLikeButtons();
