@@ -424,7 +424,11 @@ form {
   gap: var(--spacing-md);
 }
 
-
+.legendF{
+  color: var(--color-primary-dark);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
 .fieldsetF {
   border: 1pxprofile solid var(--color-secondary);
   padding: var(--spacing-md);
