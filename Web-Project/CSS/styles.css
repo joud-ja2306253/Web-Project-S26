@@ -7,7 +7,6 @@
 :root {
   /* Must Change these colors */
 
-  
   --color-primary: #8f0bf4;
   --color-secondary: #f4e7fe;
   --color-primary-dark: #5c079c;
@@ -198,6 +197,13 @@ nav a i {
   font-size: 1.5rem;
 }
 
+.nav-text {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
 nav a:hover {
   color: var(--color-primary-dark);
   background-color: var(--color-secondary);
@@ -379,20 +385,29 @@ nav a:hover {
   nav {
     flex-direction: column;
     justify-content: space-around;
-    align-items: flex-start; /* important for expansion */
-    width: fit-content; /* let content control width */
-
     box-shadow: var(--shadow-md-right);
     top: 0;
-    width: 70px;
+    left: 0;
+    bottom: auto;
+    right: auto;
+    min-width: 70px;
+    width: fit-content; /*  allows expansion */
     height: 100%;
   }
 
-  nav:hover {
+  nav:hover .nav-text {
+    opacity: 1;
+    max-width: 100px; /* enough space for text */
   }
-
+  nav:hover a {
+    gap: 10px;
+  }
+  
   nav a {
-    border-radius: 20%;
+    width: auto;
+    border-radius: 10%;
+
+    /* white-space: nowrap; */
   }
 
   .add-btn {
@@ -424,11 +439,7 @@ form {
   gap: var(--spacing-md);
 }
 
-<<<<<<< HEAD
-fieldset {
-=======
 .fieldsetF {
->>>>>>> b5d1c052bb96c9e0fcbab5c423328c0d8bfca3c1
   border: 1pxprofile solid var(--color-secondary);
   padding: var(--spacing-md);
   border-radius: var(--radius-sm);
@@ -449,7 +460,7 @@ fieldset {
   font-weight: bold;
 }
 
-.inputF{
+.inputF {
   width: 100%;
   padding: var(--spacing-sm);
   border-radius: var(--radius-sm);
@@ -458,8 +469,7 @@ fieldset {
   font-size: 0.95rem;
 }
 
-.buttonF
-{
+.buttonF {
   width: 100%;
   padding: 10px;
   background: var(--color-primary-dark);
@@ -475,9 +485,8 @@ fieldset {
 .buttonF:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
-} */
-
-.switch {
+}
+*/ .switch {
   text-align: center;
   margin-top: 10px;
 }
