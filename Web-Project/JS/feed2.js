@@ -16,7 +16,7 @@ function loadPost() {
   const data = getPost();
 
   const post_data = data.map(post => `
-    <div class="post">
+    <div class="post_R">
       <div class="post-header">
         <h4>${post.name}</h4>
         <span class="time">${post.time}</span>
