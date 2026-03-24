@@ -424,11 +424,8 @@ form {
   gap: var(--spacing-md);
 }
 
-<<<<<<< HEAD
-fieldset {
-=======
+
 .fieldsetF {
->>>>>>> b5d1c052bb96c9e0fcbab5c423328c0d8bfca3c1
   border: 1pxprofile solid var(--color-secondary);
   padding: var(--spacing-md);
   border-radius: var(--radius-sm);
@@ -471,7 +468,7 @@ fieldset {
   cursor: pointer;
 }
 
-/* salsa change this because its affecting my buttons aswell - joud */
+
 .buttonF:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
