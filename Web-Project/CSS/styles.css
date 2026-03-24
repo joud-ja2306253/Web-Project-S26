@@ -7,31 +7,18 @@
 :root {
   /* Must Change these colors */
 
-  /* --color-primary: #ff5c8a;
-  --color-primary-dark: #d6336c;
-  --color-secondary: #ff8fb1;
-  --color-accent: #ec407a;
- */
+  
   --color-primary: #8f0bf4;
   --color-secondary: #f4e7fe;
   --color-primary-dark: #5c079c;
   --color-primary-darker: #420570;
   --color-primary-darkest: #280344;
 
-  /* --color-primary: #ac72bb;
-  --color-primary-dark: #ac72bb;
-  --color-secondary: #f6e3fb;
-  --color-accent: #ac72bb; */
-
   --color-text: #333333;
   --color-text-light: #777777;
   --color-black: #000000;
   --color-light-grey: #b4b9b9;
   --color-white: #ffffff;
-
-  /* --color-bg: #ffe4ec; */
-
-  /* --color-bg: #ffffff; */
 
   --color-border: #ffc1d3;
 
@@ -438,7 +425,7 @@ form {
 }
 
 fieldset {
-  border: 1pxprofile solid var(--color-border);
+  border: 1pxprofile solid var(--color-secondary);
   padding: var(--spacing-md);
   border-radius: var(--radius-sm);
 }
@@ -464,7 +451,7 @@ h2 {
   width: 100%;
   padding: var(--spacing-sm);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-secondary);
   background: #fff;
   font-size: 0.95rem;
 }
