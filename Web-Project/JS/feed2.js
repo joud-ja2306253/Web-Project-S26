@@ -32,7 +32,7 @@ function loadPost() {
     const userLike = likes.find(
       like => like.postID === post.id && like.userID === currentUser
     );
-// ${userLike ? "♥" : "♡"}
+
     return `
       <div class="post_R">
         <div class="post-header">
@@ -46,11 +46,13 @@ function loadPost() {
 
         <div class="post-actions">
           <div class="post_actions">
+          
             <button id="likeBtn-${post.id}" class="menu_btn" onclick="addlike(${post.id})">♡
               
             </button>
             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
           </div>
+<button class="menu_btn comment-btn">🗨️</button>
 
 <div class="menu">
   <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
@@ -69,8 +71,6 @@ function loadPost() {
   </ul>
 </div>
 
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ function loadPost() {
   container.innerHTML = post_data;
 }
 
-
+//delet menue 
 function toggleMenu(id) {
   const menu = document.getElementById(`menuList-${id}`);
 
@@ -91,7 +91,8 @@ function toggleMenu(id) {
   }
 }
 
-
+//add post
+post_btn.addEventListener("click", addPost);
 function addPost() {
   const text = enter_post.value.trim();
 
@@ -115,14 +116,7 @@ function addPost() {
   loadPost();
 }
 
-function deleteComment(id) {
-  let comments = getComments();
-
-  comments = comments.filter(c => c.id !== id);
-
-  saveComments(comments);
-  loadComments();
-}
+  
 
 
 //like ===========================
@@ -154,6 +148,7 @@ function reloadLikeButtons() {
     }
   });
 }
+
 function addlike(postID) {
   let likes = getLikes();
   const likeBtn = document.getElementById(`likeBtn-${postID}`);
