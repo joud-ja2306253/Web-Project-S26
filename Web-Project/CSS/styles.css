@@ -627,7 +627,7 @@ form {
  
   background: rgb(243, 241, 250);
   padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: var(--spacing-lg);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
@@ -636,6 +636,7 @@ form {
 .feed-container {
   max-width: 600px;
   margin: auto;
+  margin-bottom: 40px;
   padding: var(--spacing-md);
 }
 

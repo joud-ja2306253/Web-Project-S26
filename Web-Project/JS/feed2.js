@@ -79,7 +79,7 @@ function loadPost() {
 
   <ul id="menuList-${post.id}" style="display: none">
     <li>
-      <button class="menu_btn" style="font-size: 15px">
+      <button class="menu_btn" style="font-size: 15px" onclick ="editPost(${post.id}) id="edit-post-${post.id}">
         Edit post
       </button>
     </li>
@@ -333,6 +333,43 @@ function saveEdit(id, postID) {
   editBtn.style.display = "inline-block";
 
   loadComments(postID);
+}
+
+
+
+function editPost(id) {
+  const postText = document.querySelector(`#postText-${id}`);
+  const saveBtn = document.querySelector(`#savePost-${id}`);
+  const editBtn = document.querySelector(`#edit_post-${id}`);
+
+  postText.contentEditable = true;
+  postText.focus();
+
+  saveBtn.style.display = "inline-block";
+  editBtn.style.display = "none";
+}
+
+function savePostEdit(id) {
+  const postText = document.querySelector(`#postText-${id}`);
+  const saveBtn = document.querySelector(`#savePost-${id}`);
+  const editBtn = document.querySelector(`#edit_post-${id}`);
+
+  const updatedText = postText.textContent.trim();
+
+  const posts = getPost();
+  const index = posts.findIndex(p => p.id === id);
+
+  if (index !== -1) {
+    posts[index].comment = updatedText;
+    savePost(posts);
+  }
+
+  postText.contentEditable = false;
+  saveBtn.style.display = "none";
+  editBtn.style.display = "inline-block";
+
+  loadPost();
+  reloadLikeButtons();
 }
 loadPost();
 reloadLikeButtons();
