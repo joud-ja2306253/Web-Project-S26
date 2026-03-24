@@ -523,6 +523,7 @@ form {
   background-color: transparent;
   padding: 0;
   width: auto;
+  border: none;
 }
 .menu_btn:hover {
   transform: none;
@@ -563,13 +564,20 @@ form {
   grid-template-columns: 1fr auto;
 }
 
+.enterComment{
+  border-top-left-radius: var(--radius-sm);
+  border-bottom-left-radius: var(--radius-sm);
+}
 .sendComment,
 .enterComment {
-  border-radius: 0px;
+
   color: var(--color-primary-darkest);
+  padding: 12px;
 }
 .sendComment {
   background-color: var(--color-primary);
+  border-bottom-right-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
 }
 
 .sendComment:hover {
