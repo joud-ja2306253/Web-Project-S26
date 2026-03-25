@@ -6,14 +6,13 @@ form.addEventListener("submit", function (event) {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("conf_password").value;
-  
-  //const passwordPattern = ;
 
   if (!firstName || !lastName || !email || !password || !confirmPassword) {
     alert("Please fill all fields!");
     return;
   }
 
+  const pass= password !== confirmPassword => :"Passwords do not match!";
   if (password !== confirmPassword) {
     alert("Passwords do not match!");
     return;
@@ -25,7 +24,7 @@ form.addEventListener("submit", function (event) {
     email,
     password,
   };
-  
+
   localStorage.setItem("user", JSON.stringify(user));
 
   alert("Registration successful!");
