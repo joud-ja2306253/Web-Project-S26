@@ -8,7 +8,7 @@ form.addEventListener("submit", function (event) {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("conf_password").value;
   const message = document.getElementById("registerMessage");
-  const existingUser = JSON.parse(localStorage.getItem("user"));
+  const existingUser = JSON.parse(localStorage.getItem("currentUser"));
 
  if (!firstName || !lastName || !UserName || !email || !password || !confirmPassword) {
     message.textContent = "Registration failed Please fill all fields";
@@ -29,7 +29,7 @@ form.addEventListener("submit", function (event) {
     return;
   }
 
-  const user = {
+  const currentUser = {
     firstName,
     lastName,
     UserName,
@@ -38,7 +38,7 @@ form.addEventListener("submit", function (event) {
   };
  
 
-  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("user", JSON.stringify(currentUser));
 
   alert("Registration successful!");
   window.location.href = "login-page.html";

@@ -6,7 +6,7 @@ form.addEventListener("submit", function (event) {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedUser = JSON.parse(localStorage.getItem("currentUser"));
 
   if (!storedUser) {
     alert("No account found!");
@@ -18,4 +18,9 @@ form.addEventListener("submit", function (event) {
   } else {
     alert("Invalid email or password!");
   }
+
+  localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
+
+  alert("Log in successful!");
+  window.location.href = "profile-page.html";
 });
