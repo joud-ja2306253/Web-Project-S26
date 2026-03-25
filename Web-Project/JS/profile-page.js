@@ -132,7 +132,16 @@ logoutBtn.addEventListener("click", () => {
   window.location.href = "login-page.html"; // Change to your login page
 });
 
-
 //========================================
 //         Profile Data (numbers)
 //========================================
+
+console.log(Date.now());
+
+//========================================
+//         Render Posts
+//========================================
+
+function renderUserPosts() {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+}
