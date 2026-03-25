@@ -111,7 +111,7 @@ body {
 }
 
 .follow-btn,
-.edit-profile-btn {
+.settingsBtn {
   display: flex;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
@@ -124,13 +124,13 @@ body {
 }
 
 .follow-btn:hover,
-.edit-profile-btn:hover {
+.settingsBtn:hover {
   background-color: var(--color-primary-dark);
   color: var(--color-white);
 }
 
 .follow-btn:active,
-.edit-profile-btn:active,
+.settingsBtn:active,
 .follow-btn.following:active {
   background-color: var(--color-primary-darker);
 }
@@ -154,7 +154,6 @@ body {
 .profile-data > div > p:first-of-type {
   /* styles only for the first <p> in each box */
   font-weight: bold;
-  /* color: var(--color-primary-dark); */
 }
 
 .labeling {
@@ -245,7 +244,10 @@ nav a:hover {
 }
 
 /* Panel */
-#editPanel {
+#settingsPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   position: fixed;
   top: 0;
   right: -80%; /* for it to be hidden rigth must equal width*/
@@ -263,11 +265,11 @@ nav a:hover {
   pointer-events: all;
 }
 
-#editPanel.active {
+#settingsPanel.active {
   right: 0 !important;
 }
 
-.edit-profile-btn:hover + #editPanel {
+.settingsBtn:hover + #settingsPanel {
   right: -75%;
   box-shadow: var(--shadow-md-left);
 }
@@ -356,6 +358,27 @@ nav a:hover {
   border: 3px solid var(--color-primary-dark);
 }
 
+.logoutBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  margin-bottom: 60px;
+}
+#logoutBtn {
+  border: none;
+  color: red;
+  background-color: transparent;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+#logoutBtn:hover {
+  background-color: var(--color-secondary);
+}
+
+#logoutBtn:active {
+  border: 2px solid var(--color-border);
+}
+
 #saveBtn:hover {
   background-color: var(--color-primary-dark);
   color: var(--color-white);
@@ -390,24 +413,35 @@ nav a:hover {
     left: 0;
     bottom: auto;
     right: auto;
-    min-width: 70px;
-    width: fit-content; /*  allows expansion */
+    width: 70px;
     height: 100%;
+    transition: all 0.3s ease;
+  }
+
+  nav a {
+    width: auto;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .nav-text {
+    transition:
+      opacity 0.3s ease,
+      max-width 0.3s ease;
+  }
+
+  nav:hover {
+    width: 110px;
+  }
+
+  nav:hover a {
+    gap: 10px;
   }
 
   nav:hover .nav-text {
     opacity: 1;
     max-width: 100px; /* enough space for text */
-  }
-  nav:hover a {
-    gap: 10px;
-  }
-  
-  nav a {
-    width: auto;
-    border-radius: 10%;
-
-    /* white-space: nowrap; */
   }
 
   .add-btn {
@@ -439,7 +473,7 @@ form {
   gap: var(--spacing-md);
 }
 
-.legendF{
+.legendF {
   color: var(--color-primary-dark);
   margin-bottom: 10px;
   font-weight: bold;
@@ -486,7 +520,6 @@ form {
   font-size: 16px;
   cursor: pointer;
 }
-
 
 .buttonF:hover {
   transform: translateY(-3px);
@@ -575,20 +608,18 @@ form {
   border-radius: var(--radius-md);
   display: grid;
   grid-template-columns: 1fr auto;
-  padding: 0px ;
+  padding: 0px;
 }
 
-.enterComment{
+.enterComment {
   border-top-left-radius: var(--radius-sm);
   border-bottom-left-radius: var(--radius-sm);
   width: 229px;
 }
 .sendComment,
 .enterComment {
-
   color: var(--color-primary-darkest);
   padding: 12px;
-  
 }
 .sendComment {
   background-color: var(--color-primary);
@@ -638,15 +669,12 @@ form {
 /* ============================= */
 /* Feed (Girl 2) */
 /* ============================= */
-.post_R
-{
- 
+.post_R {
   background: rgb(243, 241, 250);
   padding: 15px;
   margin-bottom: var(--spacing-lg);
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .feed-container {
@@ -662,13 +690,10 @@ form {
   /* flex-direction: column; */
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
-  
 }
 
-
-
 .create-post textarea {
-  width: 600px ;
+  width: 600px;
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-light-grey);
@@ -726,21 +751,15 @@ form {
 @media (min-width: 768px) and (max-width: 1023px) {
   .feed-container {
     padding: var(--spacing-sm);
-      
   }
-
-.feed-container {
-  max-width: 750px;}
- 
-  } 
-
-
-@media (min-width: 1024px){
 
   .feed-container {
-    max-width: 1200px;
-   
-  
+    max-width: 750px;
   }
+}
 
+@media (min-width: 1024px) {
+  .feed-container {
+    max-width: 1200px;
+  }
 }
