@@ -6,7 +6,31 @@
 //         Profile Action Button
 // ===================================
 
-const currentUserId = "123"; // Get from your auth system
+//If both scripts are linked in HTML, they share the same global scope.
+// This file runs AFTER feed2.js
+// It uses functions from feed2.js without redeclaring anything
+
+//currentUser local storage
+// {"id":"123","username":"joud","displayName":"Joud Haytham",
+// "bio":"CS student","email":"joud@email.com","password":"123456",
+// "createdAt":"2026-03-25T12:34:56.789Z",
+// "posts":["",1774452295367,1774452305953,1774452311180,1774452318132,1774452903971],
+// "followers":[""],"following":[""]}
+
+// // Get logged-in user
+// function getCurrentUser() {
+//   return JSON.parse(localStorage.getItem("currentUser"));
+// }
+
+// // Joud Get current logged-in user
+// const currentUser = getCurrentUser();
+// console.log("hi");
+
+if (!currentUser) {
+  window.location.href = "login.html";
+}
+
+// const currentUserId = loggedInUser.id; // Get from your auth system
 const profileUserId = "123"; // Get from URL/profile data
 
 const settingsBtn = document.querySelector("#settingsBtn");
@@ -19,7 +43,7 @@ if (!settingsBtn && !followBtn) {
 }
 
 // Decide which button to show
-if (currentUserId === profileUserId) {
+if (currentUser.id === profileUserId) {
   // User's own profile - show settings, hide follow
   //   editProfileBtn.style.display = "flex";
   followBtn.style.display = "none";
@@ -125,23 +149,20 @@ loadSavedData();
 
 // Logout functionality
 logoutBtn.addEventListener("click", () => {
-  // Clear localStorage if you want
-  // localStorage.clear();
-
-  // Redirect to login page or home
-  window.location.href = "login-page.html"; // Change to your login page
+  // localStorage.removeItem("currentUser");
+  alert("Logged out successfully");
+  // Redirect to login page
+  window.location.href = "login-page.html";
 });
 
 //========================================
 //         Profile Data (numbers)
 //========================================
 
-console.log(Date.now());
-
 //========================================
 //         Render Posts
 //========================================
 
-function renderUserPosts() {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-}
+// const myPosts = allPosts.filter(post => post.userId === currentUser.id);
+// loadPost(myPosts);
+// //loadPost(data.filter((post) => post.userId === profileUserId));

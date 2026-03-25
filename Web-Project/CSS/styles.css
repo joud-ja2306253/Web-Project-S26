@@ -144,6 +144,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-bottom: var(--spacing-lg);
 }
 
 .profile-data > div {
@@ -397,11 +398,12 @@ nav a:hover {
   grid-area: post;
 }
 @media (min-width: 768px) {
-  main {
+  /* .profile-info-container { */
+  /* main {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+  } */
 }
 
 @media (min-width: 1024px) {

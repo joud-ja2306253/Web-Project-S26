@@ -18,131 +18,120 @@
     <header class="header"></header>
     <div class="container">
       <main class="main">
-        <div class="profile-info">
-          <div class="top-field">
-            <img
-              class="profile-pic"
-              src="https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_640.png"
-              alt="profile picture"
-            />
-            <div class="top-row">
-              <div class="names">
-                <h3 class="displayName"></h3>
-                <p class="username"></p>
-              </div>
-
-              <div>
-                <button class="follow-btn" id="followBtn" type="button">
-                  <i class="fas fa-plus"></i>Follow
-                </button>
-
-                <!-- should dim the page (css) & detect clicks outside of the page to close the panel -->
-                <div id="overlay"></div>
-
-                <button class="settingsBtn" id="settingsBtn" type="button">
-                  Settings
-                </button>
-                <!-- dont add anything between settingsBtn and settingsPanel as they should stay siblings -->
-                <div id="settingsPanel">
-                  <div class="editProfileTop">
-                    <button id="closeBtn">
-                      <i class="fa-solid fa-angle-left"></i>
-                    </button>
-                    <p>Edit Profile</p>
-                  </div>
-
-                  <!-- Profile Picture -->
-                  <div class="editProfilePicContainer">
-                    <img
-                      class="editProfilePic"
-                      src="https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_640.png"
-                      alt="profile picture"
-                    />
-                    <label for="changePhoto" class="changePhoto"
-                      >Change Photo</label
-                    >
-                    <input type="file" id="changePhoto" hidden />
-                  </div>
-
-                  <!-- Username -->
-                  <div class="editRow">
-                    <label for="editUsername">Username</label>
-                    <input id="editUsername" type="text" class="editInput" />
-                  </div>
-
-                  <!-- Name -->
-                  <div class="editRow">
-                    <label for="editDisplayName">Name</label>
-                    <input id="editDisplayName" type="text" class="editInput" />
-                  </div>
-
-                  <!-- Bio -->
-                  <div class="editRow">
-                    <label for="editBio">Bio</label>
-                    <input
-                      id="editBio"
-                      type="text"
-                      class="editInput"
-                      placeholder="Your bio should go here"
-                    />
-                  </div>
-
-                  <div class="saveBtnWrapper">
-                    <button id="saveBtn" type="button">Save</button>
-                  </div>
-                  <div class="logoutBtn">
-                    <button id="logoutBtn" type="button">Logout</button>
-                  </div>
+        <div class="profile-info-container">
+          <div class="profile-info">
+            <div class="top-field">
+              <img
+                class="profile-pic"
+                src="https://i.pinimg.com/1200x/28/16/5a/28165aaca2ee560b4a6b760765efe976.jpg"
+                alt="profile picture"
+              />
+              <div class="top-row">
+                <div class="names">
+                  <h3 class="displayName"></h3>
+                  <p class="username"></p>
                 </div>
 
-                <!-- editPanel -->
+                <div>
+                  <button class="follow-btn" id="followBtn" type="button">
+                    <i class="fas fa-plus"></i>Follow
+                  </button>
+
+                  <!-- should dim the page (css) & detect clicks outside of the page to close the panel -->
+                  <div id="overlay"></div>
+
+                  <button class="settingsBtn" id="settingsBtn" type="button">
+                    Settings
+                  </button>
+                  <!-- dont add anything between settingsBtn and settingsPanel as they should stay siblings -->
+                  <div id="settingsPanel">
+                    <div class="editProfileTop">
+                      <button id="closeBtn">
+                        <i class="fa-solid fa-angle-left"></i>
+                      </button>
+                      <p>Edit Profile</p>
+                    </div>
+
+                    <!-- Profile Picture -->
+                    <div class="editProfilePicContainer">
+                      <img
+                        class="editProfilePic"
+                        src="https://cdn.pixabay.com/photo/2017/06/13/12/53/profile-2398782_640.png"
+                        alt="profile picture"
+                      />
+                      <label for="changePhoto" class="changePhoto"
+                        >Change Photo</label
+                      >
+                      <input type="file" id="changePhoto" hidden />
+                    </div>
+
+                    <!-- Username -->
+                    <div class="editRow">
+                      <label for="editUsername">Username</label>
+                      <input id="editUsername" type="text" class="editInput" />
+                    </div>
+
+                    <!-- Name -->
+                    <div class="editRow">
+                      <label for="editDisplayName">Name</label>
+                      <input
+                        id="editDisplayName"
+                        type="text"
+                        class="editInput"
+                      />
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="editRow">
+                      <label for="editBio">Bio</label>
+                      <input
+                        id="editBio"
+                        type="text"
+                        class="editInput"
+                        placeholder="Your bio should go here"
+                      />
+                    </div>
+
+                    <div class="saveBtnWrapper">
+                      <button id="saveBtn" type="button">Save</button>
+                    </div>
+                    <div class="logoutBtn">
+                      <button id="logoutBtn" type="button">Logout</button>
+                    </div>
+                  </div>
+
+                  <!-- editPanel -->
+                </div>
+              </div>
+              <!-- top-row -->
+            </div>
+            <!-- top-field  -->
+
+            <div class="bio">
+              <p></p>
+            </div>
+
+            <div class="profile-data">
+              <div>
+                <p>10</p>
+                <p class="labeling">Posts</p>
+              </div>
+              <div>
+                <p>67</p>
+                <p class="labeling">Followers</p>
+              </div>
+              <div>
+                <p>15</p>
+                <p class="labeling">Following</p>
               </div>
             </div>
-            <!-- top-row -->
+            <!-- profile data -->
           </div>
-          <!-- top-field  -->
-
-          <div class="bio">
-            <p></p>
-          </div>
-
-          <div class="profile-data">
-            <div>
-              <p>10</p>
-              <p class="labeling">Posts</p>
-            </div>
-            <div>
-              <p>67</p>
-              <p class="labeling">Followers</p>
-            </div>
-            <div>
-              <p>15</p>
-              <p class="labeling">Following</p>
-            </div>
-          </div>
-          <!-- profile data -->
+          <!-- profile info -->
         </div>
-        <!-- profile info -->
 
-        <div class="posts">
-          <p class="post">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse vitae
-            ipsa tempore. Temporibus aliquam dolore exercitationem, ipsum
-            laborum quo maxime nesciunt molestias optio! Ratione exercitationem
-            itaque illum earum cupiditate numquam? Aspernatur repellendus
-            pariatur beatae laborum magni. Voluptatem adipisci quaerat quisquam
-            eligendi a eum neque, incidunt cupiditate ducimus quae alias nobis
-            repellendus, vitae, officia laudantium placeat. Laborum, libero?
-            Ipsam, exercitationem! Amet dolor voluptate harum veritatis odit? Ex
-            sequi omnis dolore aliquid similique amet necessitatibus molestiae
-            minima libero sit quibusdam, officiis modi optio, nulla consequatur
-            quo. Aliquid totam dicta fuga, eum reiciendis eveniet quisquam amet
-            nisi culpa. Ex sequi omnis dolore aliquid similique amet
-            necessitatibus molestiae minima libero sit quibusdam, officiis modi
-            optio, nulla consequatur quo. Aliquid totam dicta fuga, eum
-            reiciendis eveniet quisquam amet nisi culpa.
-          </p>
-        </div>
+        <!-- Posts -->
+        <div id="postsContainer">it load here</div>
       </main>
       <aside class="side"></aside>
 
@@ -165,6 +154,8 @@
         </nav>
       </footer>
     </div>
+    <script src="../JS/feed2.js"></script>
+
     <script src="../JS/profile-page.js"></script>
   </body>
 </html>

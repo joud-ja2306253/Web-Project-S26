@@ -1,6 +1,22 @@
 const post_Key = "post";
 const likes_Key = "likes";
 
+// ==================== Joud GET CURRENT USER ====================
+// Get logged-in user
+function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('currentUser'));
+}
+
+function saveCurrentUser(currentUser) {
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
+}
+
+// Joud Get current logged-in user
+const currentUser = getCurrentUser();
+if (!currentUser) {
+  window.location.href = "login-page.html";
+}
+
 function getPost() {
   return JSON.parse(localStorage.getItem(post_Key)) || [];
 }
@@ -21,16 +37,35 @@ const container = document.getElementById("postsContainer");
 const post_btn = document.getElementById("postBtn");
 const enter_post = document.getElementById("postInput");
 
-const currentUser = "User";
+
+// let currentPosts = [];
+// let allPosts = getPost();
+
 
 function loadPost() {
-  const data = getPost();
+
+  //const data = getPost();
+  
+  // Get current page name from URL
+  const path = window.location.pathname;       // e.g., "/profile-page.html"
+  const page = path.split("/").pop();          // gets "profile-page.html" or "feed.html"
+
+  const allPosts = getPost();
+  let data;
+
+  if (page === "profile-page.html") {
+    // Only show posts by the current user
+    data = allPosts.filter(post => post.userId === currentUser.id);
+  } else {
+    // Home/feed page shows all posts
+    data = allPosts;
+  }
   const likes = getLikes();
 
   const post_data = data.map(post => {
     const postLikes = likes.filter(like => like.postID === post.id);
     const userLike = likes.find(
-      like => like.postID === post.id && like.userID === currentUser
+      like => like.postID === post.id && like.userID === currentUser.id
     );
 
     return `
@@ -96,6 +131,7 @@ function loadPost() {
   container.innerHTML = post_data;
 }
 
+
 //delet menue 
 function toggleMenu(id) {
   const menu = document.getElementById(`menuList-${id}`);
@@ -108,11 +144,13 @@ function toggleMenu(id) {
 }
 
 //add post
+//joud modified and added gaurd (the if statement)
+if (post_btn) {
 post_btn.addEventListener("click", addPost);
 function addPost() {
   const text = enter_post.value.trim();
 
-  if (text === "") {
+if (text === "") {
     return;
   }
 
@@ -120,16 +158,29 @@ function addPost() {
 
   const newPost = {
     id: Date.now(),
-    name: "User",
+
+    // joud Create post with USER ID and USERNAME
+    userId: currentUser.id,      //  Link to user who created it
+    username: currentUser.username, //  Store username for display
+
+    name: currentUser.displayName,
     comment: text,
     time: new Date().toLocaleString()
   };
 
-  posts.push(newPost);
+  //joud modify new posts on top
+  posts.unshift(newPost);
   savePost(posts);
+
+  // joud Update user's posts array
+  currentUser.posts.push(newPost.id);
+  localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
   enter_post.value = "";
   loadPost();
+}
+} else {
+  console.warn("Add post elements not found or user not logged in.");
 }
 
   
@@ -146,7 +197,7 @@ function reloadLikeButtons() {
 
     const postLikes = likes.filter(like => like.postID === post.id);
     const userLike = likes.find(
-      like => like.postID === post.id && like.userID === currentUser
+      like => like.postID === post.id && like.userID === currentUser.id
     );
 
     if (likeBtn) {
@@ -171,13 +222,16 @@ function addlike(postID) {
   const likeCount = document.getElementById(`likeCount-${postID}`);
 
   const existingLike = likes.find(
-    like => like.postID === postID && like.userID === currentUser
+    like => like.postID === postID && like.userID === currentUser.id
   );
 
   if (!existingLike) {
     const newLike = {
       id: Date.now(),
-      userID: currentUser,
+
+      // joud modify
+      userID: currentUser.id,
+
       postID: postID
     };
 
@@ -186,7 +240,7 @@ function addlike(postID) {
     likeBtn.textContent = "♥";
   } else {
     likes = likes.filter(
-      like => !(like.postID === postID && like.userID === currentUser)
+      like => !(like.postID === postID && like.userID === currentUser.id)
     );
 
     likeBtn.classList.remove("liked");
