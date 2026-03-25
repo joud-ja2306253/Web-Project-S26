@@ -23,12 +23,12 @@ function registerUser() {
     const password = document.getElementById('password').value;
     
     const newUser = {
-        id: generateId(),  // ✅ UNIQUE USER ID
+        id: generateId(),  
         username: username,
         email: email,
         password: password,
         createdAt: new Date().toISOString(),
-        posts: [],  // Will store post IDs
+        posts: [],  
         following: [],
         followers: []
     };
@@ -40,10 +40,9 @@ function registerUser() {
     const allUsers = JSON.parse(localStorage.getItem('allUsers')) || [];
     allUsers.push(newUser);
     localStorage.setItem('allUsers', JSON.stringify(allUsers));
-    
-    // Redirect to main page
-    window.location.href = 'main.html';
-}
+  }
+
+
  if (!firstName || !lastName || !UserName || !email || !password || !confirmPassword) {
     message.textContent = "Registration failed Please fill all fields";
     message.style.color = "red";
@@ -72,7 +71,7 @@ function registerUser() {
   };
  
 
-  localStorage.setItem("user", JSON.stringify(currentUser));
+  localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
   alert("Registration successful!");
   window.location.href = "login-page.html";
