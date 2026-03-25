@@ -12,7 +12,7 @@ form.addEventListener("submit", function (event) {
     return;
   }
 
-  const pass= password !== confirmPassword => :"Passwords do not match!";
+  
   if (password !== confirmPassword) {
     alert("Passwords do not match!");
     return;
