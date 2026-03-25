@@ -445,7 +445,7 @@ form {
   font-weight: bold;
 }
 .fieldsetF {
-  border: 1pxprofile solid var(--color-secondary);
+  border: 1px solid var(--color-secondary);
   padding: var(--spacing-md);
   border-radius: var(--radius-sm);
 }
