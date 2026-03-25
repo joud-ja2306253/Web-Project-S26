@@ -8,7 +8,7 @@ form.addEventListener("submit", function (event) {
   const confirmPassword = document.getElementById("conf_password").value;
   
   //const passwordPattern = ;
-  
+
   if (!firstName || !lastName || !email || !password || !confirmPassword) {
     alert("Please fill all fields!");
     return;
@@ -25,4 +25,9 @@ form.addEventListener("submit", function (event) {
     email,
     password,
   };
+  
+  localStorage.setItem("user", JSON.stringify(user));
+
+  alert("Registration successful!");
+  window.location.href = "login-page.html";
 });

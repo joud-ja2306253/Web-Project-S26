@@ -22,7 +22,10 @@
           <label class="labelF" for="email"> Email<span class="requiredF"> *</span></label>
           <input class="inputF" id="email" type="email" placeholder="Enter Your Email" required />
           <label class="labelF" for="password">Password<span class="requiredF"> *</span></label>
-          <input class="inputF" id="password" type="password" placeholder="Enter Your Password" required />
+          <input class="inputF" id="password" type="password" placeholder="Enter Your Password" required 
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+          title="Password must contain: 1-uppercase 2-lowercase 3-number 
+          4-special character 5-at least 8 characters"/>
           <label class="labelF" for="conf_password">Confirm Password<span class="requiredF"> *</span></label>
           <input class="inputF" id="conf_password" type="password" placeholder="Enter Your Password Again" required />
         </fieldset>
