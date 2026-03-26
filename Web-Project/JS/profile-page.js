@@ -27,7 +27,6 @@
 // // is this our own profile or someone else's?
 // const isOwnProfile = profileUser.id === currentUserID;
 
-
 const displayNameElem = document.querySelector(".displayName");
 const displayUsernameElem = document.querySelector(".username");
 const displayBioElem = document.querySelector(".bio p");
@@ -138,7 +137,6 @@ function updateProfileStats(user) {
   const profiledataDiv = document.querySelector(".profile-data");
   if (profiledataDiv) {
     profiledataDiv.innerHTML = `
-      <div class="profile-data">
         <div>
           <p>${user.posts ? user.posts.length : 0}</p>
           <p class="labeling">Posts</p>
@@ -151,7 +149,6 @@ function updateProfileStats(user) {
           <p>${user.following ? user.following.length : 0}</p>
           <p class="labeling">Following</p>
         </div>
-      </div>
     `;
   }
 }
@@ -406,7 +403,7 @@ const editUsername = document.getElementById("editUsername");
 const editDisplayName = document.getElementById("editDisplayName");
 const editBio = document.getElementById("editBio");
 //didnt implement edit profile pic
-//const editProfilePic = document.querySelector(".profile-pic");
+const editProfilePic = document.querySelector(".profile-pic");
 
 settingsBtn.addEventListener("click", () => {
   // Load current displayed values into edit inputs

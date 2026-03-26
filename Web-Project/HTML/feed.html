@@ -18,15 +18,20 @@
     <main>
       <!-- FEED -->
       <section id="feed-page">
-  <div class="search-input-row">
-    <input type="text" id="searchInput" placeholder="Search users..." 
-      class="search-input" oninput="searchUsers()"/>
-    <button class="search-btn" onclick="searchUsers()">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-  </div>
-  <div id="searchResults" class="search-results"></div>
-</div>
+        <div class="search-input-row">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search users..."
+            class="search-input"
+            oninput="searchUsers()"
+          />
+          <button class="search-btn" onclick="searchUsers()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <div id="searchResults" class="search-results"></div>
+        </div>
+        
         <div class="feed-container">
           <!-- Create Post UI -->
           <div class="create-post">
@@ -35,8 +40,13 @@
               id="postInput"
               placeholder="What's on your mind?"
             ></textarea>
-            <button class="
-            " id="postBtn">Post</button>
+            <button
+              class="
+            "
+              id="postBtn"
+            >
+              Post
+            </button>
           </div>
 
           <!-- Posts -->
@@ -64,8 +74,5 @@
       </nav>
     </footer>
     <script src="../JS/feed2.js"></script>
-
-    
-
   </body>
 </html>
