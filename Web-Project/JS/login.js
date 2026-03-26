@@ -11,8 +11,10 @@ form.addEventListener("submit", function (event) {
   // Get all registered users
   const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
 
-  // Find user by email
-  const matchedUser = allUsers.find((user) => user.email === email);
+  // Find user by email, case in-sensitive
+  const matchedUser = allUsers.find(
+    (user) => user.email.toLowerCase() === email.toLowerCase(),
+  );
 
   if (!matchedUser) {
     alert("No account found with this email!");
@@ -26,18 +28,13 @@ form.addEventListener("submit", function (event) {
   //   return;
   // }
 
-  if (email === matchedUser.email && password === matchedUser.password) {
+  if (password === matchedUser.password) {
     //save current user id in the currentUser key if the email matches 1 from the allUsers
     localStorage.setItem("currentUser", matchedUser.id);
 
-    //joud, this alert is duplicate?
     alert("Log in successful!");
     window.location.href = "profile-page.html";
   } else {
     alert("Invalid password!");
   }
-
-  localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
-  //duplicate
-  // alert("Log in successful!");
 });

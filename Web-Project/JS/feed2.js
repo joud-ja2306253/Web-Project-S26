@@ -1,21 +1,35 @@
-const post_Key = "post";
-const likes_Key = "likes";
-
 // ==================== Joud GET CURRENT USER ====================
+
+// Get all users
+function getAllUsers() {
+  return JSON.parse(localStorage.getItem("allUsers"));
+}
+
+function saveAllUsers(allUsers) {
+  localStorage.setItem("allUsers", JSON.stringify(allUsers));
+}
+const allUsers = getAllUsers() || [];
+
 // Get logged-in user
 function getCurrentUser() {
-    return JSON.parse(localStorage.getItem('currentUser'));
+  return localStorage.getItem("currentUser");
 }
 
-function saveCurrentUser(currentUser) {
-  localStorage.setItem('currentUser', JSON.stringify(currentUser));
-}
+//=============
+//  Get current logged-in user by id match to allUsers and return its object
 
-// Joud Get current logged-in user
-const currentUser = getCurrentUser();
-if (!currentUser) {
+//gets id
+const currentUserID = getCurrentUser();
+if (!currentUserID) {
   window.location.href = "login-page.html";
 }
+const currentUserObj = allUsers.find((user) => user.id === currentUserID);
+//=============
+
+//==================================================
+
+const post_Key = "post";
+const likes_Key = "likes";
 
 function getPost() {
   return JSON.parse(localStorage.getItem(post_Key)) || [];
@@ -37,38 +51,36 @@ const container = document.getElementById("postsContainer");
 const post_btn = document.getElementById("postBtn");
 const enter_post = document.getElementById("postInput");
 
-
 // let currentPosts = [];
 // let allPosts = getPost();
 
-
 function loadPost() {
-
   //const data = getPost();
-  
+
   // Get current page name from URL
-  const path = window.location.pathname;       // e.g., "/profile-page.html"
-  const page = path.split("/").pop();          // gets "profile-page.html" or "feed.html"
+  const path = window.location.pathname; // e.g., "/profile-page.html"
+  const page = path.split("/").pop(); // gets "profile-page.html" or "feed.html"
 
   const allPosts = getPost();
   let data;
 
   if (page === "profile-page.html") {
     // Only show posts by the current user
-    data = allPosts.filter(post => post.userId === currentUser.id);
+    data = allPosts.filter((post) => post.userId === currentUserObj.id);
   } else {
     // Home/feed page shows all posts
     data = allPosts;
   }
   const likes = getLikes();
 
-  const post_data = data.map(post => {
-    const postLikes = likes.filter(like => like.postID === post.id);
-    const userLike = likes.find(
-      like => like.postID === post.id && like.userID === currentUser.id
-    );
+  const post_data = data
+    .map((post) => {
+      const postLikes = likes.filter((like) => like.postID === post.id);
+      const userLike = likes.find(
+        (like) => like.postID === post.id && like.userID === currentUserObj.id,
+      );
 
-    return `
+      return `
       <div class="post_R">
         <div class="post-header">
           <h4>${post.name}</h4>
@@ -86,53 +98,53 @@ function loadPost() {
               
             </button>
             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
-          </div>
+        </div>
+
+
+        
+        <div>
+          <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
+        </div>
+
+        <div class="commentBox" style="display: none" id="commentBox-${post.id}">
+          <input
+            class="enterComment"
+            id="enterComment-${post.id}"
+            type="text"
+            placeholder="write your comment"
+          />
+          <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
+          <p class="loadedCommnetText" id="loadedCommnetText-${post.id}">
+            comments will load here
+          </p>
+        </div>
 
 
 
-    <div>
-      <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
-    </div>
+        <div class="menu">
+          <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
 
-    <div class="commentBox" style="display: none" id="commentBox-${post.id}">
-      <input
-        class="enterComment"
-        id="enterComment-${post.id}"
-        type="text"
-        placeholder="write your comment"
-      />
-      <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
-      <p class="loadedCommnetText" id="loadedCommnetText-${post.id}">
-        comments will load here
-      </p>
-    </div>
-
-
-
-<div class="menu">
-  <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
-
-  <ul id="menuList-${post.id}" style="display: none">
-  
-    <li>
-      <button class="menu_btn" onclick="deletePost(${post.id})" style="font-size: 15px">
-        Delete post
-      </button>
-    </li>
-  </ul>
-</div>
+          <ul id="menuList-${post.id}" style="display: none">
+          
+            <li>
+              <button class="menu_btn" onclick="deletePost(${post.id})" style="font-size: 15px">
+                Delete post
+              </button>
+            </li>
+          </ul>
+        </div>
 
           </div>
         </div>
       </div>
     `;
-  }).join("");
+    })
+    .join("");
 
   container.innerHTML = post_data;
 }
 
-
-//delet menue 
+//delet menue
 function toggleMenu(id) {
   const menu = document.getElementById(`menuList-${id}`);
 
@@ -146,58 +158,56 @@ function toggleMenu(id) {
 //add post
 //joud modified and added gaurd (the if statement)
 if (post_btn) {
-post_btn.addEventListener("click", addPost);
-function addPost() {
-  const text = enter_post.value.trim();
+  post_btn.addEventListener("click", addPost);
+  function addPost() {
+    const text = enter_post.value.trim();
 
-if (text === "") {
-    return;
+    if (text === "") {
+      return;
+    }
+
+    const posts = getPost();
+
+    const newPost = {
+      id: Date.now(),
+
+      // joud Create post with USER ID and USERNAME
+      userId: currentUserObj.id, //  Link to user who created it
+      username: currentUserObj.username, //  Store username for display
+
+      name: currentUserObj.displayName,
+      comment: text,
+      time: new Date().toLocaleString(),
+    };
+
+    //joud modify new posts on top
+    posts.unshift(newPost);
+    savePost(posts);
+
+    // joud Update user's posts array
+    currentUserObj.posts.push(newPost.id);
+    saveAllUsers(allUsers);
+    // localStorage.setItem('allUsers', JSON.stringify(currentUserObj));
+
+    enter_post.value = "";
+    loadPost();
   }
-
-  const posts = getPost();
-
-  const newPost = {
-    id: Date.now(),
-
-    // joud Create post with USER ID and USERNAME
-    userId: currentUser.id,      //  Link to user who created it
-    username: currentUser.username, //  Store username for display
-
-    name: currentUser.displayName,
-    comment: text,
-    time: new Date().toLocaleString()
-  };
-
-  //joud modify new posts on top
-  posts.unshift(newPost);
-  savePost(posts);
-
-  // joud Update user's posts array
-  currentUser.posts.push(newPost.id);
-  localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-  enter_post.value = "";
-  loadPost();
-}
 } else {
   console.warn("Add post elements not found or user not logged in.");
 }
-
-  
-
 
 //like ===========================
 function reloadLikeButtons() {
   const likes = getLikes();
   const posts = getPost();
 
-  posts.forEach(post => {
+  posts.forEach((post) => {
     const likeBtn = document.getElementById(`likeBtn-${post.id}`);
     const likeCount = document.getElementById(`likeCount-${post.id}`);
 
-    const postLikes = likes.filter(like => like.postID === post.id);
+    const postLikes = likes.filter((like) => like.postID === post.id);
     const userLike = likes.find(
-      like => like.postID === post.id && like.userID === currentUser.id
+      (like) => like.postID === post.id && like.userID === currentUserObj.id,
     );
 
     if (likeBtn) {
@@ -222,7 +232,7 @@ function addlike(postID) {
   const likeCount = document.getElementById(`likeCount-${postID}`);
 
   const existingLike = likes.find(
-    like => like.postID === postID && like.userID === currentUser.id
+    (like) => like.postID === postID && like.userID === currentUserObj.id,
   );
 
   if (!existingLike) {
@@ -230,9 +240,9 @@ function addlike(postID) {
       id: Date.now(),
 
       // joud modify
-      userID: currentUser.id,
+      userID: currentUserObj.id,
 
-      postID: postID
+      postID: postID,
     };
 
     likes.push(newLike);
@@ -240,7 +250,7 @@ function addlike(postID) {
     likeBtn.textContent = "♥";
   } else {
     likes = likes.filter(
-      like => !(like.postID === postID && like.userID === currentUser.id)
+      (like) => !(like.postID === postID && like.userID === currentUserObj.id),
     );
 
     likeBtn.classList.remove("liked");
@@ -249,19 +259,17 @@ function addlike(postID) {
 
   saveLikes(likes);
 
-  const postLikes = likes.filter(like => like.postID === postID);
+  const postLikes = likes.filter((like) => like.postID === postID);
   likeCount.textContent = `${postLikes.length} likes`;
 }
 
-
-
-//delete post 
+//delete post
 function deletePost(id) {
   let posts = getPost();
   let likes = getLikes();
 
-  posts = posts.filter(post => post.id !== id);
-  likes = likes.filter(like => like.postID !== id);
+  posts = posts.filter((post) => post.id !== id);
+  likes = likes.filter((like) => like.postID !== id);
 
   savePost(posts);
   saveLikes(likes);
@@ -269,10 +277,6 @@ function deletePost(id) {
   loadPost();
   reloadLikeButtons();
 }
-
-
-
-
 
 const comments_Key = "comments";
 
@@ -297,11 +301,15 @@ function toggleComments(postID) {
 
 function loadComments(postID) {
   const data = getComments();
-  const loadedCommnetText = document.getElementById(`loadedCommnetText-${postID}`);
+  const loadedCommnetText = document.getElementById(
+    `loadedCommnetText-${postID}`,
+  );
 
-  const filteredComments = data.filter(comment => comment.postID === postID);
+  const filteredComments = data.filter((comment) => comment.postID === postID);
 
-  const comment_data = filteredComments.map(t => `
+  const comment_data = filteredComments
+    .map(
+      (t) => `
     <div class="comment_row">
       <p class="box" id="comment-${t.id}" data-name="${t.name}">
         ${t.name}: ${t.comment}
@@ -311,7 +319,9 @@ function loadComments(postID) {
       <button class="menu_btn CommentBtn" id="editBtn-${t.id}" onclick="editComment(${t.id})">Edit</button>
       <button class="menu_btn CommentBtn" id="saveBtn-${t.id}" onclick="saveEdit(${t.id}, ${postID})" style="display:none;">Save</button>
     </div>
-  `).join("");
+  `,
+    )
+    .join("");
 
   loadedCommnetText.innerHTML = comment_data;
 }
@@ -330,7 +340,7 @@ function addComment(postID) {
     id: Date.now(),
     postID: postID,
     name: "User",
-    comment: text
+    comment: text,
   };
 
   comments.push(newComment);
@@ -343,7 +353,7 @@ function addComment(postID) {
 function deleteComment(id, postID) {
   let comments = getComments();
 
-  comments = comments.filter(c => c.id !== id);
+  comments = comments.filter((c) => c.id !== id);
 
   saveComments(comments);
   loadComments(postID);
@@ -371,7 +381,7 @@ function saveEdit(id, postID) {
   const updatedComment = fullText.replace(`${originalName}:`, "").trim();
 
   const comments = getComments();
-  const index = comments.findIndex(c => c.id === id);
+  const index = comments.findIndex((c) => c.id === id);
 
   if (index !== -1) {
     comments[index].comment = updatedComment;
@@ -384,8 +394,6 @@ function saveEdit(id, postID) {
 
   loadComments(postID);
 }
-
-
 
 function editPost(id) {
   const postText = document.querySelector(`#postText-${id}`);
@@ -407,7 +415,7 @@ function savePostEdit(id) {
   const updatedText = postText.textContent.trim();
 
   const posts = getPost();
-  const index = posts.findIndex(p => p.id === id);
+  const index = posts.findIndex((p) => p.id === id);
 
   if (index !== -1) {
     posts[index].comment = updatedText;

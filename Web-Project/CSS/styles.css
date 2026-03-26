@@ -398,12 +398,17 @@ nav a:hover {
   grid-area: post;
 }
 @media (min-width: 768px) {
-  /* .profile-info-container { */
-  main {
+  .profile-info-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
+  /* main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  } */
 }
 
 @media (min-width: 1024px) {
@@ -474,9 +479,8 @@ form {
   flex-direction: column;
   gap: var(--spacing-md);
   width: 100%;
-  max-width: 500px;   
+  max-width: 500px;
   margin: 50px auto;
-  
 }
 
 .legendF {
@@ -558,11 +562,9 @@ form {
 }
 @media (min-width: 768px) {
   form {
-    max-width: 750px;   
-    margin: 50px auto;  
+    max-width: 750px;
+    margin: 50px auto;
   }
-
-  
 }
 
 /* ========shouq =========== */

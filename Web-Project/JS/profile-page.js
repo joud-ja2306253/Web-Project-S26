@@ -44,7 +44,7 @@ if (!settingsBtn && !followBtn) {
 }
 
 // Decide which button to show
-if (currentUser.id === profileUserId) {
+if (currentUserObj.id === profileUserId) {
   // User's own profile - show settings, hide follow
   //   editProfileBtn.style.display = "flex";
   followBtn.style.display = "none";
@@ -164,6 +164,4 @@ logoutBtn.addEventListener("click", () => {
 //         Render Posts
 //========================================
 
-// const myPosts = allPosts.filter(post => post.userId === currentUser.id);
-// loadPost(myPosts);
-// //loadPost(data.filter((post) => post.userId === profileUserId));
+//applied logic in registration.js in loadPost
