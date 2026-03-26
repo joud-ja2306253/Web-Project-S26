@@ -26,7 +26,7 @@ function renderPosts() {
     postElement.innerHTML = `
       <div class="post-header">
         <h4>${post.username}</h4>
-        <span class="time">${post.time}</span>
+          <span class="time">${post.time}</span>
       </div>
 
       <div class="post-content">

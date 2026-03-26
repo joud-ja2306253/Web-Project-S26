@@ -7,6 +7,7 @@
 :root {
   /* Must Change these colors */
 
+  --color-background: rgb(243, 241, 250);
   --color-primary: #8f0bf4;
   --color-secondary: #f4e7fe;
   --color-primary-dark: #5c079c;
@@ -54,23 +55,22 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
-  background: var(--color-white);
+  background: var(--color-background);
   color: var(--color-text);
   line-height: 1.6;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas: "post";
-  margin: var(--spacing-lg);
 }
 
 /*//////////////////////////////////*/
 /* profile page */
 
+.profile-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 30px 0px 30px;
+}
+
 .profile-info {
-  padding: 1rem;
   max-width: 700px;
   width: 100%;
 }
@@ -89,6 +89,7 @@ body {
   border-radius: 50%;
   padding: 2px;
   border: 3px solid var(--color-primary-dark);
+  background-color: white;
 }
 
 .top-row {
@@ -111,26 +112,26 @@ body {
 }
 
 .follow-btn,
-.edit-profile-btn {
+.settingsBtn {
   display: flex;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-lg);
   font-weight: 600;
   font-size: 0.9rem;
-  background-color: transparent;
+  background-color: var(--color-white);
   color: var(--color-primary-dark);
   border: 3px solid var(--color-primary-dark);
 }
 
 .follow-btn:hover,
-.edit-profile-btn:hover {
+.settingsBtn:hover {
   background-color: var(--color-primary-dark);
   color: var(--color-white);
 }
 
 .follow-btn:active,
-.edit-profile-btn:active,
+.settingsBtn:active,
 .follow-btn.following:active {
   background-color: var(--color-primary-darker);
 }
@@ -144,6 +145,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-bottom: var(--spacing-sm);
 }
 
 .profile-data > div {
@@ -154,7 +156,6 @@ body {
 .profile-data > div > p:first-of-type {
   /* styles only for the first <p> in each box */
   font-weight: bold;
-  /* color: var(--color-primary-dark); */
 }
 
 .labeling {
@@ -245,7 +246,10 @@ nav a:hover {
 }
 
 /* Panel */
-#editPanel {
+#settingsPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   position: fixed;
   top: 0;
   right: -80%; /* for it to be hidden rigth must equal width*/
@@ -263,11 +267,11 @@ nav a:hover {
   pointer-events: all;
 }
 
-#editPanel.active {
+#settingsPanel.active {
   right: 0 !important;
 }
 
-.edit-profile-btn:hover + #editPanel {
+.settingsBtn:hover + #settingsPanel {
   right: -75%;
   box-shadow: var(--shadow-md-left);
 }
@@ -356,6 +360,27 @@ nav a:hover {
   border: 3px solid var(--color-primary-dark);
 }
 
+.logoutBtn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  margin-bottom: 60px;
+}
+#logoutBtn {
+  border: none;
+  color: red;
+  background-color: transparent;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+#logoutBtn:hover {
+  background-color: var(--color-secondary);
+}
+
+#logoutBtn:active {
+  border: 2px solid var(--color-border);
+}
+
 #saveBtn:hover {
   background-color: var(--color-primary-dark);
   color: var(--color-white);
@@ -363,22 +388,6 @@ nav a:hover {
 
 #saveBtn:active {
   background-color: var(--color-primary-darker);
-}
-
-/* ============================ */
-/* posts */
-.posts {
-}
-
-.post {
-  grid-area: post;
-}
-@media (min-width: 768px) {
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -390,24 +399,35 @@ nav a:hover {
     left: 0;
     bottom: auto;
     right: auto;
-    min-width: 70px;
-    width: fit-content; /*  allows expansion */
+    width: 70px;
     height: 100%;
+    transition: all 0.3s ease;
+  }
+
+  nav a {
+    width: auto;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .nav-text {
+    transition:
+      opacity 0.3s ease,
+      max-width 0.3s ease;
+  }
+
+  nav:hover {
+    width: 110px;
+  }
+
+  nav:hover a {
+    gap: 10px;
   }
 
   nav:hover .nav-text {
     opacity: 1;
     max-width: 100px; /* enough space for text */
-  }
-  nav:hover a {
-    gap: 10px;
-  }
-  
-  nav a {
-    width: auto;
-    border-radius: 10%;
-
-    /* white-space: nowrap; */
   }
 
   .add-btn {
@@ -429,7 +449,16 @@ nav a:hover {
 /*//////////////////////////////////*/
 /* login and registration*/
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* fill full viewport height */
+}
+
 form {
+  min-height: 400px; /* fill full viewport height */
   background: white;
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
@@ -437,15 +466,18 @@ form {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
+  width: 90%;
+  max-width: 500px;
+  margin: 10px;
 }
 
-.legendF{
+.legendF {
   color: var(--color-primary-dark);
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   font-weight: bold;
 }
 .fieldsetF {
-  border: 1pxprofile solid var(--color-secondary);
+  border: 1px solid var(--color-secondary);
   padding: var(--spacing-md);
   border-radius: var(--radius-sm);
 }
@@ -457,7 +489,7 @@ form {
 .h2F {
   color: var(--color-primary-dark);
   text-align: center;
-  margin: 10px;
+  margin-top: 9px;
 }
 
 .labelF {
@@ -468,10 +500,10 @@ form {
 .inputF {
   width: 100%;
   padding: var(--spacing-sm);
-  margin-bottom: 20px;
+  margin-bottom: 13px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-secondary);
-  background: #fff;
+  background: var(--color-white);
   font-size: 0.95rem;
 }
 
@@ -481,20 +513,23 @@ form {
   background: var(--color-primary-dark);
   color: white;
   border: none;
-  /* why do you have a border radius with no border :) */
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
-
 
 .buttonF:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
 }
-*/ .switch {
+.buttonF:active {
+  background-color: var(--color-primary-darker);
+}
+
+.switch {
   text-align: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .switch a {
@@ -503,6 +538,12 @@ form {
 }
 .switch a:hover {
   text-decoration: underline;
+}
+@media (min-width: 768px) {
+  form {
+    /* max-width: 750px; */
+    /* margin: 50px auto; */
+  }
 }
 
 /* ========shouq =========== */
@@ -529,19 +570,43 @@ form {
   --spacing-xl: 32px;
 } */
 /* ---like--- */
+
+
 .menu_btn {
   color: var(--color-primary-darker);
   font-size: 22px;
   margin-right: var(--spacing-md);
   background-color: transparent;
-  padding: 0;
+  padding: 4px;
   width: auto;
   border: none;
+  
+
+  
+}
+.menu_li{
+  min-width: 100px;
+  border: 1px solid var(--color-blacky);
+  background: #eee;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  list-style: none;
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  
+}
+.menu_li:hover{
+   text-decoration: underline;
+}
+#delte_btn{
+  color: red;
 }
 .menu_btn:hover {
   transform: none;
   box-shadow: none;
   background-color: rgba(0, 0, 0, 0.07);
+  border-radius: var(--radius-sm);
 }
 
 .post_actions {
@@ -570,51 +635,68 @@ form {
 
 /* comment  */
 .commentBox {
+  display: block;
   background-color: rgb(233, 216, 245);
-  width: 300px;
   border-radius: var(--radius-md);
-  display: grid;
   grid-template-columns: 1fr auto;
-  padding: 0px ;
+  padding: 7px;
+  width: 100%;
+
+                
 }
 
-.enterComment{
-  border-top-left-radius: var(--radius-sm);
-  border-bottom-left-radius: var(--radius-sm);
-  width: 229px;
+.enterComment {
+  flex: 1;               
+  width: auto;
+  justify-self: start;
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+
+  
+  
 }
 .sendComment,
 .enterComment {
-
   color: var(--color-primary-darkest);
   padding: 12px;
-  
 }
 .sendComment {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
   background-color: var(--color-primary);
-  border-bottom-right-radius: var(--radius-sm);
-  border-top-right-radius: var(--radius-sm);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  
 }
 
 .sendComment:hover {
   transform: none;
   box-shadow: none;
+  background-color: var(--color-primary-dark);
+  
 }
+
 
 .comment_row {
   display: flex;
-  justify-content: space-between; /* pushes button to the right */
-  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  width: 100%;
 }
 
 .box {
   display: block;
   padding-right: 120px;
+  
 }
 
 .CommentBtn {
   width: auto;
   font-size: 14px;
+  
 }
 
 .comment_row {
@@ -630,6 +712,7 @@ form {
   min-height: 40px;
   padding: 6px;
   box-sizing: border-box;
+  
   /* word-break: break-word; */
 }
 
@@ -638,15 +721,12 @@ form {
 /* ============================= */
 /* Feed (Girl 2) */
 /* ============================= */
-.post_R
-{
- 
-  background: rgb(243, 241, 250);
+.post_R {
+  background: var(--color-white);
   padding: 15px;
   margin-bottom: var(--spacing-lg);
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .feed-container {
@@ -656,19 +736,20 @@ form {
   padding: var(--spacing-md);
 }
 
+.no-posts p{
+  color: var(--color-text);
+  font-size: 14px;
+}
 /* Create Post */
 .create-post {
   display: flex;
   /* flex-direction: column; */
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
-  
 }
 
-
-
 .create-post textarea {
-  width: 600px ;
+  width: 600px;
   padding: var(--spacing-sm);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-light-grey);
@@ -698,7 +779,9 @@ form {
   display: flex;
   justify-content: space-between;
   margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
+
 
 /* Username */
 .post-header h4 {
@@ -709,6 +792,7 @@ form {
 .time {
   font-size: 0.8rem;
   color: var(--color-text-light);
+  margin-left: auto;
 }
 
 /* Content */
@@ -726,21 +810,18 @@ form {
 @media (min-width: 768px) and (max-width: 1023px) {
   .feed-container {
     padding: var(--spacing-sm);
-      
   }
-
-.feed-container {
-  max-width: 750px;}
- 
-  } 
-
-
-@media (min-width: 1024px){
 
   .feed-container {
-    max-width: 1200px;
-   
-  
+    max-width: 750px;
   }
-
 }
+
+@media (min-width: 1024px) {
+  .feed-container {
+    max-width: 1200px;
+    padding-left: 90px;
+    padding-right: 90px;
+  }
+}
+
