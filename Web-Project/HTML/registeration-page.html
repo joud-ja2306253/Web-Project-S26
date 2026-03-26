@@ -14,36 +14,95 @@
         <fieldset class="fieldsetF">
           <legend class="legendF">Create Account</legend>
 
-         
-          <label  class="labelF" for="fname">First Name<span class="requiredF"> *</span></label>
-          <input class="inputF" id="fname" type="text" placeholder="Enter Your First Name" required  pattern=".*\S.*"
-          title="This field cannot be empty space"/>
-          <label class="labelF" for="lname">Last Name<span class="requiredF"> *</span></label>
-          <input class="inputF" id="lname" type="text" placeholder="Enter Your Last Name" required  pattern=".*\S.*"
-          title="This field cannot be empty space"/>
-          <label class="labelF" for="Uname">User Name<span class="requiredF"> *</span></label>
-          <input class="inputF" id="Uname" type="text" placeholder="Enter Your User Name" required  pattern=".*\S.*"
-          title="This field cannot be empty space"/>
-          <label class="labelF" for="email"> Email<span class="requiredF"> *</span></label>
-          <input class="inputF" id="email" type="email" placeholder="Enter Your Email" required />
-          <label class="labelF" for="password">Password<span class="requiredF"> *</span></label>
-          <input class="inputF" id="password" type="password" placeholder="Enter Your Password" required 
-          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
-          title="Password must contain: Uppercase 2.Lowercase 3.Number 
-          4-at least 8 characters"/>
-          <ul id="passwordRules">
-              <li>At least 1 uppercase letter</li>
-              <li>At least 1 lowercase letter</li>
-              <li>At least 1 number</li>
-              <li>Minimum 8 characters</li>
-          </ul>
-          <label class="labelF" for="conf_password">Confirm Password<span class="requiredF"> *</span></label>
-          <input class="inputF" id="conf_password" type="password" placeholder="Enter Your Password Again" required />
+          <label class="labelF" for="fname"
+            >First Name<span class="requiredF"> *</span></label
+          >
+          <input
+            class="inputF"
+            id="fname"
+            name="fname"
+            type="text"
+            placeholder="Enter Your First Name"
+            required
+            pattern=".*\S.*"
+            title="This field cannot be empty space"
+          />
+          <label class="labelF" for="lname"
+            >Last Name<span class="requiredF"> *</span></label
+          >
+          <input
+            class="inputF"
+            id="lname"
+            name="lname"
+            type="text"
+            placeholder="Enter Your Last Name"
+            required
+            pattern=".*\S.*"
+            title="This field cannot be empty space"
+          />
+          <label class="labelF" for="Uname"
+            >User Name<span class="requiredF"> *</span></label
+          >
+          <input
+            class="inputF"
+            id="Uname"
+            name="username"
+            type="text"
+            placeholder="Enter Your User Name"
+            required
+            pattern=".*\S.*"
+            title="This field cannot be empty space"
+          />
+          <label class="labelF" for="email">
+            Email<span class="requiredF"> *</span></label
+          >
+          <input
+            class="inputF"
+            id="email"
+            name="email"
+            autocomplete="email"
+            type="email"
+            placeholder="Enter Your Email"
+            required
+          />
+          <label class="labelF" for="password"
+            >Password<span class="requiredF"> *</span></label
+          >
+          <input
+            class="inputF"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter Your Password"
+            required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+            title="Password must contain minimum 8 characters with at least 1 uppercase, lowercase and number"
+          />
+          <!-- <ul id="passwordRules">
+            <li>At least 1 uppercase letter</li>
+            <li>At least 1 lowercase letter</li>
+            <li>At least 1 number</li>
+            <li>Minimum 8 characters</li>
+          </ul> -->
+
+          <label class="labelF" for="conf_password"
+            >Confirm Password<span class="requiredF"> *</span></label
+          >
+          <input
+            class="inputF"
+            id="conf_password"
+            name="conf_password"
+            type="password"
+            placeholder="Enter Your Password Again"
+            required
+          />
         </fieldset>
-        
+
         <button class="buttonF" type="submit">Register</button>
-        <p id="registerMessage" style="font-size: 0.9rem;"></p>
-        <p class="switch">Already have an account? <a href="login-page.html">Login</a></p>
+        <p id="registerMessage" style="font-size: 0.9rem"></p>
+        <p class="switch">
+          Already have an account? <a href="login-page.html">Login</a>
+        </p>
       </form>
     </div>
     <script src="../JS/registration.js"></script>

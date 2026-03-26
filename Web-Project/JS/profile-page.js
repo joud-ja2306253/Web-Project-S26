@@ -26,12 +26,13 @@
 // const currentUser = getCurrentUser();
 // console.log("hi");
 
-if (!currentUser) {
-  window.location.href = "login.html";
-}
+//i dont thinkn this should be commented but it gives an error
+// if (!currentUser) {
+//   window.location.href = "login.html";
+// }
 
 // const currentUserId = loggedInUser.id; // Get from your auth system
-const profileUserId = "123"; // Get from URL/profile data
+const profileUserId = "1234"; // Get from URL/profile data
 
 const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
@@ -149,7 +150,7 @@ loadSavedData();
 
 // Logout functionality
 logoutBtn.addEventListener("click", () => {
-  // localStorage.removeItem("currentUser");
+  localStorage.removeItem("currentUser");
   alert("Logged out successfully");
   // Redirect to login page
   window.location.href = "login-page.html";

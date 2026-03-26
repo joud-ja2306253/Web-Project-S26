@@ -6,21 +6,38 @@ form.addEventListener("submit", function (event) {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+  // joud you have match the email with one the emails in allUsers
 
-  if (!storedUser) {
-    alert("No account found!");
+  // Get all registered users
+  const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+
+  // Find user by email
+  const matchedUser = allUsers.find((user) => user.email === email);
+
+  if (!matchedUser) {
+    alert("No account found with this email!");
     return;
   }
 
-  if (email === storedUser.email && password === storedUser.password) {
-    alert("Login successful!");
+  // const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  // if (!storedUser) {
+  //   alert("No account found!");
+  //   return;
+  // }
+
+  if (email === matchedUser.email && password === matchedUser.password) {
+    //save current user id in the currentUser key if the email matches 1 from the allUsers
+    localStorage.setItem("currentUser", matchedUser.id);
+
+    //joud, this alert is duplicate?
+    alert("Log in successful!");
+    window.location.href = "profile-page.html";
   } else {
-    alert("Invalid email or password!");
+    alert("Invalid password!");
   }
 
   localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
-
-  alert("Log in successful!");
-  window.location.href = "profile-page.html";
+  //duplicate
+  // alert("Log in successful!");
 });
