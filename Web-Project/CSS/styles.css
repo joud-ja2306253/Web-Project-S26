@@ -575,14 +575,13 @@ form {
   font-size: 22px;
   margin-right: var(--spacing-md);
   background-color: transparent;
-  padding: 0;
+  padding: 4px;
   width: auto;
   border: none;
 }
 .menu_btn:hover {
   transform: none;
   box-shadow: none;
-  padding: 4px;
   background-color: rgba(0, 0, 0, 0.07);
   border-radius: var(--radius-sm);
 }
@@ -651,11 +650,13 @@ form {
 .box {
   display: block;
   padding-right: 120px;
+  
 }
 
 .CommentBtn {
   width: auto;
   font-size: 14px;
+  
 }
 
 .comment_row {
@@ -671,6 +672,7 @@ form {
   min-height: 40px;
   padding: 6px;
   box-sizing: border-box;
+  
   /* word-break: break-word; */
 }
 
@@ -733,7 +735,9 @@ form {
   display: flex;
   justify-content: space-between;
   margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
+
 
 /* Username */
 .post-header h4 {
@@ -744,6 +748,7 @@ form {
 .time {
   font-size: 0.8rem;
   color: var(--color-text-light);
+  margin-left: auto;
 }
 
 /* Content */
