@@ -592,6 +592,12 @@ form {
   border-bottom-left-radius: var(--radius-md);
   border-bottom-right-radius: var(--radius-md);
 }
+.menu_li:hover{
+   text-decoration: underline;
+}
+#delte_btn{
+  color: red;
+}
 .menu_btn:hover {
   transform: none;
   box-shadow: none;
@@ -660,9 +666,6 @@ form {
   box-shadow: none;
   background-color: var(--color-primary-dark);
   
-}
-#delte_post {
-  color: red !important;
 }
 
 
