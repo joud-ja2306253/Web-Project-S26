@@ -29,7 +29,7 @@ const currentUserObj = allUsers.find((user) => user.id === currentUserID);
 
 //==================================================
 
-const post_Key = "post";
+const post_Key = "posts";
 const likes_Key = "likes";
 
 function getPost() {
