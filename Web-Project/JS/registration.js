@@ -20,15 +20,6 @@ form.addEventListener(
       //return "user_" + Date.now();
     }
 
-    // function registerUser() {
-    //joud - you dont need to initalize them again
-    // const username = document.getElementById("username").value;
-    // const firstName = document.getElementById("fname").value;
-    // const lastName = document.getElementById("fname").value;
-
-    // const email = document.getElementById("email").value;
-    // const password = document.getElementById("password").value;
-
     if (
       !firstName ||
       !lastName ||

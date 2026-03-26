@@ -72,6 +72,16 @@ function loadPost() {
     // Home/feed page shows all posts
     data = allPosts;
   }
+
+  // Check if there are no posts
+  if (!data || data.length === 0) {
+    postsContainer.innerHTML = `
+      <div class="no-posts">
+        <p>Posts will load here...</p>
+      </div>
+    `;
+    return;
+  }
   const likes = getLikes();
 
   const post_data = data
@@ -270,15 +280,35 @@ function addlike(postID) {
 function deletePost(id) {
   let posts = getPost();
   let likes = getLikes();
+  
+  const postToDelete = posts.find((post) => post.id === id);
+  if (!postToDelete) {
+    console.error("Post not found");
+    return;
+  }
 
   posts = posts.filter((post) => post.id !== id);
   likes = likes.filter((like) => like.postID !== id);
 
+  // Update the user who created the post
+  const updatedUsers = allUsers.map((user) => {
+    if (user.id === postToDelete.userId) {
+      // Remove the post ID from this user's posts
+      return {
+        ...user,
+        posts: user.posts.filter((postId) => postId !== id),
+      };
+    }
+    return user;
+  });
+
   savePost(posts);
   saveLikes(likes);
+  saveAllUsers(updatedUsers);
 
   loadPost();
   reloadLikeButtons();
+  
 }
 
 const comments_Key = "comments";
