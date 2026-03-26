@@ -5,6 +5,7 @@ form.addEventListener("submit", function (event) {
 
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
+  const message = document.getElementById("loginMessage");
 
   // joud you have match the email with one the emails in allUsers
 
@@ -15,7 +16,9 @@ form.addEventListener("submit", function (event) {
   const matchedUser = allUsers.find((user) => user.email === email);
 
   if (!matchedUser) {
-    alert("No account found with this email!");
+    message.textContent = "Login failed: No account found with this email!";
+    message.style.color = "red";
+    
     return;
   }
 
@@ -34,10 +37,9 @@ form.addEventListener("submit", function (event) {
     alert("Log in successful!");
     window.location.href = "profile-page.html";
   } else {
+    message.textContent = "Login failed: Invalid password!!";
+    message.style.color = "red";
     alert("Invalid password!");
   }
 
-  localStorage.setItem("CurrentUser", JSON.stringify(currentUser));
-  //duplicate
-  // alert("Log in successful!");
 });
