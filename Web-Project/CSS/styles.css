@@ -109,6 +109,7 @@ body {
 
 .bio {
   margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 .follow-btn,
@@ -241,6 +242,8 @@ nav a:hover {
 
   opacity: 0;
   pointer-events: none;
+    z-index: 300;  /* Highest of all */
+
 
   transition: 0.3s;
 }
@@ -259,6 +262,8 @@ nav a:hover {
   background: white;
   padding: 20px;
   transition: 0.4s ease;
+    z-index: 400;  /* Highest of all */
+
 }
 
 /* Active state */
@@ -586,13 +591,14 @@ form {
   position: relative;
   display: inline-block;
   margin-left: 10px;
+  z-index: 200;
 }
 
 /* The dropdown menu list */
 .menu ul {
   position: absolute;
-  top: 100%;        /* Places it directly below the button */
-  right: 0;         /* Aligns to the RIGHT edge of the menu container */
+  top: 100%; /* Places it directly below the button */
+  right: 0; /* Aligns to the RIGHT edge of the menu container */
   min-width: 120px;
   background-color: #eee;
   border: 1px solid #ccc;
@@ -606,8 +612,8 @@ form {
   padding: var(--spacing-xs) var(--spacing-sm);
   list-style: none;
   border-radius: var(--radius-md);
-  }
-  
+}
+
 .menu_li:hover {
   text-decoration: underline;
 }
@@ -668,8 +674,8 @@ form {
   color: var(--color-primary-darkest);
   padding: 12px;
 }
-.enterComment:active{
-border: 2px solid var(--color-primary);
+.enterComment:active {
+  border: 2px solid var(--color-primary);
 }
 .sendComment {
   border-radius: var(--radius-lg);
@@ -723,11 +729,12 @@ border: 2px solid var(--color-primary);
 }
 
 .search-input-row {
-  margin: 20px;
+  margin: 20px auto;  /* auto on left/right centers horizontally */
   padding: 10px;
   display: flex;
   align-items: center;
-  gap: 0;
+  max-width: 950px;
+  width: 90%;  /* Makes it responsive */
 }
 
 .search-input {
@@ -776,6 +783,7 @@ border: 2px solid var(--color-primary);
   margin: auto;
   margin-bottom: 40px;
   padding: var(--spacing-md);
+  
 }
 
 .no-posts p {
