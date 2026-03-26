@@ -25,9 +25,94 @@ if (!currentUserID) {
 }
 //gets obj
 const currentUserObj = allUsers.find((user) => user.id === currentUserID);
-//=============
 
-//==================================================
+// ====================================
+//       Search Users Function
+// ====================================
+function searchUsers() {
+  const searchInput = document.getElementById("searchInput");
+  if (!searchInput) return;
+
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  const resultsContainer = document.getElementById("searchResults");
+
+  if (!resultsContainer) return;
+
+  if (searchTerm === "") {
+    resultsContainer.style.display = "none";
+    resultsContainer.innerHTML = "";
+    return;
+  }
+
+  const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+
+  const filteredUsers = allUsers.filter((user) => {
+    const usernameMatch = user.username?.toLowerCase().includes(searchTerm);
+    const displayNameMatch = user.displayName
+      ?.toLowerCase()
+      .includes(searchTerm);
+    return usernameMatch || displayNameMatch;
+  });
+
+  // If no users found
+  if (filteredUsers.length === 0) {
+    resultsContainer.innerHTML = '<div class="no-results">No users found</div>';
+    resultsContainer.style.display = "block";
+    return;
+  }
+
+  // Display search results
+  resultsContainer.innerHTML = filteredUsers
+    .map(
+      (user) => `
+    <div class="search-result-item" data-user-id="${user.id}">
+      <img src="${user.profilePic}" class="search-result-img" />
+      <div class="search-result-info">
+        <div class="search-result-name">${user.displayName}</div>
+        <div class="search-result-username">@${user.username}</div>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
+
+  resultsContainer.style.display = "block";
+
+  // Add click event listeners to each search result
+
+  document.querySelectorAll(".search-result-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const userId = item.dataset.userId;
+      viewUserProfile(userId);
+    });
+  });
+}
+
+// ===============================
+//       Close Search Results
+// ===============================
+// Close search results when clicking outside
+document.addEventListener("click", function (event) {
+  const searchContainer = document.querySelector(".search-input-row");
+  const resultsContainer = document.getElementById("searchResults");
+  if (
+    searchContainer &&
+    resultsContainer &&
+    !searchContainer.contains(event.target)
+  ) {
+    resultsContainer.style.display = "none";
+  }
+});
+
+// ===========================
+//       View User Profile
+// ===========================
+function viewUserProfile(userId) {
+  // Save the user ID to localStorage
+  localStorage.setItem("profileUserId", userId);
+  // Navigate to profile page
+  window.location.href = "profile-page.html";
+}
 
 const post_Key = "post";
 const likes_Key = "likes";
@@ -56,8 +141,6 @@ const enter_post = document.getElementById("postInput");
 // let allPosts = getPost();
 
 function loadPost() {
-  //const data = getPost();
-
   // Get current page name from URL
   const path = window.location.pathname; // e.g., "/profile-page.html"
   const page = path.split("/").pop(); // gets "profile-page.html" or "feed.html"
@@ -66,8 +149,19 @@ function loadPost() {
   let data;
 
   if (page === "profile-page.html") {
-    // Only show posts by the current user
-    data = allPosts.filter((post) => post.userId === currentUserObj.id);
+    // Show posts for the profile user, not current user
+    const profileUserId = localStorage.getItem("profileUserId");
+    let userIdToShow;
+
+    if (profileUserId) {
+      // Showing someone's profile (could be own or other)
+      userIdToShow = profileUserId; // ← REMOVED Number()
+    } else {
+      // No profileUserId, fallback to current user
+      userIdToShow = currentUserObj.id;
+    }
+
+    data = allPosts.filter((post) => post.userId === userIdToShow);
   } else {
     // Home/feed page shows all posts
     data = allPosts;
@@ -75,13 +169,16 @@ function loadPost() {
 
   // Check if there are no posts
   if (!data || data.length === 0) {
-    postsContainer.innerHTML = `
+    container.innerHTML = `
       <div class="no-posts">
         <p>Posts will load here...</p>
       </div>
     `;
     return;
   }
+
+  //remaining load post normal code
+
   const likes = getLikes();
 
   const post_data = data
@@ -94,8 +191,7 @@ function loadPost() {
       return `
       <div class="post_R">
         <div class="post-header">
-          <h4>${post.name}</h4>
-          <span class="time">${post.time}</span>
+<h4 style="cursor: pointer; " onclick="viewUserProfile('${post.userId}')">${post.name}</h4>          <span class="time">${post.time}</span>
           
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
@@ -287,7 +383,7 @@ function addlike(postID) {
 function deletePost(id) {
   let posts = getPost();
   let likes = getLikes();
-  
+
   const postToDelete = posts.find((post) => post.id === id);
   if (!postToDelete) {
     console.error("Post not found");
@@ -315,7 +411,6 @@ function deletePost(id) {
 
   loadPost();
   reloadLikeButtons();
-  
 }
 
 const comments_Key = "comments";
