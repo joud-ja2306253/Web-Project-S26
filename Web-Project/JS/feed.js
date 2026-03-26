@@ -114,7 +114,7 @@ function viewUserProfile(userId) {
   window.location.href = "profile-page.html";
 }
 
-const post_Key = "post";
+const post_Key = "posts";
 const likes_Key = "likes";
 
 function getPost() {
