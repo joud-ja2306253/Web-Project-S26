@@ -716,6 +716,42 @@ form {
   /* word-break: break-word; */
 }
 
+.search-input-row {
+  margin: 20px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.search-input {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg); /* rounded only on left */
+  border: 2px solid var(--color-secondary);
+  border-right: none; /* remove right border so it connects to button */
+  background: white;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--color-primary-dark);
+}
+
+.search-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary-dark);
+  color: white;
+  border: none;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0; /* rounded only on right */
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-btn:hover {
+  background-color: var(--color-primary-darker);
+}
 /* ================================================== */
 
 /* ============================= */
