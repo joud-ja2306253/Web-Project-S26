@@ -99,11 +99,15 @@ function loadPost() {
           
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
-
-            <ul id="menuList-${post.id}" style="display: none">
-            
+                
+            <ul id="menuList-${post.id}" style="display: none" class="menu_li">
               <li>
-                <button class="menu_btn" onclick="deletePost(${post.id})" style="font-size: 15px">
+                <button id="edit_post" class="menu_li" onclick="editPost(${post.id})" style="font-size: 15px">
+                  Edit post
+                </button>
+              </li>
+              <li>
+                <button id="delte_post" class="menu_li" onclick="deletePost(${post.id})" style="font-size: 15px">
                   Delete post
                 </button>
               </li>
@@ -112,7 +116,13 @@ function loadPost() {
         </div>
 
         <div class="post-content">
-          <p>${post.comment}</p>
+          <p id="postText-${post.id}">${post.comment}</p>
+          <button id="savePost-${post.id}" 
+            onclick="savePostEdit(${post.id})" 
+            style="display:none;">
+          Save
+          </button>
+          
         </div>
 
         <div class="post-actions">
@@ -130,7 +140,10 @@ function loadPost() {
           <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
         </div>
 
-        <div class="commentBox" style="display: none" id="commentBox-${post.id}">
+        
+
+          </div>
+          <div class="commentBox" style="display: none" id="commentBox-${post.id}">
           <input
             class="enterComment"
             id="enterComment-${post.id}"
@@ -143,11 +156,6 @@ function loadPost() {
           </p>
         </div>
 
-
-
-        
-
-          </div>
         </div>
       </div>
     `;
