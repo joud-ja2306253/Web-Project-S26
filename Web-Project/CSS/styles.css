@@ -772,6 +772,10 @@ form {
   padding: var(--spacing-md);
 }
 
+.no-posts p{
+  color: var(--color-text);
+  font-size: 14px;
+}
 /* Create Post */
 .create-post {
   display: flex;
