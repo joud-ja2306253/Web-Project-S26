@@ -579,18 +579,18 @@ form {
   width: auto;
   border: none;
   
+  
 }
 .menu_li{
-  right: 0;
-  top: 100%;
-  background: white;
-  border-radius: var(--radius-md);
-
- 
-  /* z-index: 100; */
-  min-width: 200px;
-  
-  border: 1px solid var(--color-secondary);
+  min-width: 100px;
+  border: 1px solid var(--color-blacky);
+  background: #eee;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  list-style: none;
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
 }
 .menu_btn:hover {
   transform: none;

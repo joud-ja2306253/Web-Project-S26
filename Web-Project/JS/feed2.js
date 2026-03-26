@@ -90,7 +90,7 @@ function loadPost() {
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
                 
-            <ul id="menuList-${post.id}" style="display: none">
+            <ul id="menuList-${post.id}" style="display: none" class="menu_li">
               <li>
                 <button id="edit_post" class="menu_li" onclick="editPost(${post.id})" style="font-size: 15px">
                   Edit post
