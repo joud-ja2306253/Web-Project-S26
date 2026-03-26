@@ -474,7 +474,8 @@ form {
   flex-direction: column;
   gap: var(--spacing-md);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;   
+  margin: 50px auto;
   
 }
 
@@ -557,12 +558,7 @@ form {
     margin: 50px auto;  
   }
 
-  @media (min-width: 1024px) {
-  form {
-    max-width: 400px;   
-    margin: 50px auto;  
-  }
-  }
+  
 }
   
 /* ========shouq =========== */
