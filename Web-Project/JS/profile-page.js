@@ -10,22 +10,22 @@
 //      1st step: Display from LocalStorage on Load
 // =========================================================
 
-// Select Elements
-const viewingUserId = localStorage.getItem("viewingUserId");
-const currentUserID = localStorage.getItem("currentUser");
-const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+// // Select Elements
+// const viewingUserId = localStorage.getItem("viewingUserId");
+// const currentUserID = localStorage.getItem("currentUser");
+// const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
 
-// if viewing someone else use their id, otherwise use logged in user
-const profileUser = viewingUserId
-  ? allUsers.find((u) => u.id === viewingUserId)
-  : allUsers.find((u) => u.id === currentUserID);
+// // if viewing someone else use their id, otherwise use logged in user
+// const profileUser = viewingUserId
+//   ? allUsers.find((u) => u.id === viewingUserId)
+//   : allUsers.find((u) => u.id === currentUserID);
 
-if (!profileUser) {
-  window.location.href = "login-page.html";
-}
+// if (!profileUser) {
+//   window.location.href = "login-page.html";
+// }
 
-// is this our own profile or someone else's?
-const isOwnProfile = profileUser.id === currentUserID;
+// // is this our own profile or someone else's?
+// const isOwnProfile = profileUser.id === currentUserID;
 
 
 const displayNameElem = document.querySelector(".displayName");
