@@ -32,7 +32,20 @@
 // }
 
 // const currentUserId = loggedInUser.id; // Get from your auth system
-const profileUserId = "1234"; // Get from URL/profile data
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const profileUserId = currentUser.id; // Get from URL/profile data
+
+if (!currentUser) {
+  window.location.href = "login-page.html";
+}
+
+// const displayNameElem = document.querySelector(".displayName");
+// const displayUsernameElem = document.querySelector(".username");
+// const displayBioElem = document.querySelector(".bio p");
+
+// displayNameElem.textContent = currentUser.displayName;
+// displayUsernameElem.textContent = "@" + currentUser.username;
+// displayBioElem.textContent = currentUser.bio || "No bio yet";
 
 const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
@@ -167,3 +180,4 @@ logoutBtn.addEventListener("click", () => {
 // const myPosts = allPosts.filter(post => post.userId === currentUser.id);
 // loadPost(myPosts);
 // //loadPost(data.filter((post) => post.userId === profileUserId));
+

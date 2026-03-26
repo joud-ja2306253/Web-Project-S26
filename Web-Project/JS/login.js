@@ -31,7 +31,7 @@ form.addEventListener("submit", function (event) {
 
   if (email === matchedUser.email && password === matchedUser.password) {
     //save current user id in the currentUser key if the email matches 1 from the allUsers
-    localStorage.setItem("currentUser", matchedUser.id);
+    localStorage.setItem("currentUser", JSON.stringify(matchedUser));
 
     //joud, this alert is duplicate?
     alert("Log in successful!");
