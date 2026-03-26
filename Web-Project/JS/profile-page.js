@@ -10,10 +10,8 @@
 // This file runs AFTER feed2.js
 // It uses functions from feed2.js without redeclaring anything
 
-<<<<<<< Updated upstream
+
 //====dont need this
-=======
->>>>>>> Stashed changes
 // const currentUserId = loggedInUser.id; // Get from your auth system
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -37,11 +35,10 @@ const followBtn = document.querySelector("#followBtn");
 // Guard clauses
 if (!settingsBtn && !followBtn) {
   console.log("Buttons not found - exiting Joud's script");
-<<<<<<< Updated upstream
+
   //   return;
-=======
-  //return;
->>>>>>> Stashed changes
+
+
 }
 
 // Decide which button to show
@@ -73,7 +70,7 @@ if (currentUserObj.id === profileUserId) {
 // settings panel elements
 
 // const settingsBtn = document.getElementById("settingsBtn");
-<<<<<<< Updated upstream
+
 const panel = document.getElementById("settingsPanel");
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
@@ -198,8 +195,7 @@ const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
 
 // Settings panel
-=======
->>>>>>> Stashed changes
+
 const panel = document.getElementById("settingsPanel");
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
