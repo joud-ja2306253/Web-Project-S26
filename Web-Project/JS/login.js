@@ -18,6 +18,7 @@ form.addEventListener("submit", function (event) {
   if (!matchedUser) {
     message.textContent = "Login failed: No account found with this email!";
     message.style.color = "red";
+    alert("No account found with this email!");
     
     return;
   }
