@@ -571,7 +571,6 @@ form {
 } */
 /* ---like--- */
 
-
 .menu_btn {
   color: var(--color-primary-darker);
   font-size: 22px;
@@ -580,26 +579,39 @@ form {
   padding: 4px;
   width: auto;
   border: none;
-  
-
-  
 }
-.menu_li{
+
+/* menu is the 3 dots */
+.menu {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* The dropdown menu list */
+.menu ul {
+  position: absolute;
+  top: 100%;        /* Places it directly below the button */
+  right: 0;         /* Aligns to the RIGHT edge of the menu container */
+  min-width: 120px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  list-style: none;
+}
+
+.menu_li {
   min-width: 100px;
   border: 1px solid var(--color-blacky);
-  background: #eee;
   padding: var(--spacing-xs) var(--spacing-sm);
   list-style: none;
-  border-top-left-radius: var(--radius-md);
-  border-top-right-radius: var(--radius-md);
-  border-bottom-left-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
+  border-radius: var(--radius-md);
+  }
   
+.menu_li:hover {
+  text-decoration: underline;
 }
-.menu_li:hover{
-   text-decoration: underline;
-}
-#delte_btn{
+#delte_btn {
   color: red;
 }
 .menu_btn:hover {
@@ -641,20 +653,15 @@ form {
   grid-template-columns: 1fr auto;
   padding: 7px;
   width: 100%;
-
-                
 }
 
 .enterComment {
-  flex: 1;               
-  width: auto;
+  flex: 1;
+  width: 100;
   justify-self: start;
   border: 1px solid var(--color-secondary);
   border-radius: var(--radius-lg);
   padding: var(--spacing-sm) var(--spacing-md);
-
-  
-  
 }
 .sendComment,
 .enterComment {
@@ -669,16 +676,13 @@ form {
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
-  
 }
 
 .sendComment:hover {
   transform: none;
   box-shadow: none;
   background-color: var(--color-primary-dark);
-  
 }
-
 
 .comment_row {
   display: flex;
@@ -690,13 +694,11 @@ form {
 .box {
   display: block;
   padding-right: 120px;
-  
 }
 
 .CommentBtn {
   width: auto;
   font-size: 14px;
-  
 }
 
 .comment_row {
@@ -712,10 +714,46 @@ form {
   min-height: 40px;
   padding: 6px;
   box-sizing: border-box;
-  
+
   /* word-break: break-word; */
 }
 
+.search-input-row {
+  margin: 20px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.search-input {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg); /* rounded only on left */
+  border: 2px solid var(--color-secondary);
+  border-right: none; /* remove right border so it connects to button */
+  background: white;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--color-primary-dark);
+}
+
+.search-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary-dark);
+  color: white;
+  border: none;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0; /* rounded only on right */
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-btn:hover {
+  background-color: var(--color-primary-darker);
+}
 /* ================================================== */
 
 /* ============================= */
@@ -736,7 +774,7 @@ form {
   padding: var(--spacing-md);
 }
 
-.no-posts p{
+.no-posts p {
   color: var(--color-text);
   font-size: 14px;
 }
@@ -782,7 +820,6 @@ form {
   gap: var(--spacing-xs);
 }
 
-
 /* Username */
 .post-header h4 {
   color: var(--color-primary-dark);
@@ -824,4 +861,3 @@ form {
     padding-right: 90px;
   }
 }
-

@@ -18,6 +18,15 @@
     <main>
       <!-- FEED -->
       <section id="feed-page">
+  <div class="search-input-row">
+    <input type="text" id="searchInput" placeholder="Search users..." 
+      class="search-input" oninput="searchUsers()"/>
+    <button class="search-btn" onclick="searchUsers()">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+  <div id="searchResults" class="search-results"></div>
+</div>
         <div class="feed-container">
           <!-- Create Post UI -->
           <div class="create-post">

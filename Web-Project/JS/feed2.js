@@ -157,7 +157,6 @@ function loadPost() {
         </div>
 
         </div>
-      </div>
     `;
     })
     .join("");
