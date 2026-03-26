@@ -33,11 +33,12 @@
 
 // const currentUserId = loggedInUser.id; // Get from your auth system
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-const profileUserId = currentUser.id; // Get from URL/profile data
 
 if (!currentUser) {
   window.location.href = "login-page.html";
 }
+
+const profileUserId = currentUser.id; // Get from URL/profile data
 
 // const displayNameElem = document.querySelector(".displayName");
 // const displayUsernameElem = document.querySelector(".username");
