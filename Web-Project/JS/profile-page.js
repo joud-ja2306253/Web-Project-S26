@@ -10,7 +10,10 @@
 // This file runs AFTER feed2.js
 // It uses functions from feed2.js without redeclaring anything
 
+<<<<<<< Updated upstream
 //====dont need this
+=======
+>>>>>>> Stashed changes
 // const currentUserId = loggedInUser.id; // Get from your auth system
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -18,23 +21,27 @@ if (!currentUser) {
   window.location.href = "login-page.html";
 }
 
-// ===============================
-//        Select Elements
-// ===============================
+const profileUserId = currentUser.id; // Get from URL/profile data
 
-// Profile display
-const displayNameElem = document.querySelector(".displayName");
-const displayUsernameElem = document.querySelector(".username");
-const displayBioElem = document.querySelector(".bio p");
+// const displayNameElem = document.querySelector(".displayName");
+// const displayUsernameElem = document.querySelector(".username");
+// const displayBioElem = document.querySelector(".bio p");
 
-// Buttons
+// displayNameElem.textContent = currentUser.displayName;
+// displayUsernameElem.textContent = "@" + currentUser.username;
+// displayBioElem.textContent = currentUser.bio || "No bio yet";
+
 const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
 
 // Guard clauses
 if (!settingsBtn && !followBtn) {
   console.log("Buttons not found - exiting Joud's script");
+<<<<<<< Updated upstream
   //   return;
+=======
+  //return;
+>>>>>>> Stashed changes
 }
 
 // Decide which button to show
@@ -66,6 +73,7 @@ if (currentUserObj.id === profileUserId) {
 // settings panel elements
 
 // const settingsBtn = document.getElementById("settingsBtn");
+<<<<<<< Updated upstream
 const panel = document.getElementById("settingsPanel");
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
@@ -190,82 +198,99 @@ const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
 
 // Settings panel
+=======
+>>>>>>> Stashed changes
 const panel = document.getElementById("settingsPanel");
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById("closeBtn");
 const saveBtn = document.getElementById("saveBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-// Edit inputs
+// Edit input elements
 const editUsername = document.getElementById("editUsername");
 const editDisplayName = document.getElementById("editDisplayName");
 const editBio = document.getElementById("editBio");
 
-// ===============================
-//        Display User Data
-// ===============================
-displayNameElem.textContent = currentUser.displayName;
-displayUsernameElem.textContent = "@" + currentUser.username;
-displayBioElem.textContent = currentUser.bio || "No bio yet";
+// Main display elements (where user sees their info)
+const displayNameElem = document.querySelector(".displayName");
+const displayUsernameElem = document.querySelector(".username");
+const displayBioElem = document.querySelector(".bio p");
 
-// ===============================
-//        Profile Buttons Logic
-// ===============================
+settingsBtn.addEventListener("click", () => {
+  // Load current displayed values into edit inputs
+  editUsername.value = displayUsernameElem.textContent.replace("@", ""); // Remove @ symbol if present
+  editDisplayName.value = displayNameElem.textContent;
+  editBio.value = displayBioElem.textContent;
 
-// Own profile → hide follow
-if (followBtn) {
-  followBtn.style.display = "none";
-}
-
-// ===============================
-//        Settings Panel
-// ===============================
-
-if (settingsBtn) {
-  settingsBtn.addEventListener("click", () => {
-    editUsername.value = currentUser.username;
-    editDisplayName.value = currentUser.displayName;
-    editBio.value = currentUser.bio || "";
-
-    overlay.classList.add("active");
-    panel.classList.add("active");
-  });
-}
+  // Show panel
+  overlay.classList.add("active");
+  panel.classList.add("active");
+});
 
 // Close panel
+closeBtn.addEventListener("click", closePanel);
+overlay.addEventListener("click", closePanel);
+
 function closePanel() {
   panel.classList.remove("active");
   overlay.classList.remove("active");
 }
 
-closeBtn?.addEventListener("click", closePanel);
-overlay?.addEventListener("click", closePanel);
+// Save data
+saveBtn.addEventListener("click", () => {
+  const data = {
+    username: editUsername.value,
+    displayName: editDisplayName.value,
+    bio: editBio.value,
+  };
 
-// ===============================
-//        Save Changes
-// ===============================
-saveBtn?.addEventListener("click", () => {
-  // Update currentUser object
-  currentUser.username = editUsername.value.trim();
-  currentUser.displayName = editDisplayName.value.trim();
-  currentUser.bio = editBio.value.trim();
+  saveData(data);
 
-  // Save back to localStorage
-  localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  // Update main display
+  displayNameElem.textContent = data.displayName;
+  displayUsernameElem.textContent = `@${data.username}`;
+  displayBioElem.textContent = data.bio;
 
-  // Update UI
-  displayNameElem.textContent = currentUser.displayName;
-  displayUsernameElem.textContent = "@" + currentUser.username;
-  displayBioElem.textContent = currentUser.bio;
-
+  // Close panel
   closePanel();
 });
 
-// ===============================
-//        Logout
-// ===============================
-logoutBtn?.addEventListener("click", () => {
+function saveData(data) {
+  localStorage.setItem("profileData", JSON.stringify(data));
+}
+
+// Load saved data on page load
+function loadSavedData() {
+  const data = loadData(); // load the JSON object
+
+  // Update main display
+  displayUsernameElem.textContent = data.username ? `@${data.username}` : "";
+  displayNameElem.textContent = data.displayName || "";
+  displayBioElem.textContent = data.bio || "";
+}
+
+function loadData() {
+  return JSON.parse(localStorage.getItem("profileData")) || {};
+}
+
+// call on page load
+loadSavedData();
+
+// Logout functionality
+logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("currentUser");
   alert("Logged out successfully");
+  // Redirect to login page
   window.location.href = "login-page.html";
 });
+
+//========================================
+//         Profile Data (numbers)
+//========================================
+
+//========================================
+//         Render Posts
+//========================================
+
+//applied logic in registration.js in loadPost
+
