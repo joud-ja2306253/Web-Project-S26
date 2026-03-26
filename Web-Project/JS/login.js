@@ -21,7 +21,6 @@ form.addEventListener("submit", function (event) {
     message.textContent = "Login failed: No account found with this email!";
     message.style.color = "red";
     alert("No account found with this email!");
-
     return;
   }
 
@@ -36,5 +35,4 @@ form.addEventListener("submit", function (event) {
     message.style.color = "red";
     alert("Invalid password!");
   }
-
 });
