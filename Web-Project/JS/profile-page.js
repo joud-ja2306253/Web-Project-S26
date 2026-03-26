@@ -1,3 +1,4 @@
+
 // ===================================
 //         Profile Page
 // ===================================
@@ -27,7 +28,10 @@ displayPicElem.textContent = currentUserObj.profilePic.src;
 
 profileUserId = 123;
 
-// Buttons
+// displayNameElem.textContent = currentUser.displayName;
+// displayUsernameElem.textContent = "@" + currentUser.username;
+// displayBioElem.textContent = currentUser.bio || "No bio yet";
+
 const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
 
@@ -97,12 +101,12 @@ function closePanel() {
 
 // Load saved data on page load
 function loadSavedData() {
-  const data = loadData(); // load the JSON object
+  const saved = JSON.parse(localStorage.getItem("profileData")) || {};
 
-  // Update main display
-  displayUsernameElem.textContent = data.username ? `@${data.username}` : "";
-  displayNameElem.textContent = data.displayName || "";
-  displayBioElem.textContent = data.bio || "";
+  // Fall back to currentUser if no saved profile edits yet
+  displayNameElem.textContent = saved.displayName || currentUser.displayName || "";
+  displayUsernameElem.textContent = "@" + (saved.username || currentUser.username || "");
+  displayBioElem.textContent = saved.bio || currentUser.bio || "No bio yet";
 }
 
 function loadData() {
