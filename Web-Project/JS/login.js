@@ -26,7 +26,7 @@ form.addEventListener("submit", function (event) {
 
   if (password === matchedUser.password) {
     //save current user id in the currentUser key if the email matches 1 from the allUsers
-    localStorage.setItem("currentUser", matchedUser.id);
+    localStorage.setItem("currentUser", JSON.stringify(matchedUser));
 
     alert("Log in successful!");
     window.location.href = "profile-page.html";
