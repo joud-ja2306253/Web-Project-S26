@@ -85,6 +85,19 @@ function loadPost() {
         <div class="post-header">
           <h4>${post.name}</h4>
           <span class="time">${post.time}</span>
+          
+          <div class="menu">
+            <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
+
+            <ul id="menuList-${post.id}" style="display: none">
+            
+              <li>
+                <button class="menu_btn" onclick="deletePost(${post.id})" style="font-size: 15px">
+                  Delete post
+                </button>
+              </li>
+            </ul>
+        </div>
         </div>
 
         <div class="post-content">
@@ -101,7 +114,7 @@ function loadPost() {
         </div>
 
 
-        
+
         <div>
           <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
         </div>
@@ -121,18 +134,7 @@ function loadPost() {
 
 
 
-        <div class="menu">
-          <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
-
-          <ul id="menuList-${post.id}" style="display: none">
-          
-            <li>
-              <button class="menu_btn" onclick="deletePost(${post.id})" style="font-size: 15px">
-                Delete post
-              </button>
-            </li>
-          </ul>
-        </div>
+        
 
           </div>
         </div>

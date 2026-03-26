@@ -7,6 +7,7 @@
 :root {
   /* Must Change these colors */
 
+  --color-background: rgb(243, 241, 250);
   --color-primary: #8f0bf4;
   --color-secondary: #f4e7fe;
   --color-primary-dark: #5c079c;
@@ -54,23 +55,22 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
-  background: var(--color-white);
+  background: var(--color-background);
   color: var(--color-text);
   line-height: 1.6;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas: "post";
-  margin: var(--spacing-lg);
 }
 
 /*//////////////////////////////////*/
 /* profile page */
 
+.profile-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 30px 0px 30px;
+}
+
 .profile-info {
-  padding: 1rem;
   max-width: 700px;
   width: 100%;
 }
@@ -89,6 +89,7 @@ body {
   border-radius: 50%;
   padding: 2px;
   border: 3px solid var(--color-primary-dark);
+  background-color: white;
 }
 
 .top-row {
@@ -118,7 +119,7 @@ body {
   border-radius: var(--radius-lg);
   font-weight: 600;
   font-size: 0.9rem;
-  background-color: transparent;
+  background-color: var(--color-white);
   color: var(--color-primary-dark);
   border: 3px solid var(--color-primary-dark);
 }
@@ -144,7 +145,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
 }
 
 .profile-data > div {
@@ -389,28 +390,6 @@ nav a:hover {
   background-color: var(--color-primary-darker);
 }
 
-/* ============================ */
-/* posts */
-.posts {
-}
-
-.post {
-  grid-area: post;
-}
-@media (min-width: 768px) {
-  .profile-info-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  } */
-}
-
 @media (min-width: 1024px) {
   nav {
     flex-direction: column;
@@ -470,7 +449,16 @@ nav a:hover {
 /*//////////////////////////////////*/
 /* login and registration*/
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* fill full viewport height */
+}
+
 form {
+  min-height: 400px; /* fill full viewport height */
   background: white;
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
@@ -478,14 +466,14 @@ form {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  width: 100%;
+  width: 90%;
   max-width: 500px;
-  margin: 50px auto;
+  margin: 10px;
 }
 
 .legendF {
   color: var(--color-primary-dark);
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   font-weight: bold;
 }
 .fieldsetF {
@@ -501,7 +489,7 @@ form {
 .h2F {
   color: var(--color-primary-dark);
   text-align: center;
-  margin: 10px;
+  margin-top: 9px;
 }
 
 .labelF {
@@ -512,10 +500,10 @@ form {
 .inputF {
   width: 100%;
   padding: var(--spacing-sm);
-  margin-bottom: 20px;
+  margin-bottom: 13px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-secondary);
-  background: #fff;
+  background: var(--color-white);
   font-size: 0.95rem;
 }
 
@@ -541,7 +529,7 @@ form {
 
 .switch {
   text-align: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .switch a {
@@ -553,8 +541,8 @@ form {
 }
 @media (min-width: 768px) {
   form {
-    max-width: 750px;
-    margin: 50px auto;
+    /* max-width: 750px; */
+    /* margin: 50px auto; */
   }
 }
 
@@ -594,7 +582,9 @@ form {
 .menu_btn:hover {
   transform: none;
   box-shadow: none;
+  padding: 4px;
   background-color: rgba(0, 0, 0, 0.07);
+  border-radius: var(--radius-sm);
 }
 
 .post_actions {
@@ -690,7 +680,7 @@ form {
 /* Feed (Girl 2) */
 /* ============================= */
 .post_R {
-  background: rgb(243, 241, 250);
+  background: var(--color-white);
   padding: 15px;
   margin-bottom: var(--spacing-lg);
   border-radius: 10px;
@@ -781,5 +771,7 @@ form {
 @media (min-width: 1024px) {
   .feed-container {
     max-width: 1200px;
+    padding-left: 90px;
+    padding-right: 90px;
   }
 }

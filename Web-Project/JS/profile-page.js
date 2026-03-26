@@ -10,22 +10,27 @@
 // This file runs AFTER feed2.js
 // It uses functions from feed2.js without redeclaring anything
 
+//====dont need this
 // const currentUserId = loggedInUser.id; // Get from your auth system
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 if (!currentUser) {
   window.location.href = "login-page.html";
 }
+//==================
 
 const profileUserId = currentUser.id; // Get from URL/profile data
 
-// const displayNameElem = document.querySelector(".displayName");
-// const displayUsernameElem = document.querySelector(".username");
-// const displayBioElem = document.querySelector(".bio p");
+const displayNameElem = document.querySelector(".displayName");
+const displayUsernameElem = document.querySelector(".username");
+const displayBioElem = document.querySelector(".bio p");
 
-// displayNameElem.textContent = currentUser.displayName;
-// displayUsernameElem.textContent = "@" + currentUser.username;
-// displayBioElem.textContent = currentUser.bio || "No bio yet";
+displayNameElem.textContent = currentUserObj.displayName;
+displayUsernameElem.textContent = "@" + currentUserObj.username;
+displayBioElem.textContent = currentUserObj.bio || "No bio yet";
+
+
+
 
 const settingsBtn = document.querySelector("#settingsBtn");
 const followBtn = document.querySelector("#followBtn");
