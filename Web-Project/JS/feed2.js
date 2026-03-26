@@ -23,6 +23,7 @@ const currentUserID = getCurrentUser();
 if (!currentUserID) {
   window.location.href = "login-page.html";
 }
+//gets obj
 const currentUserObj = allUsers.find((user) => user.id === currentUserID);
 //=============
 
