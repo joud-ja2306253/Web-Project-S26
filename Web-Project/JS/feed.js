@@ -188,11 +188,16 @@ function loadPost() {
         (like) => like.postID === post.id && like.userID === currentUserObj.id,
       );
 
+      //add for verification of post actions
+      const isPostOwner = post.userId === currentUserObj.id;
+
       return `
       <div class="post_R">
         <div class="post-header">
 <h4 style="cursor: pointer; " onclick="viewUserProfile('${post.userId}')">${post.name}</h4>          <span class="time">${post.time}</span>
-          
+        
+        ${isPostOwner ? `
+
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
                 
@@ -208,7 +213,9 @@ function loadPost() {
                 </button>
               </li>
             </ul>
-        </div>
+          </div>
+         ` : ''}
+  
         </div>
 
         <div class="post-content">
