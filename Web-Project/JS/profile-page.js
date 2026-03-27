@@ -32,7 +32,7 @@ const changePhotoInput = document.getElementById("changePhoto");
 function loadProfile(user) {
   displayNameElem.textContent = user.displayName;
   displayUsernameElem.textContent = "@" + user.username;
-  displayBioElem.textContent = user.bio || "No bio yet";
+  displayBioElem.textContent = user.bio;
   displayPicElem.src = user.profilePic || "images/default.png";
 }
 
@@ -72,14 +72,14 @@ const allUsersFresh = JSON.parse(localStorage.getItem("allUsers")) || [];
 const profileUserId = localStorage.getItem("profileUserId");
 
 // Find the full current user object - DON'T use Number(), compare as strings
-const currentUser = allUsersFresh.find(u => u.id === currentUserId);
+const currentUser = allUsersFresh.find((u) => u.id === currentUserId);
 
 let profileUser = null;
 let isOwnProfile = false;
 
 if (profileUserId && currentUser) {
   // Viewing someone's profile - DON'T use Number(), compare as strings
-  profileUser = allUsersFresh.find(u => u.id === profileUserId);
+  profileUser = allUsersFresh.find((u) => u.id === profileUserId);
   isOwnProfile = profileUser?.id === currentUser.id;
 } else if (currentUser) {
   // Viewing own profile
@@ -101,36 +101,40 @@ if (settingsBtn && followBtn) {
   } else {
     settingsBtn.style.display = "none";
     followBtn.style.display = "block";
-    
+
     // Setup follow button
     let isFollowing = currentUser?.following?.includes(profileUser.id) || false;
     followBtn.innerHTML = isFollowing ? "Following" : "Follow";
     followBtn.classList.toggle("following", isFollowing);
-    
+
     followBtn.onclick = () => {
       // Get fresh data again
       let users = JSON.parse(localStorage.getItem("allUsers")) || [];
-      const currentIdx = users.findIndex(u => u.id === currentUser.id);
-      const profileIdx = users.findIndex(u => u.id === profileUser.id);
-      
+      const currentIdx = users.findIndex((u) => u.id === currentUser.id);
+      const profileIdx = users.findIndex((u) => u.id === profileUser.id);
+
       if (currentIdx === -1 || profileIdx === -1) return;
-      
+
       if (isFollowing) {
-        users[currentIdx].following = users[currentIdx].following.filter(id => id !== profileUser.id);
-        users[profileIdx].followers = users[profileIdx].followers.filter(id => id !== currentUser.id);
+        users[currentIdx].following = users[currentIdx].following.filter(
+          (id) => id !== profileUser.id,
+        );
+        users[profileIdx].followers = users[profileIdx].followers.filter(
+          (id) => id !== currentUser.id,
+        );
       } else {
         if (!users[currentIdx].following) users[currentIdx].following = [];
         if (!users[profileIdx].followers) users[profileIdx].followers = [];
         users[currentIdx].following.push(profileUser.id);
         users[profileIdx].followers.push(currentUser.id);
       }
-      
+
       localStorage.setItem("allUsers", JSON.stringify(users));
-      
+
       isFollowing = !isFollowing;
       followBtn.innerHTML = isFollowing ? "Following" : "Follow";
       followBtn.classList.toggle("following", isFollowing);
-      
+
       // Update stats
       const updatedProfileUser = users[profileIdx];
       updateProfileStats(updatedProfileUser);
@@ -152,13 +156,13 @@ if (settingsBtn && (isOwnProfile || profileUser?.id === currentUser?.id)) {
       editUsername.value = currentUser.username || "";
       editDisplayName.value = currentUser.displayName || "";
       editBio.value = currentUser.bio || "";
-      
+
       // Load profile picture into edit panel
       if (editProfilePic) {
         editProfilePic.src = currentUser.profilePic || "images/default.png";
         editProfilePic.alt = currentUser.displayName;
       }
-      
+
       overlay.classList.add("active");
       panel.classList.add("active");
     }
@@ -171,7 +175,7 @@ if (changePhotoInput) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         if (editProfilePic) {
           editProfilePic.src = e.target.result;
         }
@@ -191,31 +195,60 @@ overlay?.addEventListener("click", closePanel);
 
 saveBtn?.addEventListener("click", () => {
   if (!currentUser) return;
-  
+
   currentUser.username = editUsername.value.trim();
   currentUser.displayName = editDisplayName.value.trim();
   currentUser.bio = editBio.value.trim();
-  
+
   // Save profile picture if changed
   if (editProfilePic && editProfilePic.src) {
     currentUser.profilePic = editProfilePic.src;
   }
-  
+
   let users = JSON.parse(localStorage.getItem("allUsers")) || [];
-  const index = users.findIndex(u => u.id === currentUser.id);
-  
+  const index = users.findIndex((u) => u.id === currentUser.id);
+
+  // save all updated info to allUsers
   if (index !== -1) {
+    // If user was found
     users[index] = { ...users[index], ...currentUser };
     localStorage.setItem("allUsers", JSON.stringify(users));
   }
-  
-  localStorage.setItem("currentUser", JSON.stringify(currentUser));
-  
+
+  //update post name displays by that user
+  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+  posts = posts.map((post) => {
+    if (post.userId === currentUser.id) {
+      // This post belongs to current user, update it
+      return { ...post, name: currentUser.displayName };
+    }
+    // This post belongs to someone else, leave it as is
+    return post;
+  });
+
+  localStorage.setItem("posts", JSON.stringify(posts));
+
+  //update comment name displays by that user
+  let comments = JSON.parse(localStorage.getItem("comments")) || [];
+  comments = comments.map((comment) => {
+    if (comment.userId === currentUser.id) {
+      return { ...comment, name: currentUser.displayName };
+    }
+    return comment;
+  });
+  localStorage.setItem("comments", JSON.stringify(comments));
+
   displayNameElem.textContent = currentUser.displayName;
   displayUsernameElem.textContent = "@" + currentUser.username;
   displayBioElem.textContent = currentUser.bio;
   displayPicElem.src = currentUser.profilePic || "images/default.png";
-  
+
+  // Refresh feed
+  if (typeof loadPost === "function") {
+    loadPost();
+  }
+
   closePanel();
 });
 

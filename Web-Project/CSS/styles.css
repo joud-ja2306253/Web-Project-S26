@@ -175,6 +175,7 @@ nav {
 
   /*  removes it from normal layout and pins it to the viewport (screen), not the page flow. */
   position: fixed;
+  z-index: 200; /* on top pf menubtn */
   bottom: 0;
   left: 0;
   right: 0;
@@ -242,7 +243,7 @@ nav a:hover {
 
   opacity: 0;
   pointer-events: none;
-    z-index: 300;  /* Highest of all */
+  z-index: 300; 
 
 
   transition: 0.3s;
@@ -262,7 +263,7 @@ nav a:hover {
   background: white;
   padding: 20px;
   transition: 0.4s ease;
-    z-index: 400;  /* Highest of all */
+  z-index: 400;  /* higher than overlay (300) */
 
 }
 
@@ -591,7 +592,7 @@ form {
   position: relative;
   display: inline-block;
   margin-left: 10px;
-  z-index: 200;
+  z-index: 100;
 }
 
 /* The dropdown menu list */
@@ -780,7 +781,7 @@ form {
   border-radius: var(--radius-md);
   max-height: 300px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 500;   /*  places it on top of other features (highest of all) */
   display: none;
   margin-top: 5px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);

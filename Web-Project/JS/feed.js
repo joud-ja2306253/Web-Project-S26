@@ -260,7 +260,7 @@ function loadPost() {
   container.innerHTML = post_data;
 }
 
-//delet menue
+//delete menu
 function toggleMenu(id) {
   const menu = document.getElementById(`menuList-${id}`);
 
@@ -289,9 +289,7 @@ if (post_btn) {
 
       // joud Create post with USER ID and USERNAME
       userId: currentUserObj.id, //  Link to user who created it
-      username: currentUserObj.username, //  Store username for display
-
-      name: currentUserObj.displayName,
+      name: currentUserObj.displayName, //  Store displayname for display
       comment: text,
       time: new Date().toLocaleString(),
     };
@@ -301,15 +299,13 @@ if (post_btn) {
     savePost(posts);
 
     // joud Update user's posts array
-    currentUserObj.posts.push(newPost.id);
+    currentUserObj.posts.unshift(newPost.id);
     saveAllUsers(allUsers);
     // localStorage.setItem('allUsers', JSON.stringify(currentUserObj));
 
     enter_post.value = "";
     loadPost();
   }
-} else {
-  console.warn("Add post elements not found or user not logged in.");
 }
 
 //like ===========================
@@ -474,11 +470,12 @@ function addComment(postID) {
   const newComment = {
     id: Date.now(),
     postID: postID,
-    name: "User",
+    userId: currentUserObj.id, //  store user ID that commented
+    name: currentUserObj.displayName, //  Store displayname for display
     comment: text,
   };
 
-  comments.push(newComment);
+  comments.unshift(newComment);
   saveComments(comments);
 
   enterComment.value = "";

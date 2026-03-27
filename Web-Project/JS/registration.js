@@ -66,6 +66,7 @@ form.addEventListener(
       password: password,
       createdAt: new Date().toISOString(), //why do we need this joud?
       posts: [],
+      comments: [], //store comment IDs
       following: [],
       followers: [],
     };
