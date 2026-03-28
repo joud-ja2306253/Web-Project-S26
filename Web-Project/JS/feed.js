@@ -616,6 +616,10 @@ function savePostEdit(id) {
 
   const updatedText = postText.textContent.trim();
 
+  if (updatedText === "") {
+    alert("Post cannot be empty!");
+    return;
+  }
   const posts = getPost();
   const index = posts.findIndex((p) => p.id === id);
 

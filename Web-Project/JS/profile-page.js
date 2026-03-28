@@ -196,8 +196,34 @@ overlay?.addEventListener("click", closePanel);
 saveBtn?.addEventListener("click", () => {
   if (!currentUser) return;
 
-  currentUser.username = editUsername.value.trim();
-  currentUser.displayName = editDisplayName.value.trim();
+  const newUsername = editUsername.value.trim();
+  const newDisplayName = editDisplayName.value.trim();
+
+  //  Check if username is empty
+  if (newUsername === "") {
+    alert("Username cannot be empty!");
+    return;
+  }
+
+  //  Check if display name is empty
+  if (newDisplayName === "") {
+    alert("Display name cannot be empty!");
+    return;
+  }
+
+  //  Check for duplicate username case insensitive
+  let users1 = JSON.parse(localStorage.getItem("allUsers")) || [];
+  const usernameExists = users1.some(
+    (user) => user.id !== currentUser.id && user.username.toLowerCase() === newUsername.toLowerCase()
+  );
+
+  if (usernameExists) {
+    alert("Username already taken! Please choose another one.");
+    return;
+  }
+  
+  currentUser.username = newUsername;
+  currentUser.displayName = newDisplayName;
   currentUser.bio = editBio.value.trim();
 
   // Save profile picture if changed
