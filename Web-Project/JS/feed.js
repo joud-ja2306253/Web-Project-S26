@@ -183,6 +183,7 @@ function loadPost() {
 
   const post_data = data
     .map((post) => {
+      // post is a variable that represents each post object
       const postLikes = likes.filter((like) => like.postID === post.id);
       const userLike = likes.find(
         (like) => like.postID === post.id && like.userID === currentUserObj.id,
@@ -190,42 +191,55 @@ function loadPost() {
 
       //add for verification of post actions
       const isPostOwner = post.userId === currentUserObj.id;
+      //Get the user who made this post
+      const postUser = allUsers.find((u) => u.id === post.userId);
+      const profilePic = postUser?.profilePic;
+      const name = postUser?.displayName;
 
       return `
       <div class="post_R">
         <div class="post-header">
-<h4 style="cursor: pointer; " onclick="viewUserProfile('${post.userId}')">${post.name}</h4>          <span class="time">${post.time}</span>
-        
-        ${isPostOwner ? `
+          <div class="post-user-info" onclick="viewUserProfile('${post.userId}')">
+            <img src="${profilePic}" class="post-profile-pic" />
+            <h4>${name}</h4>
+          </div>
+          <span class="time">${post.time}</span>
+
+        ${
+          isPostOwner
+            ? `
 
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
                 
             <ul id="menuList-${post.id}" style="display: none" class="menu_li">
               <li>
-                <button id="edit_post" class="menu_li" onclick="editPost(${post.id})" style="font-size: 15px">
+                <button id="edit_post-${post.id}" class="menu_li" onclick="editPost(${post.id})">
                   Edit post
                 </button>
               </li>
               <li>
-                <button id="delte_post" class="menu_li" onclick="deletePost(${post.id})" style="font-size: 15px">
+                <button id="delte_post-${post.id}" class="menu_li" onclick="deletePost(${post.id})">
                   Delete post
                 </button>
               </li>
             </ul>
           </div>
-         ` : ''}
+         `
+            : ""
+        }
   
         </div>
 
         <div class="post-content">
-          <p id="postText-${post.id}">${post.comment}</p>
-          <button id="savePost-${post.id}" 
-            onclick="savePostEdit(${post.id})" 
-            style="display:none;">
-          Save
-          </button>
-          
+          <div class="postEditContainer">
+            <p id="postText-${post.id}">${post.comment}</p>
+            <button id="savePost-${post.id}" class= "postSaveBtn" 
+              onclick="savePostEdit(${post.id})" 
+              style="display:none;">
+            Save
+            </button>
+          </div>
         </div>
 
         <div class="post-actions">
@@ -247,6 +261,7 @@ function loadPost() {
 
           </div>
           <div class="commentBox" style="display: none" id="commentBox-${post.id}">
+          <div class="write-send-comment">
           <input
             class="enterComment"
             id="enterComment-${post.id}"
@@ -254,6 +269,7 @@ function loadPost() {
             placeholder="write your comment"
           />
           <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
+          </div>
           <p class="loadedCommnetText" id="loadedCommnetText-${post.id}">
             comments will load here
           </p>
@@ -275,6 +291,20 @@ function toggleMenu(id) {
     menu.style.display = "block";
   } else {
     menu.style.display = "none";
+
+    //  Cancel edit mode (remove save)
+    const saveBtn = document.querySelector(`#savePost-${id}`);
+    const postText = document.querySelector(`#postText-${id}`);
+    const editBtn = document.querySelector(`#edit_post-${id}`);
+
+    if (saveBtn && saveBtn.style.display === "inline-block") {
+      // Cancel edit mode
+      postText.contentEditable = false;
+      postText.classList.remove("post-text-editing");
+
+      saveBtn.style.display = "none";
+      if (editBtn) editBtn.style.display = "inline-block";
+    }
   }
 }
 
@@ -296,7 +326,6 @@ if (post_btn) {
 
       // joud Create post with USER ID and USERNAME
       userId: currentUserObj.id, //  Link to user who created it
-      name: currentUserObj.displayName, //  Store displayname for display
       comment: text,
       time: new Date().toLocaleString(),
     };
@@ -414,6 +443,12 @@ function deletePost(id) {
 
   loadPost();
   reloadLikeButtons();
+
+  // update profile stats on profile page without reload
+  if (typeof updateProfileStats === "function") {
+    const currentUser = updatedUsers.find((u) => u.id === currentUserObj.id);
+    updateProfileStats(currentUser);
+  }
 }
 
 const comments_Key = "comments";
@@ -431,13 +466,19 @@ function toggleComments(postID) {
 
   if (box.style.display === "none" || box.style.display === "") {
     box.style.display = "block";
-    loadComments(postID);
+    //  Get the post to find its owner
+    const posts = getPost();
+    const post = posts.find((p) => p.id === postID);
+    const postOwnerId = post ? post.userId : null;
+
+    //  Pass postOwnerId to loadComments
+    loadComments(postID, postOwnerId);
   } else {
     box.style.display = "none";
   }
 }
 
-function loadComments(postID) {
+function loadComments(postID, postOwnerId) {
   const data = getComments();
   const loadedCommnetText = document.getElementById(
     `loadedCommnetText-${postID}`,
@@ -446,19 +487,37 @@ function loadComments(postID) {
   const filteredComments = data.filter((comment) => comment.postID === postID);
 
   const comment_data = filteredComments
-    .map(
-      (t) => `
+    .map((t) => {
+      //  Use postOwnerId that was passed in
+      const isCommentOwner = t.userId === currentUserObj.id;
+      const isPostOwner = postOwnerId === currentUserObj.id;
+
+      return `
     <div class="comment_row">
-      <p class="box" id="comment-${t.id}" data-name="${t.name}">
-        ${t.name}: ${t.comment}
+      <p class="box" id="comment-${t.id}">
+        <strong>${t.name}</strong>: 
+        <span  class="comment-text" id="commentText-${t.id}">${t.comment}</span>
       </p>
 
-      <button class="menu_btn CommentBtn" onclick="deleteComment(${t.id}, ${postID})">Delete</button>
-      <button class="menu_btn CommentBtn" id="editBtn-${t.id}" onclick="editComment(${t.id})">Edit</button>
-      <button class="menu_btn CommentBtn" id="saveBtn-${t.id}" onclick="saveEdit(${t.id}, ${postID})" style="display:none;">Save</button>
+      ${
+        isCommentOwner || isPostOwner
+          ? `
+        <button class="menu_btn CommentBtn" onclick="deleteComment(${t.id}, ${postID})">Delete</button>  
+      `
+          : ""
+      }
+      
+      ${
+        isCommentOwner
+          ? `
+        <button class="menu_btn CommentBtn edit-save-btn" id="editBtn-${t.id}" onclick="editComment(${t.id})">Edit</button>
+        <button class="menu_btn CommentBtn edit-save-btn" id="saveBtn-${t.id}" onclick="saveEdit(${t.id}, ${postID})" style="display:none;">Save</button>
+      `
+          : ""
+      }
     </div>
-  `,
-    )
+  `;
+    })
     .join("");
 
   loadedCommnetText.innerHTML = comment_data;
@@ -499,10 +558,11 @@ function deleteComment(id, postID) {
 }
 
 function editComment(id) {
-  const commentText = document.querySelector(`#comment-${id}`);
+  const commentText = document.querySelector(`#commentText-${id}`);
   const saveBtn = document.querySelector(`#saveBtn-${id}`);
   const editBtn = document.querySelector(`#editBtn-${id}`);
 
+  commentText.classList.add("comment-text-editing");
   commentText.contentEditable = true;
   commentText.focus();
 
@@ -511,13 +571,17 @@ function editComment(id) {
 }
 
 function saveEdit(id, postID) {
-  const commentText = document.querySelector(`#comment-${id}`);
+  const commentText = document.querySelector(`#commentText-${id}`);
   const saveBtn = document.querySelector(`#saveBtn-${id}`);
   const editBtn = document.querySelector(`#editBtn-${id}`);
 
-  const originalName = commentText.dataset.name;
-  const fullText = commentText.textContent.trim();
-  const updatedComment = fullText.replace(`${originalName}:`, "").trim();
+  const updatedComment = commentText.textContent.trim();
+  if (updatedComment === "") {
+    alert("Comment cannot be empty!");
+    //rollback
+    loadComments(postID);
+    return;
+  }
 
   const comments = getComments();
   const index = comments.findIndex((c) => c.id === id);
@@ -537,13 +601,12 @@ function saveEdit(id, postID) {
 function editPost(id) {
   const postText = document.querySelector(`#postText-${id}`);
   const saveBtn = document.querySelector(`#savePost-${id}`);
-  const editBtn = document.querySelector(`#edit_post-${id}`);
 
   postText.contentEditable = true;
+  postText.classList.add("post-text-editing");
   postText.focus();
 
   saveBtn.style.display = "inline-block";
-  editBtn.style.display = "none";
 }
 
 function savePostEdit(id) {
@@ -562,11 +625,15 @@ function savePostEdit(id) {
   }
 
   postText.contentEditable = false;
+  postText.classList.remove("post-text-editing");
   saveBtn.style.display = "none";
   editBtn.style.display = "inline-block";
 
-  loadPost();
-  reloadLikeButtons();
+  // close the menu after saving
+  const menu = document.getElementById(`menuList-${id}`);
+  if (menu) {
+    menu.style.display = "none";
+  }
 }
 loadPost();
 reloadLikeButtons();

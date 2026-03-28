@@ -243,8 +243,7 @@ nav a:hover {
 
   opacity: 0;
   pointer-events: none;
-  z-index: 300; 
-
+  z-index: 300;
 
   transition: 0.3s;
 }
@@ -263,8 +262,7 @@ nav a:hover {
   background: white;
   padding: 20px;
   transition: 0.4s ease;
-  z-index: 400;  /* higher than overlay (300) */
-
+  z-index: 400; /* higher than overlay (300) */
 }
 
 /* Active state */
@@ -580,7 +578,6 @@ form {
 .menu_btn {
   color: var(--color-primary-darker);
   font-size: 22px;
-  margin-right: var(--spacing-md);
   background-color: transparent;
   padding: 4px;
   width: auto;
@@ -589,17 +586,20 @@ form {
 
 /* menu is the 3 dots */
 .menu {
+  align-self: center;
+
   position: relative;
   display: inline-block;
   margin-left: 10px;
   z-index: 100;
+  color: var(da);
 }
 
-/* The dropdown menu list */
+/* The dropdown menu list container*/
 .menu ul {
   position: absolute;
-  top: 100%; /* Places it directly below the button */
-  right: 0; /* Aligns to the RIGHT edge of the menu container */
+  top: -180%; /* Places it directly above the button */
+  right: 0; /* Aligns to the right edge of the menu container */
   min-width: 120px;
   background-color: #eee;
   border: 1px solid #ccc;
@@ -608,8 +608,10 @@ form {
 }
 
 .menu_li {
+  color: var(--color-primary-darkest);
+  font-size: 15px;
   min-width: 100px;
-  border: 1px solid var(--color-blacky);
+  border: none;
   padding: var(--spacing-xs) var(--spacing-sm);
   list-style: none;
   border-radius: var(--radius-md);
@@ -618,9 +620,48 @@ form {
 .menu_li:hover {
   text-decoration: underline;
 }
+
+/* Post edit container - makes text and button inline */
+.postEditContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+/* Post text inside container */
+.postEditContainer p {
+  flex: 1;
+  margin: 0;
+  word-break: break-word;
+ }
+
+.post-text-editing {
+  border: 2px solid #b6ababf8;
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+}
+
+/* Post save button */
+.postSaveBtn {
+  width: 70px;
+  text-align: center;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover is done below */
+
 #delte_btn {
   color: red;
 }
+
 .menu_btn:hover {
   transform: none;
   box-shadow: none;
@@ -661,50 +702,42 @@ form {
   padding: 7px;
   width: 100%;
 }
+.write-send-comment {
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
 
 .enterComment {
+  border: 2px solid #ddd;
+  background: white !important;
   flex: 1;
   width: 80%;
   justify-self: start;
-  border: 1px solid var(--color-secondary);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-sm) var(--spacing-md);
-}
-.sendComment,
-.enterComment {
   color: var(--color-primary-darkest);
-  padding: 12px;
+  padding: var(--spacing-sm);
 }
-.enterComment:active {
-  border: 2px solid var(--color-primary);
+
+.enterComment:focus {
+  border-color: var(--color-primary-dark) !important;
+  outline: none !important;
 }
 .sendComment {
+  padding: var(--spacing-sm);
   border-radius: var(--radius-lg);
   padding: var(--spacing-sm) var(--spacing-md);
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-white);
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
 }
 
-.sendComment:hover {
-  transform: none;
-  box-shadow: none;
+.sendComment:hover,
+.postSaveBtn:hover {
   background-color: var(--color-primary-dark);
-}
-
-.comment_row {
-  display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
-  width: 100%;
-}
-
-.box {
-  display: block;
-  padding-right: 120px;
-  margin-top: var(--spacing-sm);
 }
 
 .CommentBtn {
@@ -712,27 +745,60 @@ form {
   font-size: 14px;
 }
 
+/* makes toggle beween save edit smooth */
+.edit-save-btn {
+  width: 40px;
+}
 .comment_row {
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 8px;
+  margin-bottom: var(--spacing-sm);
+  width: 100%;
 }
 
+.comment_row:hover {
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-md);
+}
 .box {
+  display: flex;
   margin: 0;
   width: 100%;
   min-height: 40px;
   padding: 6px;
   box-sizing: border-box;
 
-  /* word-break: break-word; */
+  word-break: break-word;
+}
+
+/* display name */
+.box strong {
+  white-space: nowrap; /* Prevents username from breaking */
+}
+
+.comment-text {
+  width: 100%;
+  margin-left: 10px;
+}
+
+/* only applies when editing */
+.comment-text-editing {
+  margin-left: 10px;
+  background-color: #f9f9f9;
+  border: 2px solid var(--color-primary-dark);
+  border-radius: var(--radius-md);
+  padding: 0px 10px;
+  display: inline-block;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(44, 4, 55, 0.053);
 }
 /* ================================================== */
 
 /* Add position relative to the container */
 .search-input-row {
-  position: relative;  
+  position: relative;
   margin: 20px auto;
   padding: 10px;
   display: flex;
@@ -756,7 +822,6 @@ form {
   border-color: var(--color-primary-dark);
 }
 
-
 .search-btn {
   padding: var(--spacing-sm) var(--spacing-md);
   background-color: var(--color-primary-dark);
@@ -773,18 +838,18 @@ form {
 
 /* search results dropdown styles */
 .search-results {
-  position: absolute;     
-  top: 100%;              /*  places it right below the input */
-  right: 0;               /*  makes it same width as the container */
+  position: absolute;
+  top: 100%; /*  places it right below the input */
+  right: 0; /*  makes it same width as the container */
   background: white;
   border: 1px solid var(--color-secondary);
   border-radius: var(--radius-md);
   max-height: 300px;
   overflow-y: auto;
-  z-index: 500;   /*  places it on top of other features (highest of all) */
+  z-index: 500; /*  places it on top of other features (highest of all) */
   display: none;
   margin-top: 5px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Style for each search result item */
@@ -833,7 +898,6 @@ form {
   color: var(--color-text-light);
 }
 
-
 /* ============================= */
 /* Feed (Girl 2) */
 /* ============================= */
@@ -850,7 +914,6 @@ form {
   margin: auto;
   margin-bottom: 40px;
   padding: var(--spacing-md);
-  
 }
 
 .no-posts p {
@@ -882,6 +945,10 @@ form {
   border-radius: var(--radius-md);
 }
 
+.create-post button:hover {
+  opacity: 0.85;
+}
+
 /* Post Card */
 .post-card {
   background-color: var(--color-white);
@@ -899,13 +966,34 @@ form {
   gap: var(--spacing-xs);
 }
 
+/* holds profile pic, name */
+.post-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.post-user-info:hover {
+  opacity: 0.8;
+}
+
+.post-profile-pic {
+  aspect-ratio: 1/1;
+  width: 45px;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary-darker);
+}
+
 /* Username */
 .post-header h4 {
   color: var(--color-primary-dark);
+  margin: 0;
 }
 
 /* Time */
 .time {
+  align-self: center;
   font-size: 0.8rem;
   color: var(--color-text-light);
   margin-left: auto;
@@ -913,7 +1001,8 @@ form {
 
 /* Content */
 .post-content {
-  margin-bottom: var(--spacing-sm);
+  margin: var(--spacing-sm);
+  margin-top: var(--spacing-md);
 }
 
 /* Actions */
