@@ -755,6 +755,7 @@ form {
   align-items: center;
   gap: 8px;
   margin-bottom: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
   width: 100%;
 }
 
