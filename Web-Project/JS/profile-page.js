@@ -290,27 +290,25 @@ logoutBtn?.addEventListener("click", () => {
 // ===========================
 //        Profile Tabs
 // ===========================
+
 function initProfileTabs() {
   const tabBtns = document.querySelectorAll('.tab-btn');
-  
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Update active tab button
       tabBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
       const tab = btn.dataset.tab;
-      const allCards = document.querySelectorAll('#postsContainer .post-card');
+      const allPosts = document.querySelectorAll('#postsContainer .post_R');
 
-      allCards.forEach(card => {
-        const hasImage = card.querySelector('img.post-image') !== null;
+      allPosts.forEach(post => {
+        const hasImage = post.dataset.hasImages === 'true';
 
         if (tab === 'photos') {
-          // Show only posts WITH images
-          card.style.display = hasImage ? '' : 'none';
+          post.style.display = hasImage ? '' : 'none';
         } else {
-          // Show only posts WITHOUT images
-          card.style.display = !hasImage ? '' : 'none';
+          post.style.display = !hasImage ? '' : 'none';
         }
       });
     });
