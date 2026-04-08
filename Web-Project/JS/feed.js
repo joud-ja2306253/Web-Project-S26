@@ -240,6 +240,13 @@ function loadPost() {
             Save
             </button>
           </div>
+        <!-- ADD THIS BLOCK: renders images if the post has any -->
+         ${post.images && post.images.length > 0? `
+            <div class="post-images">
+                ${post.images.map((src) => `
+                  <img src="${src}" class="post-image" alt="post image" />`,).join("")}
+            </div>`: ""}
+
         </div>
 
         <div class="post-actions">

@@ -286,3 +286,38 @@ logoutBtn?.addEventListener("click", () => {
   localStorage.removeItem("profileUserId");
   window.location.href = "login-page.html";
 });
+
+// ===========================
+//        Profile Tabs
+// ===========================
+function initProfileTabs() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Update active tab button
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const tab = btn.dataset.tab;
+      const allCards = document.querySelectorAll('#postsContainer .post-card');
+
+      allCards.forEach(card => {
+        const hasImage = card.querySelector('img.post-image') !== null;
+
+        if (tab === 'photos') {
+          // Show only posts WITH images
+          card.style.display = hasImage ? '' : 'none';
+        } else {
+          // Show only posts WITHOUT images
+          card.style.display = !hasImage ? '' : 'none';
+        }
+      });
+    });
+  });
+}
+
+// Run after posts are loaded
+// If feed.js renders posts synchronously, call it right away.
+// If it's async, wrap in a small delay:
+setTimeout(initProfileTabs, 300);

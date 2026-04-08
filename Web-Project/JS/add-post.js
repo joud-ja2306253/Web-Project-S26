@@ -34,14 +34,12 @@ const charCounter   = document.getElementById("charCounter");
 // ===================================
 //    Upload Zone — click 
 // ===================================
-uploadZone.addEventListener("click", () => imageInput.click());
-
-
-uploadZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  uploadZone.classList.remove("drag-over");
-  handleFiles(e.dataTransfer.files);
+uploadZone.addEventListener("click", (e) => {
+  if (e.target !== imageInput) {
+    imageInput.click();
+  }
 });
+
 
 imageInput.addEventListener("change", (e) => {
   handleFiles(e.target.files);
