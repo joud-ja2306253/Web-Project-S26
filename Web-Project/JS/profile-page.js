@@ -2,7 +2,7 @@
 //         Profile Page
 // ===================================
 
-// Select Elements - MUST be at the very top!
+// Select Elements
 const displayNameElem = document.querySelector(".displayName");
 const displayUsernameElem = document.querySelector(".username");
 const displayBioElem = document.querySelector(".bio p");
@@ -25,6 +25,10 @@ const editDisplayName = document.getElementById("editDisplayName");
 const editBio = document.getElementById("editBio");
 const editProfilePic = document.querySelector(".editProfilePic");
 const changePhotoInput = document.getElementById("changePhoto");
+const deletePhotoBtn = document.getElementById("deletePhotoBtn");
+
+const DEFAULT_PROFILE_PIC =
+  "https://i.pinimg.com/1200x/28/16/5a/28165aaca2ee560b4a6b760765efe976.jpg";
 
 // ===========================
 //       Helper Functions
@@ -33,7 +37,7 @@ function loadProfile(user) {
   displayNameElem.textContent = user.displayName;
   displayUsernameElem.textContent = "@" + user.username;
   displayBioElem.textContent = user.bio;
-  displayPicElem.src = user.profilePic || "images/default.png";
+  displayPicElem.src = user.profilePic;
 }
 
 function updateProfileStats(user) {
@@ -159,8 +163,12 @@ if (settingsBtn && (isOwnProfile || profileUser?.id === currentUser?.id)) {
 
       // Load profile picture into edit panel
       if (editProfilePic) {
-        editProfilePic.src = currentUser.profilePic || "images/default.png";
-        editProfilePic.alt = currentUser.displayName;
+        //added "" just incase, though there should always be a pic
+        editProfilePic.src = currentUser.profilePic || "";
+        editProfilePic.alt = "profile pic";
+
+        //store for rollback!
+        originalProfilePicBackup = currentUser.profilePic || "";
       }
 
       overlay.classList.add("active");
@@ -174,6 +182,12 @@ if (changePhotoInput) {
   changePhotoInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file!");
+        changePhotoInput.value = "";
+        return;
+      }
+      // Valid image
       const reader = new FileReader();
       reader.onload = function (e) {
         if (editProfilePic) {
@@ -181,6 +195,28 @@ if (changePhotoInput) {
         }
       };
       reader.readAsDataURL(file);
+    }
+  });
+}
+
+// Handle delete photo
+if (deletePhotoBtn) {
+  deletePhotoBtn.addEventListener("click", () => {
+    // Confirm with user before deleting
+    const confirmDelete = confirm(
+      "Remove your profile picture? It will be set to the default avatar.",
+    );
+
+    if (confirmDelete) {
+      // Set the preview to default image
+      if (editProfilePic) {
+        editProfilePic.src = DEFAULT_PROFILE_PIC;
+      }
+
+      // Clear the file input so it doesn't show a previously selected file
+      if (changePhotoInput) {
+        changePhotoInput.value = "";
+      }
     }
   });
 }
@@ -196,32 +232,41 @@ overlay?.addEventListener("click", closePanel);
 saveBtn?.addEventListener("click", () => {
   if (!currentUser) return;
 
+  // Store original values for rollback
+  const originalUsername = currentUser.username;
+  const originalDisplayName = currentUser.displayName;
+
   const newUsername = editUsername.value.trim();
   const newDisplayName = editDisplayName.value.trim();
 
   //  Check if username is empty
   if (newUsername === "") {
     alert("Username cannot be empty!");
+    editUsername.value = originalUsername;
     return;
   }
 
   //  Check if display name is empty
   if (newDisplayName === "") {
     alert("Display name cannot be empty!");
+    editDisplayName.value = originalDisplayName;
     return;
   }
 
   //  Check for duplicate username case insensitive
-  let users1 = JSON.parse(localStorage.getItem("allUsers")) || [];
-  const usernameExists = users1.some(
-    (user) => user.id !== currentUser.id && user.username.toLowerCase() === newUsername.toLowerCase()
+  let users = JSON.parse(localStorage.getItem("allUsers")) || [];
+  const usernameExists = users.some(
+    (user) =>
+      user.id !== currentUser.id &&
+      user.username.toLowerCase() === newUsername.toLowerCase(),
   );
 
   if (usernameExists) {
     alert("Username already taken! Please choose another one.");
+    editUsername.value = originalUsername;
     return;
   }
-  
+
   currentUser.username = newUsername;
   currentUser.displayName = newDisplayName;
   currentUser.bio = editBio.value.trim();
@@ -231,7 +276,7 @@ saveBtn?.addEventListener("click", () => {
     currentUser.profilePic = editProfilePic.src;
   }
 
-  let users = JSON.parse(localStorage.getItem("allUsers")) || [];
+  // let users = JSON.parse(localStorage.getItem("allUsers")) || [];
   const index = users.findIndex((u) => u.id === currentUser.id);
 
   // save all updated info to allUsers
@@ -240,20 +285,6 @@ saveBtn?.addEventListener("click", () => {
     users[index] = { ...users[index], ...currentUser };
     localStorage.setItem("allUsers", JSON.stringify(users));
   }
-
-  //update post name displays by that user
-  let posts = JSON.parse(localStorage.getItem("posts")) || [];
-
-  posts = posts.map((post) => {
-    if (post.userId === currentUser.id) {
-      // This post belongs to current user, update it
-      return { ...post, name: currentUser.displayName };
-    }
-    // This post belongs to someone else, leave it as is
-    return post;
-  });
-
-  localStorage.setItem("posts", JSON.stringify(posts));
 
   //update comment name displays by that user
   let comments = JSON.parse(localStorage.getItem("comments")) || [];
@@ -268,13 +299,10 @@ saveBtn?.addEventListener("click", () => {
   displayNameElem.textContent = currentUser.displayName;
   displayUsernameElem.textContent = "@" + currentUser.username;
   displayBioElem.textContent = currentUser.bio;
-  displayPicElem.src = currentUser.profilePic || "images/default.png";
+  displayPicElem.src = currentUser.profilePic;
 
   // Refresh feed
-  if (typeof loadPost === "function") {
-    loadPost();
-  }
-
+  loadPost();
   closePanel();
 });
 

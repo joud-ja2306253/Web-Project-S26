@@ -137,10 +137,26 @@ const container = document.getElementById("postsContainer");
 const post_btn = document.getElementById("postBtn");
 const enter_post = document.getElementById("postInput");
 
-// let currentPosts = [];
-// let allPosts = getPost();
+// Helper Method
+function moveCursorToEnd(element) {
+  if (!element) return;
+
+  const range = document.createRange();
+  const selection = window.getSelection();
+  range.selectNodeContents(element);
+  range.collapse(false); // false = end, true = beginning
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
 
 function loadPost() {
+  // FORCE FRESH DATA
+  const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+  const currentUserObj = allUsers.find(
+    (u) =>
+      u.id === (window.currentUserId || localStorage.getItem("currentUser")),
+  );
+
   // Get current page name from URL
   const path = window.location.pathname; // e.g., "/profile-page.html"
   const page = path.split("/").pop(); // gets "profile-page.html" or "feed.html"
@@ -155,7 +171,7 @@ function loadPost() {
 
     if (profileUserId) {
       // Showing someone's profile (could be own or other)
-      userIdToShow = profileUserId; // ← REMOVED Number()
+      userIdToShow = profileUserId;
     } else {
       // No profileUserId, fallback to current user
       userIdToShow = currentUserObj.id;
@@ -413,6 +429,11 @@ function addlike(postID) {
 
 //delete post
 function deletePost(id) {
+  const userConfirmed = confirm("Are you sure you want to delete this post?");
+  if (!userConfirmed) {
+    return;
+  }
+
   let posts = getPost();
   let likes = getLikes();
 
@@ -565,6 +586,7 @@ function editComment(id) {
   commentText.classList.add("comment-text-editing");
   commentText.contentEditable = true;
   commentText.focus();
+  moveCursorToEnd(commentText);
 
   saveBtn.style.display = "inline-block";
   editBtn.style.display = "none";
@@ -578,8 +600,17 @@ function saveEdit(id, postID) {
   const updatedComment = commentText.textContent.trim();
   if (updatedComment === "") {
     alert("Comment cannot be empty!");
-    //rollback
-    loadComments(postID);
+
+    // Roll back to original comment without reloading
+    const comments = getComments();
+    const originalComment = comments.find((c) => c.id === id);
+    if (originalComment) {
+      commentText.textContent = originalComment.comment;
+    }
+
+    // Keep edit mode open
+    commentText.focus();
+    moveCursorToEnd(commentText);
     return;
   }
 
@@ -605,6 +636,7 @@ function editPost(id) {
   postText.contentEditable = true;
   postText.classList.add("post-text-editing");
   postText.focus();
+  moveCursorToEnd(postText);
 
   saveBtn.style.display = "inline-block";
 }
@@ -618,8 +650,17 @@ function savePostEdit(id) {
 
   if (updatedText === "") {
     alert("Post cannot be empty!");
+    // roll back to original text from stored post
+    const posts = getPost();
+    const originalPost = posts.find((p) => p.id === id);
+    if (originalPost) {
+      postText.textContent = originalPost.comment;
+    }
+    postText.focus();
+    moveCursorToEnd(postText);
     return;
   }
+
   const posts = getPost();
   const index = posts.findIndex((p) => p.id === id);
 
