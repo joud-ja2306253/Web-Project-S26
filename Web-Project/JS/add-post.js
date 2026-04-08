@@ -103,18 +103,14 @@ function renderCarousel() {
   if (currentSlide < 0) currentSlide = 0;
 
   // Build slides
-  carouselTrack.innerHTML = selectedImages
-    .map(
-      (src, i) => `
+  carouselTrack.innerHTML = selectedImages.map((src, i) => `
     <div class="carousel-slide">
       <img src="${src}" alt="Post image ${i + 1}" />
       <button class="remove-img-btn" onclick="removeImage(${i})" title="Remove photo">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-  `
-    )
-    .join("");
+  `).join("");
 
   // Move track to current slide
   carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -239,4 +235,5 @@ function submitPost() {
   setTimeout(() => {
     window.location.href = "feed.html";
   }, 1000);
+  
 }
