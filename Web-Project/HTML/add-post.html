@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Post</title>
+    <link rel="stylesheet" href="../CSS/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <main>
+      <div class="add-post-container">
+
+        <!-- Header -->
+        <div class="add-post-header">
+          <button class="back-btn" onclick="window.history.back()" title="Go back">
+            <i class="fa-solid fa-angle-left"></i>
+          </button>
+          <h2>New Post</h2>
+        </div>
+
+        <!-- Image Upload Zone (shown when no images selected) -->
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="imageInput" accept="image/*" multiple />
+          <!-- <i class="fa-regular fa-images"></i>  the photo image --> 
+          <p><strong>Tap to add photos</strong></p>
+        </div>
+
+        <!-- Image Preview Section -->
+        <div class="preview-section" id="previewSection">
+
+          <div class="carousel-wrapper" id="carouselWrapper">
+            <div class="carousel-track" id="carouselTrack"></div>
+            <span class="img-count-badge" id="imgCountBadge">1 / 1</span>
+            <button class="carousel-arrow prev hidden" id="prevArrow" onclick="changeSlide(-1)">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="carousel-arrow next hidden" id="nextArrow" onclick="changeSlide(1)">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="carousel-dots" id="carouselDots"></div>
+
+          <button class="add-more-btn" onclick="document.getElementById('imageInput').click()">
+            <i class="fa-solid fa-plus"></i> Add more photos
+          </button>
+        </div>
+
+        <!-- Caption & Submit -->
+        <div class="post-form-card">
+          <textarea
+            id="captionInput"
+            placeholder="Write a caption..."
+            maxlength="2200"
+            oninput="updateCharCount()"
+          ></textarea>
+          <div class="char-counter" id="charCounter">0 / 2200</div>
+          <button class="submit-post-btn" id="submitBtn" onclick="submitPost()">
+            Share Post
+          </button>
+        </div>
+
+      </div>
+    </main>
+
+
+    <footer>
+      <nav>
+        <a href="feed.html">
+          <i class="fa-solid fa-house"></i>
+          <span class="nav-text">Home</span>
+        </a>
+        <a href="add-post.html" class="add-btn" aria-label="Add post">
+          <i class="fas fa-plus"></i>
+          <span class="nav-text">Post</span>
+        </a>
+        <a href="profile-page.html">
+          <i class="fa-regular fa-user"></i>
+          <span class="nav-text">Profile</span>
+        </a>
+      </nav>
+    </footer>
+
+    <script src="../JS/add-post.js"></script>
+  </body>
+</html>
