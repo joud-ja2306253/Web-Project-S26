@@ -224,24 +224,13 @@ function loadPost() {
                 </button>
               </li>
             </ul>
-          </div>
-         `
-            : ""
-        }
+          </div>`: ""}
   
         </div>
 
         <div class="post-content">
-          <div class="postEditContainer">
-            <p id="postText-${post.id}">${post.comment}</p>
-            <button id="savePost-${post.id}" class= "postSaveBtn" 
-              onclick="savePostEdit(${post.id})" 
-              style="display:none;">
-            Save
-            </button>
-          </div>
-        <!-- ADD THIS BLOCK: renders images if the post has any -->
-         ${post.images && post.images.length > 0? `
+
+        ${post.images && post.images.length > 0? `
         <div class="post-carousel" id="carousel-${post.id}">
         <div class="post-carousel-track" id="track-${post.id}" style="display:flex; transition: transform 0.35s ease;">
           ${post.images.map((src, i) => `
@@ -261,6 +250,15 @@ function loadPost() {
               <span class="post-dot ${i === 0 ? "active" : ""}" onclick="goToPostSlide('${post.id}', ${i}, ${post.images.length})"></span>`,).join("")}
           </div>`: "" }
         </div>`: ""}
+
+          <div class="postEditContainer">
+            <p id="postText-${post.id}">${post.comment}</p>
+            <button id="savePost-${post.id}" class= "postSaveBtn" 
+              onclick="savePostEdit(${post.id})" 
+              style="display:none;">
+            Save
+            </button>
+          </div>
 
         </div>
 
@@ -297,10 +295,7 @@ function loadPost() {
           </p>
         </div>
 
-        </div>
-    `;
-    })
-    .join("");
+        </div>`;}).join("");
 
   container.innerHTML = post_data;
 }

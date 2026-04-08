@@ -1145,10 +1145,12 @@ form {
 }
 
 @media (min-width: 1024px) {
+
   .feed-container {
-    max-width: 1200px;
-    padding-left: 90px;
-    padding-right: 90px;
+    max-width: 600px;
+    padding-left: 0;
+    padding-right: 0;
+    
   }
 }
 
