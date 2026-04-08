@@ -1,5 +1,5 @@
 // ===================================
-//         Add Post Page - JS
+//         Add Post Page 
 // ===================================
 
 // ---- Auth Guard ----
@@ -32,18 +32,10 @@ const captionInput  = document.getElementById("captionInput");
 const charCounter   = document.getElementById("charCounter");
 
 // ===================================
-//    Upload Zone — click & drag/drop
+//    Upload Zone — click 
 // ===================================
 uploadZone.addEventListener("click", () => imageInput.click());
 
-uploadZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  uploadZone.classList.add("drag-over");
-});
-
-uploadZone.addEventListener("dragleave", () => {
-  uploadZone.classList.remove("drag-over");
-});
 
 uploadZone.addEventListener("drop", (e) => {
   e.preventDefault();
@@ -71,7 +63,7 @@ function handleFiles(files) {
   const toProcess = imageFiles.slice(0, remaining);
 
   if (imageFiles.length > remaining) {
-    showToast(`Max 10 photos per post. Added ${toProcess.length} photo(s).`);
+    alter(`Max 10 photos per post. Added ${toProcess.length} photo(s).`);
   }
 
   let loaded = 0;
@@ -219,7 +211,7 @@ function submitPost() {
 
   // Must have at least a caption or at least one image
   if (!caption && selectedImages.length === 0) {
-    showToast("Please add a photo or write a caption.");
+    alter("Please add a photo or write a caption.");
     return;
   }
 
@@ -244,20 +236,9 @@ function submitPost() {
     allUsersLatest[userIndex].posts.unshift(newPost.id);
     localStorage.setItem("allUsers", JSON.stringify(allUsersLatest));
   }
-
-  showToast("Post shared! ✓");
+  alert("Post shared!");
 
   setTimeout(() => {
     window.location.href = "feed.html";
   }, 1000);
-}
-
-// ===================================
-//    Toast Notification
-// ===================================
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
 }

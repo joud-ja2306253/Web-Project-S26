@@ -1317,30 +1317,6 @@ form {
         transform: none;
       }
 
-      /* Success toast */
-      .toast {
-        position: fixed;
-        bottom: 90px;
-        left: 50%;
-        transform: translateX(-50%) translateY(20px);
-        background: var(--color-primary-dark);
-        color: white;
-        padding: var(--spacing-sm) var(--spacing-lg);
-        border-radius: var(--radius-lg);
-        font-size: 0.9rem;
-        font-weight: 600;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s, transform 0.3s;
-        z-index: 9999;
-        box-shadow: var(--shadow-md);
-      }
-
-      .toast.show {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-
       /* Responsive */
       @media (min-width: 1024px) {
         .add-post-container {
