@@ -34,14 +34,12 @@ const charCounter   = document.getElementById("charCounter");
 // ===================================
 //    Upload Zone — click 
 // ===================================
-uploadZone.addEventListener("click", () => imageInput.click());
-
-
-uploadZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  uploadZone.classList.remove("drag-over");
-  handleFiles(e.dataTransfer.files);
+uploadZone.addEventListener("click", (e) => {
+  if (e.target !== imageInput) {
+    imageInput.click();
+  }
 });
+
 
 imageInput.addEventListener("change", (e) => {
   handleFiles(e.target.files);
@@ -105,18 +103,14 @@ function renderCarousel() {
   if (currentSlide < 0) currentSlide = 0;
 
   // Build slides
-  carouselTrack.innerHTML = selectedImages
-    .map(
-      (src, i) => `
+  carouselTrack.innerHTML = selectedImages.map((src, i) => `
     <div class="carousel-slide">
       <img src="${src}" alt="Post image ${i + 1}" />
       <button class="remove-img-btn" onclick="removeImage(${i})" title="Remove photo">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-  `
-    )
-    .join("");
+  `).join("");
 
   // Move track to current slide
   carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -241,4 +235,5 @@ function submitPost() {
   setTimeout(() => {
     window.location.href = "feed.html";
   }, 1000);
+  
 }

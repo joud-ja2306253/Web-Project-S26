@@ -160,6 +160,152 @@ body {
   font-weight: bold;
 }
 
+/* ===========================
+   Profile Tabs
+   =========================== */
+.profile-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-secondary);
+  margin: var(--spacing-md) var(--spacing-md) 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--color-primary-dark);
+}
+
+.tab-btn.active {
+  color: var(--color-primary-dark);
+  border-bottom: 3px solid var(--color-primary-dark);
+}
+
+.post-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.post-carousel-track {
+  display: flex;
+}
+
+.post-carousel-slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+}
+.post-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.post-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.post-carousel-prev { left: 8px; }
+.post-carousel-next { right: 8px; }
+
+.post-carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.post-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  display: inline-block;
+}
+
+.post-dot.active {
+  background: white;
+}
+
+/* Profile grid layout */
+.profile-page #postsContainer {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .profile-page #postsContainer {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  
+}
+
+@media (min-width: 1024px) {
+  .profile-page #postsContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  
+}
+
+
+/* Post Images */
+.post-images {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  
+}
+
+.post-image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
 .labeling {
   color: var(--color-text-light);
   font-size: 0.8rem;
@@ -230,6 +376,8 @@ nav a:hover {
   color: var(--color-white);
   text-decoration: none;
 }
+
+
 
 /* edit profile sliding panel  */
 
@@ -1027,10 +1175,12 @@ form {
 }
 
 @media (min-width: 1024px) {
+
   .feed-container {
-    max-width: 1200px;
-    padding-left: 90px;
-    padding-right: 90px;
+    max-width: 600px;
+    padding-left: 0;
+    padding-right: 0;
+    
   }
 }
 

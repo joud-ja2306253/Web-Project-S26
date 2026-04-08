@@ -62,19 +62,14 @@ function searchUsers() {
   }
 
   // Display search results
-  resultsContainer.innerHTML = filteredUsers
-    .map(
-      (user) => `
+  resultsContainer.innerHTML = filteredUsers.map((user) => `
     <div class="search-result-item" data-user-id="${user.id}">
       <img src="${user.profilePic}" class="search-result-img" />
       <div class="search-result-info">
         <div class="search-result-name">${user.displayName}</div>
         <div class="search-result-username">@${user.username}</div>
       </div>
-    </div>
-  `,
-    )
-    .join("");
+    </div>`,).join("");
 
   resultsContainer.style.display = "block";
 
@@ -188,8 +183,7 @@ function loadPost() {
     container.innerHTML = `
       <div class="no-posts">
         <p>Posts will load here...</p>
-      </div>
-    `;
+      </div>`;
     return;
   }
 
@@ -213,7 +207,7 @@ function loadPost() {
       const name = postUser?.displayName;
 
       return `
-      <div class="post_R">
+      <div class="post_R" data-has-images="${post.images && post.images.length > 0 ? "true" : "false"}">
         <div class="post-header">
           <div class="post-user-info" onclick="viewUserProfile('${post.userId}')">
             <img src="${profilePic}" class="post-profile-pic" />
@@ -221,9 +215,7 @@ function loadPost() {
           </div>
           <span class="time">${post.time}</span>
 
-        ${
-          isPostOwner
-            ? `
+        ${isPostOwner? `
 
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
@@ -240,14 +232,33 @@ function loadPost() {
                 </button>
               </li>
             </ul>
-          </div>
-         `
-            : ""
-        }
+          </div>`: ""}
   
         </div>
 
         <div class="post-content">
+
+        ${post.images && post.images.length > 0? `
+        <div class="post-carousel" id="carousel-${post.id}">
+        <div class="post-carousel-track" id="track-${post.id}" style="display:flex; transition: transform 0.35s ease;">
+          ${post.images.map((src, i) => `
+            <div class="post-carousel-slide" style="min-width:100%; box-sizing:border-box;">
+              <img src="${src}" class="post-image" alt="post image ${i + 1}" style="width:100%; object-fit:cover;" />
+            </div>`,).join("")}
+        </div>
+        ${post.images.length > 1? `
+          <button class="post-carousel-arrow post-carousel-prev" onclick="slidePost('${post.id}', -1)">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="post-carousel-arrow post-carousel-next" onclick="slidePost('${post.id}', 1)">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+          <div class="post-carousel-dots" id="dots-${post.id}">
+            ${post.images.map((_, i) => `
+              <span class="post-dot ${i === 0 ? "active" : ""}" onclick="goToPostSlide('${post.id}', ${i}, ${post.images.length})"></span>`,).join("")}
+          </div>`: "" }
+        </div>`: ""}
+
           <div class="postEditContainer">
             <p id="postText-${post.id}">${post.comment}</p>
             <button id="savePost-${post.id}" class= "postSaveBtn" 
@@ -256,6 +267,7 @@ function loadPost() {
             Save
             </button>
           </div>
+
         </div>
 
         <div class="post-actions">
@@ -291,12 +303,32 @@ function loadPost() {
           </p>
         </div>
 
-        </div>
-    `;
-    })
-    .join("");
+        </div>`;}).join("");
 
   container.innerHTML = post_data;
+}
+
+const postSlideIndex = {};
+
+function slidePost(postId, direction) {
+  const track = document.getElementById(`track-${postId}`);
+  const dots = document.querySelectorAll(`#dots-${postId} .post-dot`);
+  const total = track.children.length;
+
+  if (!postSlideIndex[postId]) postSlideIndex[postId] = 0;
+  postSlideIndex[postId] = Math.max(0, Math.min(total - 1, postSlideIndex[postId] + direction));
+
+  track.style.transform = `translateX(-${postSlideIndex[postId] * 100}%)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === postSlideIndex[postId]));
+}
+
+function goToPostSlide(postId, index, total) {
+  const track = document.getElementById(`track-${postId}`);
+  const dots = document.querySelectorAll(`#dots-${postId} .post-dot`);
+
+  postSlideIndex[postId] = index;
+  track.style.transform = `translateX(-${index * 100}%)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === index));
 }
 
 //delete menu

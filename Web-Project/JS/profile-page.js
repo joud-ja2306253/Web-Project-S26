@@ -314,3 +314,36 @@ logoutBtn?.addEventListener("click", () => {
   localStorage.removeItem("profileUserId");
   window.location.href = "login-page.html";
 });
+
+// ===========================
+//        Profile Tabs
+// ===========================
+
+function initProfileTabs() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const tab = btn.dataset.tab;
+      const allPosts = document.querySelectorAll('#postsContainer .post_R');
+
+      allPosts.forEach(post => {
+        const hasImage = post.dataset.hasImages === 'true';
+
+        if (tab === 'photos') {
+          post.style.display = hasImage ? '' : 'none';
+        } else {
+          post.style.display = !hasImage ? '' : 'none';
+        }
+      });
+    });
+  });
+}
+
+// Run after posts are loaded
+// If feed.js renders posts synchronously, call it right away.
+// If it's async, wrap in a small delay:
+setTimeout(initProfileTabs, 300);
