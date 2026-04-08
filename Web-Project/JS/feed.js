@@ -62,19 +62,14 @@ function searchUsers() {
   }
 
   // Display search results
-  resultsContainer.innerHTML = filteredUsers
-    .map(
-      (user) => `
+  resultsContainer.innerHTML = filteredUsers.map((user) => `
     <div class="search-result-item" data-user-id="${user.id}">
       <img src="${user.profilePic}" class="search-result-img" />
       <div class="search-result-info">
         <div class="search-result-name">${user.displayName}</div>
         <div class="search-result-username">@${user.username}</div>
       </div>
-    </div>
-  `,
-    )
-    .join("");
+    </div>`,).join("");
 
   resultsContainer.style.display = "block";
 
@@ -172,8 +167,7 @@ function loadPost() {
     container.innerHTML = `
       <div class="no-posts">
         <p>Posts will load here...</p>
-      </div>
-    `;
+      </div>`;
     return;
   }
 
@@ -205,9 +199,7 @@ function loadPost() {
           </div>
           <span class="time">${post.time}</span>
 
-        ${
-          isPostOwner
-            ? `
+        ${isPostOwner? `
 
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
