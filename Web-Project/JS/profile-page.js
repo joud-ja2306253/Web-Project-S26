@@ -322,28 +322,46 @@ logoutBtn?.addEventListener("click", () => {
 function initProfileTabs() {
   const tabBtns = document.querySelectorAll('.tab-btn');
 
+  //filter posts based on active tab
+  function filterPostsByActiveTab() {
+    const activeBtn = document.querySelector('.tab-btn.active');
+    const tab = activeBtn ? activeBtn.dataset.tab : 'text'; 
+    const allPosts = document.querySelectorAll('#postsContainer .post_R');
+
+    allPosts.forEach(post => {
+      const hasImage = post.dataset.hasImages === 'true';
+
+      if (tab === 'photos') {
+        post.style.display = hasImage ? '' : 'none';
+      } else {
+        post.style.display = !hasImage ? '' : 'none';
+      }
+    });
+  }
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       tabBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
-      const tab = btn.dataset.tab;
-      const allPosts = document.querySelectorAll('#postsContainer .post_R');
-
-      allPosts.forEach(post => {
-        const hasImage = post.dataset.hasImages === 'true';
-
-        if (tab === 'photos') {
-          post.style.display = hasImage ? '' : 'none';
-        } else {
-          post.style.display = !hasImage ? '' : 'none';
-        }
-      });
+      
+      // Call the filter function
+      filterPostsByActiveTab();
     });
   });
+
+  //Filter posts on initial load (text iis active in html) 
+  filterPostsByActiveTab();
 }
 
 // Run after posts are loaded
 // If feed.js renders posts synchronously, call it right away.
 // If it's async, wrap in a small delay:
-setTimeout(initProfileTabs, 300);
+
+//setTimeout(initProfileTabs, 300);
+
+// Run immediately when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProfileTabs);
+} else {
+  initProfileTabs();
+}

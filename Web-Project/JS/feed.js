@@ -1,5 +1,3 @@
-// ==================== Joud GET CURRENT USER ====================
-
 // Get all users
 function getAllUsers() {
   return JSON.parse(localStorage.getItem("allUsers"));
@@ -272,12 +270,11 @@ function loadPost() {
 
         <div class="post-actions">
           <div class="post_actions">
-          
-            <button id="likeBtn-${post.id}" class="menu_btn" onclick="addlike(${post.id})">♡
-              
+            <button id="likeBtn-${post.id}" class="menu_btn ${userLike ? 'liked' : ''}" onclick="addlike(${post.id})">
+              ${userLike ? '♥' : '♡'}
             </button>
             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
-        </div>
+          </div>
 
 
 
@@ -421,6 +418,7 @@ function reloadLikeButtons() {
     }
   });
 }
+
 //add like ===================
 function addlike(postID) {
   let likes = getLikes();

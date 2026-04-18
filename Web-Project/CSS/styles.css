@@ -161,11 +161,10 @@ body {
 }
 
 /* ===========================
-   Profile Tabs
+          Profile Tabs
    =========================== */
 .profile-tabs {
   display: flex;
-  border-bottom: 2px solid var(--color-secondary);
   margin: var(--spacing-md) var(--spacing-md) 0;
   max-width: 700px;
   margin-left: auto;
@@ -178,7 +177,7 @@ body {
   background: none;
   border: none;
   border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
+  margin: 0 15px 8px 15px;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-text-light);
@@ -187,8 +186,8 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
-  transition: color 0.2s, border-color 0.2s;
-}
+  transition: color 0.3s, border-color 0.3s;
+ }
 
 .tab-btn:hover {
   color: var(--color-primary-dark);
