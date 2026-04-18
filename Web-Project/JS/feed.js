@@ -60,14 +60,18 @@ function searchUsers() {
   }
 
   // Display search results
-  resultsContainer.innerHTML = filteredUsers.map((user) => `
+  resultsContainer.innerHTML = filteredUsers
+    .map(
+      (user) => `
     <div class="search-result-item" data-user-id="${user.id}">
       <img src="${user.profilePic}" class="search-result-img" />
       <div class="search-result-info">
         <div class="search-result-name">${user.displayName}</div>
         <div class="search-result-username">@${user.username}</div>
       </div>
-    </div>`,).join("");
+    </div>`,
+    )
+    .join("");
 
   resultsContainer.style.display = "block";
 
@@ -213,7 +217,9 @@ function loadPost() {
           </div>
           <span class="time">${post.time}</span>
 
-        ${isPostOwner? `
+        ${
+          isPostOwner
+            ? `
 
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
@@ -230,21 +236,31 @@ function loadPost() {
                 </button>
               </li>
             </ul>
-          </div>`: ""}
+          </div>`
+            : ""
+        }
   
         </div>
 
         <div class="post-content">
 
-        ${post.images && post.images.length > 0? `
+        ${
+          post.images && post.images.length > 0
+            ? `
         <div class="post-carousel" id="carousel-${post.id}">
         <div class="post-carousel-track" id="track-${post.id}" style="display:flex; transition: transform 0.35s ease;">
-          ${post.images.map((src, i) => `
+          ${post.images
+            .map(
+              (src, i) => `
             <div class="post-carousel-slide" style="min-width:100%; box-sizing:border-box;">
               <img src="${src}" class="post-image" alt="post image ${i + 1}" style="width:100%; object-fit:cover;" />
-            </div>`,).join("")}
+            </div>`,
+            )
+            .join("")}
         </div>
-        ${post.images.length > 1? `
+        ${
+          post.images.length > 1
+            ? `
           <button class="post-carousel-arrow post-carousel-prev" onclick="slidePost('${post.id}', -1)">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
@@ -252,10 +268,18 @@ function loadPost() {
             <i class="fa-solid fa-chevron-right"></i>
           </button>
           <div class="post-carousel-dots" id="dots-${post.id}">
-            ${post.images.map((_, i) => `
-              <span class="post-dot ${i === 0 ? "active" : ""}" onclick="goToPostSlide('${post.id}', ${i}, ${post.images.length})"></span>`,).join("")}
-          </div>`: "" }
-        </div>`: ""}
+            ${post.images
+              .map(
+                (_, i) => `
+              <span class="post-dot ${i === 0 ? "active" : ""}" onclick="goToPostSlide('${post.id}', ${i}, ${post.images.length})"></span>`,
+              )
+              .join("")}
+          </div>`
+            : ""
+        }
+        </div>`
+            : ""
+        }
 
           <div class="postEditContainer">
             <p id="postText-${post.id}">${post.comment}</p>
@@ -270,8 +294,8 @@ function loadPost() {
 
         <div class="post-actions">
           <div class="post_actions">
-            <button id="likeBtn-${post.id}" class="menu_btn ${userLike ? 'liked' : ''}" onclick="addlike(${post.id})">
-              ${userLike ? '♥' : '♡'}
+            <button id="likeBtn-${post.id}" class="menu_btn ${userLike ? "liked" : ""}" onclick="addlike(${post.id})">
+              ${userLike ? "♥" : "♡"}
             </button>
             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
           </div>
@@ -300,7 +324,9 @@ function loadPost() {
           </p>
         </div>
 
-        </div>`;}).join("");
+        </div>`;
+    })
+    .join("");
 
   container.innerHTML = post_data;
 }
@@ -313,10 +339,15 @@ function slidePost(postId, direction) {
   const total = track.children.length;
 
   if (!postSlideIndex[postId]) postSlideIndex[postId] = 0;
-  postSlideIndex[postId] = Math.max(0, Math.min(total - 1, postSlideIndex[postId] + direction));
+  postSlideIndex[postId] = Math.max(
+    0,
+    Math.min(total - 1, postSlideIndex[postId] + direction),
+  );
 
   track.style.transform = `translateX(-${postSlideIndex[postId] * 100}%)`;
-  dots.forEach((d, i) => d.classList.toggle('active', i === postSlideIndex[postId]));
+  dots.forEach((d, i) =>
+    d.classList.toggle("active", i === postSlideIndex[postId]),
+  );
 }
 
 function goToPostSlide(postId, index, total) {
@@ -325,7 +356,7 @@ function goToPostSlide(postId, index, total) {
 
   postSlideIndex[postId] = index;
   track.style.transform = `translateX(-${index * 100}%)`;
-  dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  dots.forEach((d, i) => d.classList.toggle("active", i === index));
 }
 
 //delete menu
@@ -461,48 +492,43 @@ function addlike(postID) {
 function deletePost(id) {
   // Replace confirm() with custom alert
   showConfirm("Are you sure you want to delete this post?", () => {
-     if (!userConfirmed) {
-    return;
-  }
-  // const userConfirmed = confirm("Are you sure you want to delete this post?");
- 
+   
+    let posts = getPost();
+    let likes = getLikes();
 
-  let posts = getPost();
-  let likes = getLikes();
-
-  const postToDelete = posts.find((post) => post.id === id);
-  if (!postToDelete) {
-    console.error("Post not found");
-    return;
-  }
-
-  posts = posts.filter((post) => post.id !== id);
-  likes = likes.filter((like) => like.postID !== id);
-
-  // Update the user who created the post
-  const updatedUsers = allUsers.map((user) => {
-    if (user.id === postToDelete.userId) {
-      // Remove the post ID from this user's posts
-      return {
-        ...user,
-        posts: user.posts.filter((postId) => postId !== id),
-      };
+    const postToDelete = posts.find((post) => post.id === id);
+    if (!postToDelete) {
+      console.error("Post not found");
+      return;
     }
-    return user;
-  });
 
-  savePost(posts);
-  saveLikes(likes);
-  saveAllUsers(updatedUsers);
+    posts = posts.filter((post) => post.id !== id);
+    likes = likes.filter((like) => like.postID !== id);
 
-  loadPost();
-  reloadLikeButtons();
+    // Update the user who created the post
+    const updatedUsers = allUsers.map((user) => {
+      if (user.id === postToDelete.userId) {
+        // Remove the post ID from this user's posts
+        return {
+          ...user,
+          posts: user.posts.filter((postId) => postId !== id),
+        };
+      }
+      return user;
+    });
 
-  // update profile stats on profile page without reload
-  if (typeof updateProfileStats === "function") {
-    const currentUser = updatedUsers.find((u) => u.id === currentUserObj.id);
-    updateProfileStats(currentUser);
-  }
+    savePost(posts);
+    saveLikes(likes);
+    saveAllUsers(updatedUsers);
+
+    loadPost();
+    reloadLikeButtons();
+
+    // update profile stats on profile page without reload
+    if (typeof updateProfileStats === "function") {
+      const currentUser = updatedUsers.find((u) => u.id === currentUserObj.id);
+      updateProfileStats(currentUser);
+    }
   });
 }
 
@@ -633,7 +659,7 @@ function saveEdit(id, postID) {
 
   const updatedComment = commentText.textContent.trim();
   if (updatedComment === "") {
-    showAlert("Comment cannot be empty!", "warning")
+    showAlert("Comment cannot be empty!", "warning");
 
     // Roll back to original comment without reloading
     const comments = getComments();
@@ -683,7 +709,7 @@ function savePostEdit(id) {
   const updatedText = postText.textContent.trim();
 
   if (updatedText === "") {
-    showAlert("Post cannot be empty!", "warning")
+    showAlert("Post cannot be empty!", "warning");
     // roll back to original text from stored post
     const posts = getPost();
     const originalPost = posts.find((p) => p.id === id);
