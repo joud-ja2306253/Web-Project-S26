@@ -14,7 +14,7 @@
     />
   </head>
 
-  <body  class="profile-page">
+  <body class="profile-page">
     <header class="header"></header>
     <div class="container">
       <main class="main">
@@ -155,8 +155,16 @@
         </nav>
       </footer>
     </div>
+    <script src="../JS/alert.js"></script>
     <script src="../JS/feed.js"></script>
 
     <script src="../JS/profile-page.js"></script>
+    <div id="customAlert" class="alert-overlay">
+      <div class="alert-box">
+        <span id="alertIcon" class="alert-icon"></span>
+        <p id="alertMessage"></p>
+        <button onclick="closeAlert()">OK</button>
+      </div>
+    </div>
   </body>
 </html>

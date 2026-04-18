@@ -183,7 +183,8 @@ if (changePhotoInput) {
     const file = event.target.files[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        alert("Please select an image file!");
+        showAlert("Please select an image file!", "error")
+        
         changePhotoInput.value = "";
         return;
       }
@@ -203,22 +204,13 @@ if (changePhotoInput) {
 if (deletePhotoBtn) {
   deletePhotoBtn.addEventListener("click", () => {
     // Confirm with user before deleting
-    const confirmDelete = confirm(
-      "Remove your profile picture? It will be set to the default avatar.",
-    );
 
-    if (confirmDelete) {
-      // Set the preview to default image
-      if (editProfilePic) {
-        editProfilePic.src = DEFAULT_PROFILE_PIC;
-      }
+    showConfirm("Remove your profile picture? It will be set to the default avatar.", () => {
+  if (editProfilePic) editProfilePic.src = DEFAULT_PROFILE_PIC;
+  if (changePhotoInput) changePhotoInput.value = "";
+    });
 
-      // Clear the file input so it doesn't show a previously selected file
-      if (changePhotoInput) {
-        changePhotoInput.value = "";
-      }
-    }
-  });
+   });
 }
 
 function closePanel() {
@@ -241,14 +233,14 @@ saveBtn?.addEventListener("click", () => {
 
   //  Check if username is empty
   if (newUsername === "") {
-    alert("Username cannot be empty!");
+    showAlert("Username cannot be empty!", "warning");
     editUsername.value = originalUsername;
     return;
   }
 
   //  Check if display name is empty
   if (newDisplayName === "") {
-    alert("Display name cannot be empty!");
+    showAlert("Display name cannot be empty!", "warning")
     editDisplayName.value = originalDisplayName;
     return;
   }
@@ -262,7 +254,7 @@ saveBtn?.addEventListener("click", () => {
   );
 
   if (usernameExists) {
-    alert("Username already taken! Please choose another one.");
+    showAlert("Username already taken! Please choose another one.", "warning")
     editUsername.value = originalUsername;
     return;
   }

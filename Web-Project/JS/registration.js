@@ -78,8 +78,8 @@ form.addEventListener(
     allUsers.push(newUser);
     localStorage.setItem("allUsers", JSON.stringify(allUsers));
 
-    alert("Registration successful!");
-    window.location.href = "profile-page.html";
+    showAlert("Registration successful!", "success", 
+      () => { window.location.href = "profile-page.html"; })
   },
   // }
 );

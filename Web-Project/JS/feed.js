@@ -459,10 +459,13 @@ function addlike(postID) {
 
 //delete post
 function deletePost(id) {
-  const userConfirmed = confirm("Are you sure you want to delete this post?");
-  if (!userConfirmed) {
+  // Replace confirm() with custom alert
+  showConfirm("Are you sure you want to delete this post?", () => {
+     if (!userConfirmed) {
     return;
   }
+  // const userConfirmed = confirm("Are you sure you want to delete this post?");
+ 
 
   let posts = getPost();
   let likes = getLikes();
@@ -500,6 +503,7 @@ function deletePost(id) {
     const currentUser = updatedUsers.find((u) => u.id === currentUserObj.id);
     updateProfileStats(currentUser);
   }
+  });
 }
 
 const comments_Key = "comments";
@@ -629,7 +633,7 @@ function saveEdit(id, postID) {
 
   const updatedComment = commentText.textContent.trim();
   if (updatedComment === "") {
-    alert("Comment cannot be empty!");
+    showAlert("Comment cannot be empty!", "warning")
 
     // Roll back to original comment without reloading
     const comments = getComments();
@@ -679,7 +683,7 @@ function savePostEdit(id) {
   const updatedText = postText.textContent.trim();
 
   if (updatedText === "") {
-    alert("Post cannot be empty!");
+    showAlert("Post cannot be empty!", "warning")
     // roll back to original text from stored post
     const posts = getPost();
     const originalPost = posts.find((p) => p.id === id);

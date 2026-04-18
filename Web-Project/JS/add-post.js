@@ -61,7 +61,8 @@ function handleFiles(files) {
   const toProcess = imageFiles.slice(0, remaining);
 
   if (imageFiles.length > remaining) {
-    alter(`Max 10 photos per post. Added ${toProcess.length} photo(s).`);
+    showAlert("Max 10 photos per post.", "warning")
+    
   }
 
   let loaded = 0;
@@ -205,7 +206,7 @@ function submitPost() {
 
   // Must have at least a caption or at least one image
   if (!caption && selectedImages.length === 0) {
-    alter("Please add a photo or write a caption.");
+    showAlert("Please add a photo or write a caption.", "warning")
     return;
   }
 
@@ -230,10 +231,10 @@ function submitPost() {
     allUsersLatest[userIndex].posts.unshift(newPost.id);
     localStorage.setItem("allUsers", JSON.stringify(allUsersLatest));
   }
-  alert("Post shared!");
+  showAlert("Post shared!", "success",() => { window.location.href = "feed.html"; })
 
-  setTimeout(() => {
-    window.location.href = "feed.html";
-  }, 1000);
+  // setTimeout(() => {
+  //   window.location.href = "feed.html";
+  // }, 1000);
   
 }

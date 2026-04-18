@@ -20,7 +20,7 @@ form.addEventListener("submit", function (event) {
   if (!matchedUser) {
     message.textContent = "Login failed: No account found with this email!";
     message.style.color = "red";
-    alert("No account found with this email!");
+    showAlert("No account found with this email!", "error")
     return;
   }
 
@@ -28,11 +28,10 @@ form.addEventListener("submit", function (event) {
     //save current user id in the currentUser key if the email matches 1 from the allUsers
     localStorage.setItem("currentUser", matchedUser.id);
 
-    alert("Log in successful!");
-    window.location.href = "profile-page.html";
+    showAlert("Login successful!", "success", () => { window.location.href = "profile-page.html"; })
   } else {
     message.textContent = "Login failed: Invalid password!";
     message.style.color = "red";
-    alert("Invalid password!");
+    showAlert("Invalid password!", "error")
   }
 });

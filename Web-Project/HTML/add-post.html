@@ -17,38 +17,57 @@
   <body>
     <main>
       <div class="add-post-container">
-
         <!-- Header -->
         <div class="add-post-header">
-          <button class="back-btn" onclick="window.history.back()" title="Go back">
+          <button
+            class="back-btn"
+            onclick="window.history.back()"
+            title="Go back"
+          >
             <i class="fa-solid fa-angle-left"></i>
           </button>
           <h2>New Post</h2>
         </div>
 
         <!-- Image Upload Zone (shown when no images selected) -->
-        <div class="upload-zone" id="uploadZone"> 
+        <div class="upload-zone" id="uploadZone">
           <p><strong>Tap to add photos</strong></p>
         </div>
-        <input type="file" id="imageInput" accept="image/*" multiple style="display:none" />
-        
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          multiple
+          style="display: none"
+        />
+
         <!-- Image Preview Section -->
         <div class="preview-section" id="previewSection">
-
           <div class="carousel-wrapper" id="carouselWrapper">
             <div class="carousel-track" id="carouselTrack"></div>
             <span class="img-count-badge" id="imgCountBadge">1 / 1</span>
-            <button class="carousel-arrow prev hidden" id="prevArrow" onclick="changeSlide(-1)">
+            <button
+              class="carousel-arrow prev hidden"
+              id="prevArrow"
+              onclick="changeSlide(-1)"
+            >
               <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button class="carousel-arrow next hidden" id="nextArrow" onclick="changeSlide(1)">
+            <button
+              class="carousel-arrow next hidden"
+              id="nextArrow"
+              onclick="changeSlide(1)"
+            >
               <i class="fa-solid fa-chevron-right"></i>
             </button>
           </div>
 
           <div class="carousel-dots" id="carouselDots"></div>
 
-          <button class="add-more-btn" onclick="document.getElementById('imageInput').click()">
+          <button
+            class="add-more-btn"
+            onclick="document.getElementById('imageInput').click()"
+          >
             <i class="fa-solid fa-plus"></i> Add more photos
           </button>
         </div>
@@ -66,10 +85,8 @@
             Share Post
           </button>
         </div>
-
       </div>
     </main>
-
 
     <footer>
       <nav>
@@ -87,7 +104,14 @@
         </a>
       </nav>
     </footer>
-
+    <script src="../JS/alert.js"></script>
     <script src="../JS/add-post.js"></script>
+    <div id="customAlert" class="alert-overlay">
+      <div class="alert-box">
+        <span id="alertIcon" class="alert-icon"></span>
+        <p id="alertMessage"></p>
+        <button onclick="closeAlert()">OK</button>
+      </div>
+    </div>
   </body>
 </html>

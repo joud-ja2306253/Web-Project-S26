@@ -1504,3 +1504,60 @@ form {
     max-width: 750px;
   }
 }
+
+/* ===== Custom Alert ===== */
+.alert-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-overlay.show {
+  display: flex;
+}
+
+.alert-box {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+}
+
+.alert-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.alert-box p {
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+  color: var(--color-text);
+}
+
+
+.alert-box button {
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.alert-box.success button { background: #4caf50; }
+.alert-box.success button:hover { background: #388e3c; }
+.alert-box.error   button { background: #f44336; }
+.alert-box.error   button:hover { background: #c62828; }
+.alert-box.warning button { background: #ff9800; }
+.alert-box.warning button:hover { background: #e65100; }
+.alert-box.info    button { background: var(--color-primary); }
+.alert-box.info    button:hover { background: var(--color-primary-dark); }
+
