@@ -329,6 +329,11 @@ function loadPost() {
     .join("");
 
   container.innerHTML = post_data;
+
+  //call the tabs function only on profile page (where its defined)
+  if (typeof initProfileTabs === 'function') {
+    initProfileTabs();
+  }
 }
 
 const postSlideIndex = {};

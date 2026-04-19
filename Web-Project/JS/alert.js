@@ -25,7 +25,7 @@ function closeAlert() {
   const overlay = document.getElementById("customAlert");
   overlay.classList.remove("show");
 
-  // Run callback if one was set (e.g. redirect after success)
+  // Run callback if one was set (example: redirect after success)
   if (overlay._callback) {
     overlay._callback();
     overlay._callback = null;

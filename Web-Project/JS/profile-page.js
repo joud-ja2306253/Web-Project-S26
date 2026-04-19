@@ -183,8 +183,8 @@ if (changePhotoInput) {
     const file = event.target.files[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        showAlert("Please select an image file!", "error")
-        
+        showAlert("Please select an image file!", "error");
+
         changePhotoInput.value = "";
         return;
       }
@@ -205,12 +205,14 @@ if (deletePhotoBtn) {
   deletePhotoBtn.addEventListener("click", () => {
     // Confirm with user before deleting
 
-    showConfirm("Remove your profile picture? It will be set to the default avatar.", () => {
-  if (editProfilePic) editProfilePic.src = DEFAULT_PROFILE_PIC;
-  if (changePhotoInput) changePhotoInput.value = "";
-    });
-
-   });
+    showConfirm(
+      "Remove your profile picture? It will be set to the default avatar.",
+      () => {
+        if (editProfilePic) editProfilePic.src = DEFAULT_PROFILE_PIC;
+        if (changePhotoInput) changePhotoInput.value = "";
+      },
+    );
+  });
 }
 
 function closePanel() {
@@ -240,7 +242,7 @@ saveBtn?.addEventListener("click", () => {
 
   //  Check if display name is empty
   if (newDisplayName === "") {
-    showAlert("Display name cannot be empty!", "warning")
+    showAlert("Display name cannot be empty!", "warning");
     editDisplayName.value = originalDisplayName;
     return;
   }
@@ -254,7 +256,7 @@ saveBtn?.addEventListener("click", () => {
   );
 
   if (usernameExists) {
-    showAlert("Username already taken! Please choose another one.", "warning")
+    showAlert("Username already taken! Please choose another one.", "warning");
     editUsername.value = originalUsername;
     return;
   }
@@ -344,12 +346,6 @@ function initProfileTabs() {
   //Filter posts on initial load (text iis active in html) 
   filterPostsByActiveTab();
 }
-
-// Run after posts are loaded
-// If feed.js renders posts synchronously, call it right away.
-// If it's async, wrap in a small delay:
-
-//setTimeout(initProfileTabs, 300);
 
 // Run immediately when DOM is ready
 if (document.readyState === 'loading') {
