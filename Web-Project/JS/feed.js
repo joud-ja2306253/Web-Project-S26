@@ -331,7 +331,7 @@ function loadPost() {
   container.innerHTML = post_data;
 
   //call the tabs function only on profile page (where its defined)
-  if (typeof initProfileTabs === 'function') {
+  if (typeof initProfileTabs === "function") {
     initProfileTabs();
   }
 }
@@ -497,9 +497,9 @@ function addlike(postID) {
 function deletePost(id) {
   // Replace confirm() with custom alert
   showConfirm("Are you sure you want to delete this post?", () => {
-   
     let posts = getPost();
     let likes = getLikes();
+    let allUsers = getAllUsers(); //fresh data
 
     const postToDelete = posts.find((post) => post.id === id);
     if (!postToDelete) {
@@ -713,10 +713,18 @@ function savePostEdit(id) {
 
   const updatedText = postText.textContent.trim();
 
-  if (updatedText === "") {
+  //Get the specific post
+  const posts = getPost();
+  const post = posts.find((p) => p.id === id);
+  if (!post) return; // Safety check
+
+  //check if the post has images
+  const hasImages = post.images && post.images.length > 0;
+
+  if (updatedText === "" && !hasImages) {
     showAlert("Post cannot be empty!", "warning");
+
     // roll back to original text from stored post
-    const posts = getPost();
     const originalPost = posts.find((p) => p.id === id);
     if (originalPost) {
       postText.textContent = originalPost.comment;
@@ -726,7 +734,6 @@ function savePostEdit(id) {
     return;
   }
 
-  const posts = getPost();
   const index = posts.findIndex((p) => p.id === id);
 
   if (index !== -1) {
