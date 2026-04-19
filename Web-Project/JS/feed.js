@@ -13,6 +13,14 @@ function getCurrentUser() {
   return localStorage.getItem("currentUser");
 }
 
+//helper 
+
+function getFreshCurrentUserObject() {
+  const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+  const currentUserId = localStorage.getItem("currentUser");
+  return allUsers.find((user) => user.id === currentUserId);
+}
+
 //=============
 //  Get current logged-in user by id match to allUsers and return its object
 
@@ -147,66 +155,61 @@ function moveCursorToEnd(element) {
 }
 
 function loadPost() {
-  // FORCE FRESH DATA
+  // Always get fresh data from localStorage
   const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
-  const currentUserObj = allUsers.find(
-    (u) =>
-      u.id === (window.currentUserId || localStorage.getItem("currentUser")),
-  );
+  const currentUserObj = getFreshCurrentUserObject();
 
-  // Get current page name from URL
-  const path = window.location.pathname; // e.g., "/profile-page.html"
-  const page = path.split("/").pop(); // gets "profile-page.html" or "feed.html"
-
-  const allPosts = getPost();
-  let data;
-
-  if (page === "profile-page.html") {
-    // Show posts for the profile user, not current user
-    const profileUserId = localStorage.getItem("profileUserId");
-    let userIdToShow;
-
-    if (profileUserId) {
-      // Showing someone's profile (could be own or other)
-      userIdToShow = profileUserId;
-    } else {
-      // No profileUserId, fallback to current user
-      userIdToShow = currentUserObj.id;
-    }
-
-    data = allPosts.filter((post) => post.userId === userIdToShow);
-  } else {
-    // Home/feed page shows all posts
-    data = allPosts;
-  }
-
-  // Check if there are no posts
-  if (!data || data.length === 0) {
-    container.innerHTML = `
-      <div class="no-posts">
-        <p>Posts will load here...</p>
-      </div>`;
+  if (!currentUserObj) {
+    window.location.href = "login-page.html";
     return;
   }
 
-  //remaining load post normal code
+  // Get current page name from URL
+  const path = window.location.pathname;
+  const page = path.split("/").pop();
+
+  const allPosts = getPost();
+  let data = [];
+
+  if (page === "profile-page.html") {
+    // Show only posts of the profile being viewed
+    const profileUserId =
+      localStorage.getItem("profileUserId") || currentUserObj.id;
+
+    data = allPosts.filter((post) => post.userId === profileUserId);
+  } else {
+    // FEED PAGE:
+    // show current user's posts + followed users' posts only
+    const following = currentUserObj.following || [];
+    const allowedUserIds = [currentUserObj.id, ...following];
+
+    data = allPosts.filter((post) => allowedUserIds.includes(post.userId));
+  }
+
+  // Optional: newest first
+  data.sort((a, b) => b.id - a.id);
+
+  if (!data.length) {
+    container.innerHTML = `
+      <div class="no-posts">
+        <p>No posts yet from you or the accounts you follow.</p>
+      </div>`;
+    return;
+  }
 
   const likes = getLikes();
 
   const post_data = data
     .map((post) => {
-      // post is a variable that represents each post object
       const postLikes = likes.filter((like) => like.postID === post.id);
       const userLike = likes.find(
         (like) => like.postID === post.id && like.userID === currentUserObj.id,
       );
 
-      //add for verification of post actions
       const isPostOwner = post.userId === currentUserObj.id;
-      //Get the user who made this post
       const postUser = allUsers.find((u) => u.id === post.userId);
-      const profilePic = postUser?.profilePic;
-      const name = postUser?.displayName;
+      const profilePic = postUser?.profilePic || "";
+      const name = postUser?.displayName || "Unknown User";
 
       return `
       <div class="post_R" data-has-images="${post.images && post.images.length > 0 ? "true" : "false"}">
@@ -220,7 +223,6 @@ function loadPost() {
         ${
           isPostOwner
             ? `
-
           <div class="menu">
             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
                 
@@ -283,10 +285,10 @@ function loadPost() {
 
           <div class="postEditContainer">
             <p id="postText-${post.id}">${post.comment}</p>
-            <button id="savePost-${post.id}" class= "postSaveBtn" 
+            <button id="savePost-${post.id}" class="postSaveBtn" 
               onclick="savePostEdit(${post.id})" 
               style="display:none;">
-            Save
+              Save
             </button>
           </div>
 
@@ -300,41 +302,226 @@ function loadPost() {
             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
           </div>
 
-
-
-        <div>
-          <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
+          <div>
+            <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
+          </div>
         </div>
 
-        
-
-          </div>
-          <div class="commentBox" style="display: none" id="commentBox-${post.id}">
+        <div class="commentBox" style="display: none" id="commentBox-${post.id}">
           <div class="write-send-comment">
-          <input
-            class="enterComment"
-            id="enterComment-${post.id}"
-            type="text"
-            placeholder="write your comment"
-          />
-          <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
+            <input
+              class="enterComment"
+              id="enterComment-${post.id}"
+              type="text"
+              placeholder="write your comment"
+            />
+            <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
           </div>
           <p class="loadedCommnetText" id="loadedCommnetText-${post.id}">
             comments will load here
           </p>
         </div>
 
-        </div>`;
+      </div>`;
     })
     .join("");
 
   container.innerHTML = post_data;
 
-  //call the tabs function only on profile page (where its defined)
   if (typeof initProfileTabs === "function") {
     initProfileTabs();
   }
 }
+
+// function loadPost() {
+//   // FORCE FRESH DATA
+//   const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+//   const currentUserObj = allUsers.find(
+//     (u) =>
+//       u.id === (window.currentUserId || localStorage.getItem("currentUser")),
+//   );
+
+//   // Get current page name from URL
+//   const path = window.location.pathname; // e.g., "/profile-page.html"
+//   const page = path.split("/").pop(); // gets "profile-page.html" or "feed.html"
+
+//   const allPosts = getPost();
+//   let data;
+
+//   if (page === "profile-page.html") {
+//     // Show posts for the profile user, not current user
+//     const profileUserId = localStorage.getItem("profileUserId");
+//     let userIdToShow;
+
+//     if (profileUserId) {
+//       // Showing someone's profile (could be own or other)
+//       userIdToShow = profileUserId;
+//     } else {
+//       // No profileUserId, fallback to current user
+//       userIdToShow = currentUserObj.id;
+//     }
+
+//     data = allPosts.filter((post) => post.userId === userIdToShow);
+//   } else {
+//     // Home/feed page shows all posts
+//     data = allPosts;
+//   }
+
+//   // Check if there are no posts
+//   if (!data || data.length === 0) {
+//     container.innerHTML = `
+//       <div class="no-posts">
+//         <p>Posts will load here...</p>
+//       </div>`;
+//     return;
+//   }
+
+//   //remaining load post normal code
+
+//   const likes = getLikes();
+
+//   const post_data = data
+//     .map((post) => {
+//       // post is a variable that represents each post object
+//       const postLikes = likes.filter((like) => like.postID === post.id);
+//       const userLike = likes.find(
+//         (like) => like.postID === post.id && like.userID === currentUserObj.id,
+//       );
+
+//       //add for verification of post actions
+//       const isPostOwner = post.userId === currentUserObj.id;
+//       //Get the user who made this post
+//       const postUser = allUsers.find((u) => u.id === post.userId);
+//       const profilePic = postUser?.profilePic;
+//       const name = postUser?.displayName;
+
+//       return `
+//       <div class="post_R" data-has-images="${post.images && post.images.length > 0 ? "true" : "false"}">
+//         <div class="post-header">
+//           <div class="post-user-info" onclick="viewUserProfile('${post.userId}')">
+//             <img src="${profilePic}" class="post-profile-pic" />
+//             <h4>${name}</h4>
+//           </div>
+//           <span class="time">${post.time}</span>
+
+//         ${
+//           isPostOwner
+//             ? `
+
+//           <div class="menu">
+//             <button class="menu_btn" onclick="toggleMenu(${post.id})">⋮</button>
+                
+//             <ul id="menuList-${post.id}" style="display: none" class="menu_li">
+//               <li>
+//                 <button id="edit_post-${post.id}" class="menu_li" onclick="editPost(${post.id})">
+//                   Edit post
+//                 </button>
+//               </li>
+//               <li>
+//                 <button id="delte_post-${post.id}" class="menu_li" onclick="deletePost(${post.id})">
+//                   Delete post
+//                 </button>
+//               </li>
+//             </ul>
+//           </div>`
+//             : ""
+//         }
+  
+//         </div>
+
+//         <div class="post-content">
+
+//         ${
+//           post.images && post.images.length > 0
+//             ? `
+//         <div class="post-carousel" id="carousel-${post.id}">
+//         <div class="post-carousel-track" id="track-${post.id}" style="display:flex; transition: transform 0.35s ease;">
+//           ${post.images
+//             .map(
+//               (src, i) => `
+//             <div class="post-carousel-slide" style="min-width:100%; box-sizing:border-box;">
+//               <img src="${src}" class="post-image" alt="post image ${i + 1}" style="width:100%; object-fit:cover;" />
+//             </div>`,
+//             )
+//             .join("")}
+//         </div>
+//         ${
+//           post.images.length > 1
+//             ? `
+//           <button class="post-carousel-arrow post-carousel-prev" onclick="slidePost('${post.id}', -1)">
+//             <i class="fa-solid fa-chevron-left"></i>
+//           </button>
+//           <button class="post-carousel-arrow post-carousel-next" onclick="slidePost('${post.id}', 1)">
+//             <i class="fa-solid fa-chevron-right"></i>
+//           </button>
+//           <div class="post-carousel-dots" id="dots-${post.id}">
+//             ${post.images
+//               .map(
+//                 (_, i) => `
+//               <span class="post-dot ${i === 0 ? "active" : ""}" onclick="goToPostSlide('${post.id}', ${i}, ${post.images.length})"></span>`,
+//               )
+//               .join("")}
+//           </div>`
+//             : ""
+//         }
+//         </div>`
+//             : ""
+//         }
+
+//           <div class="postEditContainer">
+//             <p id="postText-${post.id}">${post.comment}</p>
+//             <button id="savePost-${post.id}" class= "postSaveBtn" 
+//               onclick="savePostEdit(${post.id})" 
+//               style="display:none;">
+//             Save
+//             </button>
+//           </div>
+
+//         </div>
+
+//         <div class="post-actions">
+//           <div class="post_actions">
+//             <button id="likeBtn-${post.id}" class="menu_btn ${userLike ? "liked" : ""}" onclick="addlike(${post.id})">
+//               ${userLike ? "♥" : "♡"}
+//             </button>
+//             <p id="likeCount-${post.id}">${postLikes.length} likes</p>
+//           </div>
+
+
+
+//         <div>
+//           <button id="commentBtn-${post.id}" class="menu_btn" onclick="toggleComments(${post.id})">🗨️</button>
+//         </div>
+
+        
+
+//           </div>
+//           <div class="commentBox" style="display: none" id="commentBox-${post.id}">
+//           <div class="write-send-comment">
+//           <input
+//             class="enterComment"
+//             id="enterComment-${post.id}"
+//             type="text"
+//             placeholder="write your comment"
+//           />
+//           <button class="sendComment" id="sendComment-${post.id}" onclick="addComment(${post.id})">Send</button>
+//           </div>
+//           <p class="loadedCommnetText" id="loadedCommnetText-${post.id}">
+//             comments will load here
+//           </p>
+//         </div>
+
+//         </div>`;
+//     })
+//     .join("");
+
+//   container.innerHTML = post_data;
+
+//   //call the tabs function only on profile page (where its defined)
+//   if (typeof initProfileTabs === "function") {
+//     initProfileTabs();
+//   }
+// }
 
 const postSlideIndex = {};
 
@@ -393,36 +580,74 @@ function toggleMenu(id) {
 //joud modified and added gaurd (the if statement)
 if (post_btn) {
   post_btn.addEventListener("click", addPost);
+  // randa 
   function addPost() {
-    const text = enter_post.value.trim();
+  const text = enter_post.value.trim();
 
-    if (text === "") {
-      return;
-    }
-
-    const posts = getPost();
-
-    const newPost = {
-      id: Date.now(),
-
-      // joud Create post with USER ID and USERNAME
-      userId: currentUserObj.id, //  Link to user who created it
-      comment: text,
-      time: new Date().toLocaleString(),
-    };
-
-    //joud modify new posts on top
-    posts.unshift(newPost);
-    savePost(posts);
-
-    // joud Update user's posts array
-    currentUserObj.posts.unshift(newPost.id);
-    saveAllUsers(allUsers);
-    // localStorage.setItem('allUsers', JSON.stringify(currentUserObj));
-
-    enter_post.value = "";
-    loadPost();
+  if (text === "") {
+    return;
   }
+
+  const currentUserObj = getFreshCurrentUserObject();
+  if (!currentUserObj) {
+    window.location.href = "login-page.html";
+    return;
+  }
+
+  const posts = getPost();
+  const allUsers = getAllUsers() || [];
+
+  const newPost = {
+    id: Date.now(),
+    userId: currentUserObj.id,
+    comment: text,
+    time: new Date().toLocaleString(),
+  };
+
+  posts.unshift(newPost);
+  savePost(posts);
+
+  const userIndex = allUsers.findIndex((u) => u.id === currentUserObj.id);
+  if (userIndex !== -1) {
+    if (!allUsers[userIndex].posts) allUsers[userIndex].posts = [];
+    allUsers[userIndex].posts.unshift(newPost.id);
+    saveAllUsers(allUsers);
+  }
+
+  enter_post.value = "";
+  loadPost();
+}
+
+  // function addPost() {
+  //   const text = enter_post.value.trim();
+
+  //   if (text === "") {
+  //     return;
+  //   }
+
+  //   const posts = getPost();
+
+  //   const newPost = {
+  //     id: Date.now(),
+
+  //     // joud Create post with USER ID and USERNAME
+  //     userId: currentUserObj.id, //  Link to user who created it
+  //     comment: text,
+  //     time: new Date().toLocaleString(),
+  //   };
+
+  //   //joud modify new posts on top
+  //   posts.unshift(newPost);
+  //   savePost(posts);
+
+  //   // joud Update user's posts array
+  //   currentUserObj.posts.unshift(newPost.id);
+  //   saveAllUsers(allUsers);
+  //   // localStorage.setItem('allUsers', JSON.stringify(currentUserObj));
+
+  //   enter_post.value = "";
+  //   loadPost();
+  // }
 }
 
 //like ===========================
@@ -435,9 +660,14 @@ function reloadLikeButtons() {
     const likeCount = document.getElementById(`likeCount-${post.id}`);
 
     const postLikes = likes.filter((like) => like.postID === post.id);
-    const userLike = likes.find(
-      (like) => like.postID === post.id && like.userID === currentUserObj.id,
-    );
+    // const userLike = likes.find(
+    //   (like) => like.postID === post.id && like.userID === currentUserObj.id,
+    // );
+
+    const currentUserObj = getFreshCurrentUserObject();
+const userLike = likes.find(
+  (like) => like.postID === post.id && like.userID === currentUserObj.id,
+);
 
     if (likeBtn) {
       if (userLike) {
@@ -457,6 +687,9 @@ function reloadLikeButtons() {
 
 //add like ===================
 function addlike(postID) {
+  const currentUserObj = getFreshCurrentUserObject();
+  if (!currentUserObj) return;
+
   let likes = getLikes();
   const likeBtn = document.getElementById(`likeBtn-${postID}`);
   const likeCount = document.getElementById(`likeCount-${postID}`);
@@ -468,10 +701,7 @@ function addlike(postID) {
   if (!existingLike) {
     const newLike = {
       id: Date.now(),
-
-      // joud modify
       userID: currentUserObj.id,
-
       postID: postID,
     };
 
@@ -492,6 +722,43 @@ function addlike(postID) {
   const postLikes = likes.filter((like) => like.postID === postID);
   likeCount.textContent = `${postLikes.length} likes`;
 }
+
+// function addlike(postID) {
+//   let likes = getLikes();
+//   const likeBtn = document.getElementById(`likeBtn-${postID}`);
+//   const likeCount = document.getElementById(`likeCount-${postID}`);
+
+//   const existingLike = likes.find(
+//     (like) => like.postID === postID && like.userID === currentUserObj.id,
+//   );
+
+//   if (!existingLike) {
+//     const newLike = {
+//       id: Date.now(),
+
+//       // joud modify
+//       userID: currentUserObj.id,
+
+//       postID: postID,
+//     };
+
+//     likes.push(newLike);
+//     likeBtn.classList.add("liked");
+//     likeBtn.textContent = "♥";
+//   } else {
+//     likes = likes.filter(
+//       (like) => !(like.postID === postID && like.userID === currentUserObj.id),
+//     );
+
+//     likeBtn.classList.remove("liked");
+//     likeBtn.textContent = "♡";
+//   }
+
+//   saveLikes(likes);
+
+//   const postLikes = likes.filter((like) => like.postID === postID);
+//   likeCount.textContent = `${postLikes.length} likes`;
+// }
 
 //delete post
 function deletePost(id) {
