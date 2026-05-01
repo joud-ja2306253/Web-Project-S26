@@ -32,7 +32,7 @@ export async function POST(request, { params }) {
     const newComment = await interactionRepo.addComment({
       comment: body.comment,
       postId: id,   // ✅ send as STRING
-      userId: 1
+      userId: body.userId
     });
 
     return NextResponse.json(newComment, { status: 201 });

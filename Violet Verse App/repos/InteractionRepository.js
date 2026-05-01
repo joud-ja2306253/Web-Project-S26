@@ -10,23 +10,37 @@ const prisma = new PrismaClient();
 class InteractionRepository {
 
   // GET comments
+  // async getComments(postId) {
+  //   return prisma.comment.findMany({
+  //     where: { postId: postId }
+  //   });
+  // }
   async getComments(postId) {
-    return prisma.comment.findMany({
-      where: { postId: postId }
-    });
-  }
+  return prisma.comment.findMany({
+    where: {
+      post: {
+        id: postId   // ✅ relation filter
+      }
+    }
+  });
+}
 
   // ADD comment
-  async addComment(data) {
-    return prisma.comment.create({
-      data: {
-        content: data.comment,
-        postId: data.postId,
-        userId: data.userId
-      }
-    });
-  }
+async addComment(data) {
+  return prisma.comment.create({
+    data: {
+      content: data.comment,
 
+      post: {
+        connect: { id: data.postId }   // ✅ FIX
+      },
+
+      author: {
+        connect: { id: data.userId }   // ✅ FIX
+      }
+    }
+  });
+}
   // DELETE comment
   async deleteComment(id) {
     try {
