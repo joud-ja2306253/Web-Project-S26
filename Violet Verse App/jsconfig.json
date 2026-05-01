@@ -10,7 +10,7 @@
         "./app/components/*"
       ],
       "@/repos/*": [
-        "./app/repos/*"
+        "./repos/*"
       ]
     }
   }

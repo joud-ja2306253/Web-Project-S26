@@ -2,7 +2,6 @@
 // repos/InteractionRepository.js
 
 // import the shared instance of prisma client
-// import prisma from '../../lib/prisma';
 import prisma from '../app/lib/prisma';
 
 class InteractionRepository {
