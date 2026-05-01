@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../repos/InteractionRepository";
-
+import interactionRepo from "../../../../../repo/InteractionRepository";
 export async function GET(request, { params }) {
   try {
     // the post id 
-    const { id } = await params;
+    const postId = Number(params.id);
 
-    // ❌ remove Number()
-    const comments = await interactionRepo.getComments(id);
+    const comments = await interactionRepo.getComments(postId);
 
     return NextResponse.json(comments);
 
@@ -18,10 +16,12 @@ export async function GET(request, { params }) {
 
 export async function POST(request, { params }) {
   try {
-    const { id } = await params;
+    const postId = Number(params.id);
 
+    // reads the data 
     const body = await request.json();
 
+    // in case there is no comment 
     if (!body.comment || !body.comment.trim()) {
       return NextResponse.json(
         { error: "comment is required" },
@@ -32,7 +32,9 @@ export async function POST(request, { params }) {
     const newComment = await interactionRepo.addComment({
       comment: body.comment,
       postId: id,   // ✅ send as STRING
-      userId: body.userId
+      userId: body.userId,
+      postId: postId,
+      userId: 1
     });
 
     return NextResponse.json(newComment, { status: 201 });
