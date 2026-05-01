@@ -10,20 +10,20 @@ const prisma = new PrismaClient();
 class InteractionRepository {
 
   // GET comments
-  // async getComments(postId) {
-  //   return prisma.comment.findMany({
-  //     where: { postId: postId }
-  //   });
-  // }
   async getComments(postId) {
-  return prisma.comment.findMany({
-    where: {
-      post: {
-        id: postId   // ✅ relation filter
-      }
-    }
-  });
-}
+    return prisma.comment.findMany({
+      where: { postId: postId }
+    });
+  }
+//   async getComments(postId) {
+//   return prisma.comment.findMany({
+//     where: {
+//       post: {
+//         id: postId   // ✅ relation filter
+//       }
+//     }
+//   });
+// }
 
   // ADD comment
 async addComment(data) {
