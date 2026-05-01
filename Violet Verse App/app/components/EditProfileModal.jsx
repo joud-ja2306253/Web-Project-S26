@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useUser } from '../AuthenticateUser';
 
 const DEFAULT_PIC = 'https://i.pinimg.com/1200x/28/16/5a/28165aaca2ee560b4a6b760765efe976.jpg';
 

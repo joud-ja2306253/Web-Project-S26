@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useUser } from '../AuthenticateUser';
 
 export default function FollowButton({ targetUserId, currentUserId, initialIsFollowing }) {
   const [isFollowing, setIsFollowing] = useState(initialIsFollowing);

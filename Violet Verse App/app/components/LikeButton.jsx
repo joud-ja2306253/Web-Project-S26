@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useUser } from '@/auth/AuthenticateUser';
+import { useUser } from '../AuthenticateUser';
 
 export default function LikeButton({ postId, initialLikes, initialLiked }) {
   const { user } = useUser();

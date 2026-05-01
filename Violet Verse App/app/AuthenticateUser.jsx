@@ -1,4 +1,3 @@
-// app/auth/AuthenticateUser.jsx
 'use client'
 import { createContext, useContext, useState, useEffect } from 'react'
 

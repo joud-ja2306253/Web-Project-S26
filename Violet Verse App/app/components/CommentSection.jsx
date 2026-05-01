@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useUser } from '@/auth/AuthenticateUser';
+import { useUser } from '../AuthenticateUser';
 
 export default function CommentSection({ postId, postAuthorId }) {
   const { user } = useUser();

@@ -7,7 +7,7 @@
         "./app/*"
       ],
       "@/components/*": [
-        "./app/client/components/*"
+        "./app/components/*"
       ],
       "@/repos/*": [
         "./app/repos/*"

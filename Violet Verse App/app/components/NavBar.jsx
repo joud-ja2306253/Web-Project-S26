@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useUser } from '@/auth/AuthenticateUser';
+import { useUser } from '../AuthenticateUser';
 
 export default function NavBar() {
   const { user, logout } = useUser();

@@ -1,9 +1,10 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useUser } from '@/auth/AuthenticateUser';
-import SearchBar from '@/components/SearchBar';
-import CreateTextPost from '@/components/CreateTextPost';
-import PostCard from '@/components/PostCard';
+import { useState, useEffect } from 'react';    
+import { useUser } from './AuthenticateUser';
+
+import SearchBar from './components/SearchBar';
+import CreateTextPost from './components/CreateTextPost';
+import PostCard from './components/PostCard';
 
 export default function HomePage() {
   const { user } = useUser();

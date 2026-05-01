@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { useUser } from '@/auth/AuthenticateUser';
+import { useUser } from '../AuthenticateUser';
 import LikeButton from '@/components/LikeButton';
 import CommentSection from '@/components/CommentSection';
 
