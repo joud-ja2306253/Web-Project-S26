@@ -1,3 +1,4 @@
+// app/components/SearchBar.jsx
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -9,6 +10,7 @@ export default function SearchBar() {
   const containerRef = useRef(null);
   const router = useRouter();
 
+  // Close results when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -19,8 +21,9 @@ export default function SearchBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // wait for user to search
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
+    const timer = setTimeout(() => {
       if (searchTerm.trim()) {
         performSearch();
       } else {
@@ -28,13 +31,14 @@ export default function SearchBar() {
         setShowResults(false);
       }
     }, 300);
-    return () => clearTimeout(delayDebounce);
+    return () => clearTimeout(timer);
   }, [searchTerm]);
 
   const performSearch = async () => {
     if (!searchTerm.trim()) return;
+    
     try {
-      const res = await fetch(`/server/api/users/search?q=${encodeURIComponent(searchTerm)}`);
+      const res = await fetch(`/api/users/search?q=${encodeURIComponent(searchTerm)}`);
       const data = await res.json();
       setResults(data);
       setShowResults(true);
@@ -46,13 +50,14 @@ export default function SearchBar() {
   const handleUserClick = (userId) => {
     setShowResults(false);
     setSearchTerm('');
-    router.push(`/client/users/${userId}`);
+    router.push(`/profile?userId=${userId}`);
   };
 
   return (
     <div className="search-input-row" ref={containerRef}>
       <input
         type="text"
+        id="searchInput"
         placeholder="Search users..."
         className="search-input"
         value={searchTerm}
@@ -62,13 +67,18 @@ export default function SearchBar() {
       <button className="search-btn" onClick={performSearch}>
         <i className="fa-solid fa-magnifying-glass"></i>
       </button>
+      
       {showResults && (
-        <div className="search-results">
+        <div id="searchResults" className="search-results" style={{ display: 'block' }}>
           {results.length === 0 ? (
             <div className="no-results">No users found</div>
           ) : (
-            results.map(user => (
-              <div key={user.id} className="search-result-item" onClick={() => handleUserClick(user.id)}>
+            results.map((user) => (
+              <div
+                key={user.id}
+                className="search-result-item"
+                onClick={() => handleUserClick(user.id)}
+              >
                 <img src={user.profilePic} className="search-result-img" alt="" />
                 <div className="search-result-info">
                   <div className="search-result-name">{user.displayName}</div>

@@ -1,12 +1,17 @@
+// app/components/CommentSection.jsx
 'use client';
 import { useState, useEffect } from 'react';
 import { useUser } from '../AuthenticateUser';
+import { useAlert } from '../hooks/useAlert';
 
 export default function CommentSection({ postId, postAuthorId }) {
   const { user } = useUser();
+  const { showAlert } = useAlert();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editContent, setEditContent] = useState('');
 
   useEffect(() => {
     fetchComments();
@@ -14,7 +19,7 @@ export default function CommentSection({ postId, postAuthorId }) {
 
   const fetchComments = async () => {
     try {
-      const res = await fetch(`/server/api/posts/${postId}/comments`);
+      const res = await fetch(`/api/posts/${postId}/comments`);
       const data = await res.json();
       setComments(data);
     } catch (error) {
@@ -25,12 +30,14 @@ export default function CommentSection({ postId, postAuthorId }) {
   };
 
   const addComment = async () => {
-    if (!newComment.trim()) return;
+    const text = newComment.trim();
+    if (!text) return;
+    
     try {
-      const res = await fetch(`/server/api/posts/${postId}/comments`, {
+      const res = await fetch(`/api/posts/${postId}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: newComment }),
+        body: JSON.stringify({ content: text }),
       });
       if (res.ok) {
         const added = await res.json();
@@ -39,20 +46,59 @@ export default function CommentSection({ postId, postAuthorId }) {
       }
     } catch (error) {
       console.error('Failed to add comment', error);
+      showAlert("Failed to add comment", "error");
     }
   };
 
   const deleteComment = async (commentId) => {
     try {
-      const res = await fetch(`/server/api/comments/${commentId}`, {
+      const res = await fetch(`/api/comments/${commentId}`, {
         method: 'DELETE',
       });
       if (res.ok) {
         setComments(comments.filter(c => c.id !== commentId));
+        showAlert("Comment deleted", "success");
       }
     } catch (error) {
       console.error('Failed to delete comment', error);
+      showAlert("Failed to delete comment", "error");
     }
+  };
+
+  const startEdit = (comment) => {
+    setEditingCommentId(comment.id);
+    setEditContent(comment.content);
+  };
+
+  const saveEdit = async (commentId) => {
+    if (!editContent.trim()) {
+      showAlert("Comment cannot be empty!", "warning");
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/api/comments/${commentId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: editContent }),
+      });
+      if (res.ok) {
+        setComments(comments.map(c => 
+          c.id === commentId ? { ...c, content: editContent } : c
+        ));
+        setEditingCommentId(null);
+        setEditContent('');
+        showAlert("Comment updated", "success");
+      }
+    } catch (error) {
+      console.error('Failed to edit comment', error);
+      showAlert("Failed to edit comment", "error");
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingCommentId(null);
+    setEditContent('');
   };
 
   if (loading) return <div>Loading comments...</div>;
@@ -62,32 +108,62 @@ export default function CommentSection({ postId, postAuthorId }) {
       <div className="write-send-comment">
         <input
           className="enterComment"
+          id={`enterComment-${postId}`}
           type="text"
           placeholder="write your comment"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         />
-        <button className="sendComment" onClick={addComment}>Send</button>
+        <button className="sendComment" id={`sendComment-${postId}`} onClick={addComment}>
+          Send
+        </button>
       </div>
-      <div className="comments-list">
-        {comments.length === 0 && <p className="no-comments">No comments yet. Be the first!</p>}
+      <p className="loadedCommnetText" id={`loadedCommnetText-${postId}`}>
         {comments.map(comment => (
           <div key={comment.id} className="comment_row">
-            <p className="box">
-              <strong>{comment.author?.displayName || comment.name}</strong>:{' '}
-              <span className="comment-text">{comment.content}</span>
-            </p>
-            {(user?.id === comment.authorId || user?.id === postAuthorId) && (
-              <button className="menu_btn CommentBtn" onClick={() => deleteComment(comment.id)}>Delete</button>
-            )}
-            {user?.id === comment.authorId && (
+            {editingCommentId === comment.id ? (
+              <div className="comment-edit">
+                <input
+                  type="text"
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  className="edit-comment-input"
+                />
+                <button onClick={() => saveEdit(comment.id)} className="save-edit-btn">Save</button>
+                <button onClick={cancelEdit} className="cancel-edit-btn">Cancel</button>
+              </div>
+            ) : (
               <>
-                <button className="menu_btn edit-save-btn" onClick={() => {/* edit logic */}}>Edit</button>
+                <p className="box" id={`comment-${comment.id}`}>
+                  <strong>{comment.author?.displayName || comment.name}</strong>: 
+                  <span className="comment-text" id={`commentText-${comment.id}`}>
+                    {comment.content}
+                  </span>
+                </p>
+                {(user?.id === comment.authorId || user?.id === postAuthorId) && (
+                  <button 
+                    className="menu_btn CommentBtn" 
+                    onClick={() => deleteComment(comment.id)}
+                  >
+                    Delete
+                  </button>
+                )}
+                {user?.id === comment.authorId && (
+                  <>
+                    <button 
+                      className="menu_btn CommentBtn edit-save-btn" 
+                      id={`editBtn-${comment.id}`}
+                      onClick={() => startEdit(comment)}
+                    >
+                      Edit
+                    </button>
+                  </>
+                )}
               </>
             )}
           </div>
         ))}
-      </div>
+      </p>
     </div>
   );
 }
