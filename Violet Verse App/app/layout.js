@@ -1,7 +1,6 @@
-// app/layout.js
-import { AuthenticateUserProvider } from "./client/auth/AuthenticateUser";
-import NavBar from "./client/components/NavBar";
-import "./globals.css";
+import { AuthenticateUserProvider } from '@/auth/AuthenticateUser';
+import NavBar from '@/components/NavBar';
+import '@/globals.css';
 
 export default function RootLayout({ children }) {
   return (
