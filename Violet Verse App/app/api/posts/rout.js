@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createPost, getFeedPosts } from "@/repos/InteractionRepository";
+import { createPost, getFeedPosts } from "../../../repos/InteractionRepository";
 
 export async function GET(request) {
   try {
