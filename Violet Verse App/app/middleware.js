@@ -1,4 +1,6 @@
 // app/middleware.js
+import { verifyJwt } from './lib/jwt'
+
 console.log("🔥🔥🔥 MIDDLEWARE FILE IS LOADED - IF YOU SEE THIS, THE FILE LOADS 🔥🔥🔥");
 
 import { NextResponse } from "next/server";

@@ -1,7 +1,7 @@
 // app/api/auth/login/route.js
 import prisma from '../../../lib/prisma'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import { signJwt } from '../../../lib/jwt'  
 import { cookies } from 'next/headers'
 
 export async function POST(request) {
@@ -25,11 +25,7 @@ export async function POST(request) {
   }
 
   // Create JWT token
-  const token = jwt.sign(
-    { id: user.id, email: user.email, displayName: user.displayName },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: '7d' }
-  )
+ const token = signJwt({ id: user.id, email: user.email, displayName: user.displayName })
 
   // Set cookie
   cookies().set('token', token, {
