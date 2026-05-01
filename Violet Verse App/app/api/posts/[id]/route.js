@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { getPostById, updatePost, deletePost } from "@/repos/InteractionRepository";
+import { getPostById, updatePost, deletePost } from "../../../../repos/InteractionRepository";
 
 function formatPost(post) {
   if (!post) return null;
+
   return {
     ...post,
     userId: post.authorId,
@@ -12,45 +13,39 @@ function formatPost(post) {
   };
 }
 
+// ================= GET POST =================
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
+
     const post = await getPostById(id);
 
-    if (!post) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
-
     return NextResponse.json(formatPost(post));
+
   } catch (error) {
+    console.log("GET POST ERROR:", error);
+
     return NextResponse.json(
-      { error: error.message || "Failed to get post" },
+      { error: error.message || "Failed to load post" },
       { status: 500 }
     );
   }
 }
 
+
+// ================= UPDATE POST =================
 export async function PUT(request, { params }) {
   try {
     const { id } = await params;
     const body = await request.json();
-    const content = body.content?.trim() || "";
 
-    const existingPost = await getPostById(id);
-    if (!existingPost) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
+    const updatedPost = await updatePost(id, body.content);
 
-    if (!content && existingPost.images.length === 0) {
-      return NextResponse.json(
-        { error: "Post cannot be empty" },
-        { status: 400 }
-      );
-    }
+    return NextResponse.json(formatPost(updatedPost));
 
-    const updatedPost = await updatePost(id, content);
-    return NextResponse.json(updatedPost);
   } catch (error) {
+    console.log("UPDATE POST ERROR:", error);
+
     return NextResponse.json(
       { error: error.message || "Failed to update post" },
       { status: 500 }
@@ -58,18 +53,19 @@ export async function PUT(request, { params }) {
   }
 }
 
+
+// ================= DELETE POST =================
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
 
-    const existingPost = await getPostById(id);
-    if (!existingPost) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
-
     await deletePost(id);
-    return NextResponse.json({ message: "Post deleted" });
+
+    return NextResponse.json({ message: "Post deleted successfully" });
+
   } catch (error) {
+    console.log("DELETE POST ERROR:", error);
+
     return NextResponse.json(
       { error: error.message || "Failed to delete post" },
       { status: 500 }
