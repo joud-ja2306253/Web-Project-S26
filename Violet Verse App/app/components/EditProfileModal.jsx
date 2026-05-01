@@ -1,47 +1,94 @@
-'use client';
-import { useState } from 'react';
-import { useUser } from '../AuthenticateUser';
+// app/components/EditProfileModal.jsx
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "../AuthenticateUser";
+import { useAlert } from "../hooks/useAlert";
 
-const DEFAULT_PIC = 'https://i.pinimg.com/1200x/28/16/5a/28165aaca2ee560b4a6b760765efe976.jpg';
+const DEFAULT_PROFILE_PIC =
+  "https://i.pinimg.com/1200x/28/16/5a/28165aaca2ee560b4a6b760765efe976.jpg";
 
 export default function EditProfileModal({ user, onSave, onClose }) {
-  const [form, setForm] = useState({
-    username: user.username || '',
-    displayName: user.displayName || '',
-    bio: user.bio || '',
-    profilePic: user.profilePic || DEFAULT_PIC,
+  const { updateUser, logout } = useUser();
+  const { showAlert, showConfirm } = useAlert();
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    username: user.username || "",
+    displayName: user.displayName || "",
+    bio: user.bio || "",
+    profilePic: user.profilePic || DEFAULT_PROFILE_PIC,
   });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
-      reader.onload = (ev) => setForm({ ...form, profilePic: ev.target.result });
+      reader.onload = (event) => {
+        setFormData({ ...formData, profilePic: event.target.result });
+      };
       reader.readAsDataURL(file);
     } else {
-      alert('Please select an image file');
+      showAlert("Please select an image file!", "error");
     }
   };
 
-  const deletePhoto = () => {
-    if (confirm('Remove profile picture? It will be set to default.')) {
-      setForm({ ...form, profilePic: DEFAULT_PIC });
-    }
+  const handleDeletePhoto = () => {
+    showConfirm(
+      "Remove your profile picture? It will be set to the default avatar.",
+      () => {
+        setFormData({ ...formData, profilePic: DEFAULT_PROFILE_PIC });
+      },
+    );
   };
 
   const handleSubmit = async () => {
-    if (!form.username.trim() || !form.displayName.trim()) {
-      alert('Username and display name cannot be empty');
+    if (!formData.username.trim() || !formData.displayName.trim()) {
+      showAlert("Username and display name cannot be empty!", "warning");
       return;
     }
+
     setLoading(true);
-    await onSave(form);
-    setLoading(false);
+    try {
+      const res = await fetch(`/api/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        const updatedUser = await res.json();
+        onSave(updatedUser);
+        if (updateUser) updateUser(updatedUser);
+        showAlert("Profile updated!", "success");
+        onClose();
+      } else {
+        const error = await res.json();
+        if (error.error === "Username already taken") {
+          showAlert(
+            "Username already taken! Please choose another one.",
+            "warning",
+          );
+        } else {
+          showAlert(error.error || "Failed to update profile", "error");
+        }
+      }
+    } catch (error) {
+      showAlert("Failed to update profile", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    showConfirm("Are you sure you want to logout?", async () => {
+      await logout(); 
+      router.push("/login");
+    });
   };
 
   return (
@@ -49,31 +96,88 @@ export default function EditProfileModal({ user, onSave, onClose }) {
       <div id="overlay" className="active" onClick={onClose}></div>
       <div id="settingsPanel" className="active">
         <div className="editProfileTop">
-          <button onClick={onClose}><i className="fa-solid fa-angle-left"></i></button>
+          <button onClick={onClose}>
+            <i className="fa-solid fa-angle-left"></i>
+          </button>
           <p>Edit Profile</p>
         </div>
+
         <div className="editProfilePicContainer">
-          <img className="editProfilePic" src={form.profilePic} alt="profile" />
+          <img
+            className="editProfilePic"
+            src={formData.profilePic}
+            alt="profile picture"
+          />
           <div className="photoActions">
-            <label htmlFor="changePhoto" className="changePhoto">Change Photo</label>
-            <input type="file" id="changePhoto" hidden accept="image/*" onChange={handlePhotoChange} />
-            <label className="deletePhotoBtn" onClick={deletePhoto}>Delete Photo</label>
+            <label htmlFor="changePhoto" className="changePhoto">
+              Change Photo
+            </label>
+            <input
+              type="file"
+              id="changePhoto"
+              hidden
+              accept="image/*"
+              onChange={handlePhotoChange}
+            />
+            <label
+              id="deletePhotoBtn"
+              className="deletePhotoBtn"
+              onClick={handleDeletePhoto}
+            >
+              Delete Photo
+            </label>
           </div>
         </div>
+
         <div className="editRow">
-          <label>Username</label>
-          <input name="username" className="editInput" value={form.username} onChange={handleChange} />
+          <label htmlFor="editUsername">Username</label>
+          <input
+            id="editUsername"
+            name="username"
+            type="text"
+            className="editInput"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Username"
+          />
         </div>
+
         <div className="editRow">
-          <label>Name</label>
-          <input name="displayName" className="editInput" value={form.displayName} onChange={handleChange} />
+          <label htmlFor="editDisplayName">Name</label>
+          <input
+            id="editDisplayName"
+            name="displayName"
+            type="text"
+            className="editInput"
+            value={formData.displayName}
+            onChange={handleChange}
+            placeholder="Display Name"
+          />
         </div>
+
         <div className="editRow">
-          <label>Bio</label>
-          <input name="bio" className="editInput" placeholder="Your bio should go here" value={form.bio} onChange={handleChange} />
+          <label htmlFor="editBio">Bio</label>
+          <input
+            id="editBio"
+            name="bio"
+            type="text"
+            className="editInput"
+            placeholder="Your bio should go here"
+            value={formData.bio}
+            onChange={handleChange}
+          />
         </div>
+
         <div className="saveBtnWrapper">
-          <button onClick={handleSubmit} disabled={loading}>{loading ? 'Saving...' : 'Save'}</button>
+          <button id="saveBtn" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Saving..." : "Save"}
+          </button>
+        </div>
+
+        <div className="logoutBtn">
+          <button id="logoutBtn" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </div>
     </>
