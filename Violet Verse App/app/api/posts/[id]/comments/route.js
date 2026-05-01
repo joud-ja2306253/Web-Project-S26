@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+
+import interactionRepo from "../../../../../repos/InteractionRepository";
+
 import { getCommentsByPost, createComment } from "@/repos/InteractionRepository";
 
 export async function GET(request, { params }) {

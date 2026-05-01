@@ -11,7 +11,7 @@ export default function FollowButton({ targetUserId, currentUserId, initialIsFol
     setLoading(true);
     const method = isFollowing ? 'DELETE' : 'POST';
     try {
-      const res = await fetch(`/server/api/users/${targetUserId}/follow`, { method });
+      const res = await fetch(`/api/users/${targetUserId}/follow`, { method });
       if (res.ok) setIsFollowing(!isFollowing);
     } catch (error) {
       console.error('Follow action failed', error);
