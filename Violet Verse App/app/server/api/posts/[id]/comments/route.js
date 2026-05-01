@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../repo/InteractionRepository";
+import interactionRepo from "../../../../../repos/InteractionRepository";
 export async function GET(request, { params }) {
   try {
     // the post id 
