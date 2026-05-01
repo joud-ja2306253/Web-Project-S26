@@ -6,6 +6,8 @@ import SearchBar from './components/SearchBar';
 import CreateTextPost from './components/CreateTextPost';
 import PostCard from './components/PostCard';
 
+//feed.html!
+
 export default function HomePage() {
   const { user } = useUser();
   const [posts, setPosts] = useState([]);
