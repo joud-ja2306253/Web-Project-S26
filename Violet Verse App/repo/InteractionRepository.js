@@ -1,5 +1,5 @@
 
-// import interactionRepo from "@/repos/InteractionRepository";
+import interactionRepo from "@/repos/InteractionRepository";
 // repo/InteractionRepository.js
 
 import { PrismaClient } from "@prisma/client";

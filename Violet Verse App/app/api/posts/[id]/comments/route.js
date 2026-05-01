@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../repo/InteractionRepository";
+import interactionRepo from "../../../../../repos/InteractionRepository";
+
 export async function GET(request, { params }) {
   try {
     // the post id 
-    const postId = Number(params.id);
+    const { id } = await params;
+    const postId = Number(id);
 
     const comments = await interactionRepo.getComments(postId);
 
@@ -16,7 +18,9 @@ export async function GET(request, { params }) {
 
 export async function POST(request, { params }) {
   try {
-    const postId = Number(params.id);
+    // FIXED HERE ✅
+    const { id } = await params;
+    const postId = Number(id);
 
     // reads the data 
     const body = await request.json();

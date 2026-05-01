@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../../repo/InteractionRepository";
+import interactionRepo from "../../../../../../repos/InteractionRepository";
 export async function PUT(request, { params }) {
     const { commentId } = await params;
     const body = await request.json();
