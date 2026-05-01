@@ -1,18 +1,23 @@
 import { NextResponse } from "next/server";
 import interactionRepo from "@/repos/InteractionRepository";
 
+
+
 export async function PUT(request, { params }) {
     const { commentId } = await params;
     const body = await request.json();
 
     if (!body.comment || !body.comment.trim()) {
         return NextResponse.json(
-    { error: "Comment is required" }, { status: 400 }
+            { error: "Comment is required" },
+            { status: 400 }
         );
     }
 
     const updated = await interactionRepo.updateComment(commentId, {
-        comment: body.comment});
+        comment: body.comment
+    });
+
     if (!updated) {
         return NextResponse.json(
             { error: "Comment not found" },
@@ -22,6 +27,8 @@ export async function PUT(request, { params }) {
 
     return NextResponse.json(updated);
 }
+
+
 
 export async function DELETE(request, { params }) {
     const { commentId } = await params;
@@ -38,8 +45,7 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ message: "Comment deleted" });
 }
 
-import { NextResponse } from "next/server";
-import interactionRepo from "@/repos/InteractionRepository";
+
 
 export async function GET(request, { params }) {
     const { commentId } = await params;
