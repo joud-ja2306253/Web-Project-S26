@@ -1,13 +1,12 @@
-// app/page.jsx
-"use client";
-import { useState, useEffect } from "react";
-import { useAuth } from "./contexts/AuthContext";
-import SearchBar from "./client/components/SearchBar";
-import CreateTextPost from "./client/components/CreateTextPost";
-import PostCard from "./client/components/PostCard";
+'use client';
+import { useState, useEffect } from 'react';
+import { useUser } from '@/auth/AuthenticateUser';
+import SearchBar from '@/components/SearchBar';
+import CreateTextPost from '@/components/CreateTextPost';
+import PostCard from '@/components/PostCard';
 
 export default function HomePage() {
-  const { user } = useAuth();
+  const { user } = useUser();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,46 +15,32 @@ export default function HomePage() {
   }, []);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/posts/feed");
-    const data = await response.json();
-    setPosts(data);
-    setLoading(false);
+    try {
+      const res = await fetch('/server/api/posts/feed');
+      const data = await res.json();
+      setPosts(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handlePostCreated = () => {
-    fetchPosts();
-  };
+  const handlePostCreated = () => fetchPosts();
+  const handlePostDeleted = (id) => setPosts(prev => prev.filter(p => p.id !== id));
 
-  const handlePostDeleted = (deletedPostId) => {
-    setPosts(posts.filter((post) => post.id !== deletedPostId));
-  };
-
-  if (loading) {
-    return <div className="loading">Loading posts...</div>;
-  }
+  if (loading) return <div>Loading posts...</div>;
 
   return (
     <section id="feed-page">
-      <SearchBar currentUserId={user?.id} />
-
+      <SearchBar />
       <div className="feed-container">
         <CreateTextPost onPostCreated={handlePostCreated} />
-
         <div id="postsContainer">
-          {posts.length === 0 ? (
-            <div className="no-posts">
-              <p>No posts yet from you or the accounts you follow.</p>
-            </div>
-          ) : (
-            posts.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                currentUserId={user?.id}
-                onPostDeleted={handlePostDeleted}
-              />
-            ))
-          )}
+          {posts.length === 0 && <p>No posts yet.</p>}
+          {posts.map(post => (
+            <PostCard key={post.id} post={post} onPostDeleted={handlePostDeleted} />
+          ))}
         </div>
       </div>
     </section>
