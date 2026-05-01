@@ -1,0 +1,57 @@
+[
+    {
+        "id": "follow_1",
+        "followerId": "user_1",
+        "followingId": "user_2"
+    },
+    {
+        "id": "follow_2",
+        "followerId": "user_1",
+        "followingId": "user_3"
+    },
+    {
+        "id": "follow_3",
+        "followerId": "user_1",
+        "followingId": "user_4"
+    },
+    {
+        "id": "follow_4",
+        "followerId": "user_2",
+        "followingId": "user_1"
+    },
+    {
+        "id": "follow_5",
+        "followerId": "user_2",
+        "followingId": "user_4"
+    },
+    {
+        "id": "follow_6",
+        "followerId": "user_3",
+        "followingId": "user_1"
+    },
+    {
+        "id": "follow_7",
+        "followerId": "user_3",
+        "followingId": "user_2"
+    },
+    {
+        "id": "follow_8",
+        "followerId": "user_4",
+        "followingId": "user_3"
+    },
+    {
+        "id": "follow_9",
+        "followerId": "user_4",
+        "followingId": "user_5"
+    },
+    {
+        "id": "follow_10",
+        "followerId": "user_5",
+        "followingId": "user_1"
+    },
+    {
+        "id": "follow_11",
+        "followerId": "user_5",
+        "followingId": "user_4"
+    }
+]

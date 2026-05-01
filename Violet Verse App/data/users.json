@@ -1,0 +1,47 @@
+[
+    {
+        "id": "user_1",
+        "username": "john_doe",
+        "email": "john@example.com",
+        "password": "$2b$10$hashedpassword1",
+        "displayName": "John Doe",
+        "bio": "Just a regular guy who loves coding and coffee.",
+        "profilePic": "https://i.pravatar.cc/150?img=1"
+    },
+    {
+        "id": "user_2",
+        "username": "jane_smith",
+        "email": "jane@example.com",
+        "password": "$2b$10$hashedpassword2",
+        "displayName": "Jane Smith",
+        "bio": "Designer by day, gamer by night 🎮",
+        "profilePic": "https://i.pravatar.cc/150?img=2"
+    },
+    {
+        "id": "user_3",
+        "username": "alex_dev",
+        "email": "alex@example.com",
+        "password": "$2b$10$hashedpassword3",
+        "displayName": "Alex Dev",
+        "bio": "Full-stack developer. I build things for the web.",
+        "profilePic": "https://i.pravatar.cc/150?img=3"
+    },
+    {
+        "id": "user_4",
+        "username": "sara_jones",
+        "email": "sara@example.com",
+        "password": "$2b$10$hashedpassword4",
+        "displayName": "Sara Jones",
+        "bio": "Travel lover 🌍 | Photographer | Foodie",
+        "profilePic": "https://i.pravatar.cc/150?img=4"
+    },
+    {
+        "id": "user_5",
+        "username": "mike_t",
+        "email": "mike@example.com",
+        "password": "$2b$10$hashedpassword5",
+        "displayName": "Mike T",
+        "bio": "",
+        "profilePic": "https://i.pinimg.com/1200x/28/16/5a/28165aaca2ee560b4a6b760765efe976.jpg"
+    }
+]
