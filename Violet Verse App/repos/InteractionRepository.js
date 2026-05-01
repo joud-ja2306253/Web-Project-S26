@@ -12,7 +12,7 @@ class InteractionRepository {
   // GET comments
   async getComments(postId) {
     return prisma.comment.findMany({
-      where: { postId: Number(postId) }
+      where: { postId: postId }
     });
   }
 
@@ -21,8 +21,8 @@ class InteractionRepository {
     return prisma.comment.create({
       data: {
         content: data.comment,
-        postId: Number(data.postId),
-        userId: Number(data.userId)
+        postId: data.postId,
+        userId: data.userId
       }
     });
   }
@@ -31,7 +31,7 @@ class InteractionRepository {
   async deleteComment(id) {
     try {
       await prisma.comment.delete({
-        where: { id: Number(id) }
+        where: { id: id }
       });
       return true;
     } catch {
@@ -42,7 +42,7 @@ class InteractionRepository {
   // UPDATE comment
   async updateComment(id, data) {
     return prisma.comment.update({
-      where: { id: Number(id) },
+      where: { id: id },
       data: {
         content: data.comment
       }

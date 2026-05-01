@@ -5,9 +5,9 @@ export async function GET(request, { params }) {
   try {
     // the post id 
     const { id } = await params;
-    const postId = Number(id);
 
-    const comments = await interactionRepo.getComments(postId);
+    // ❌ remove Number()
+    const comments = await interactionRepo.getComments(id);
 
     return NextResponse.json(comments);
 
@@ -18,14 +18,10 @@ export async function GET(request, { params }) {
 
 export async function POST(request, { params }) {
   try {
-    // FIXED HERE ✅
     const { id } = await params;
-    const postId = Number(id);
 
-    // reads the data 
     const body = await request.json();
 
-    // in case there is no comment 
     if (!body.comment || !body.comment.trim()) {
       return NextResponse.json(
         { error: "comment is required" },
@@ -35,7 +31,7 @@ export async function POST(request, { params }) {
 
     const newComment = await interactionRepo.addComment({
       comment: body.comment,
-      postId: postId,
+      postId: id,   // ✅ send as STRING
       userId: 1
     });
 
