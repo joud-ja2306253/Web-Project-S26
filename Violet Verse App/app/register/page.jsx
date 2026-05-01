@@ -1,56 +1,70 @@
 // app/client/auth/register/page.jsx
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useUser } from '../AuthenticateUser'
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useUser } from "../AuthenticateUser";
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const { register } = useUser()
+  const router = useRouter();
+  const { register } = useUser();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const { firstName, lastName, username, email, password, confirmPassword } = formData
+    const { firstName, lastName, username, email, password, confirmPassword } =
+      formData;
 
-    if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
-      setError('Please fill all fields')
-      setLoading(false)
-      return
+    if (
+      !firstName ||
+      !lastName ||
+      !username ||
+      !email ||
+      !password ||
+      !confirmPassword
+    ) {
+      setError("Please fill all fields");
+      setLoading(false);
+      return;
     }
 
     if (password !== confirmPassword) {
-      setError('Password does not match!')
-      setLoading(false)
-      return
+      setError("Password does not match!");
+      setLoading(false);
+      return;
     }
 
-    const result = await register({ firstName, lastName, username, email, password })
-    
+    const result = await register({
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+    });
+
     if (result.success) {
-      router.push('/')
+      router.push("/");
     } else {
-      setError(result.error)
+      setError(result.error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="form-container">
@@ -139,15 +153,22 @@ export default function RegisterPage() {
         </fieldset>
 
         <button className="buttonF" type="submit" disabled={loading}>
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? "Registering..." : "Register"}
         </button>
-        
-        {error && <p className="error-message" style={{ color: 'red', fontSize: '0.9rem', textAlign: 'center' }}>{error}</p>}
-        
+
+        {error && (
+          <p
+            className="error-message"
+            style={{ color: "red", fontSize: "0.9rem", textAlign: "center" }}
+          >
+            {error}
+          </p>
+        )}
+
         <p className="switch">
           Already have an account? <Link href="/client/auth/login">Login</Link>
         </p>
       </form>
     </div>
-  )
+  );
 }

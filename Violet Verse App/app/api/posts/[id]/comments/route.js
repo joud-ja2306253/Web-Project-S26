@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../repos/InteractionRepository";
+import interactionRepo from "@/repos/InteractionRepository";
+
 export async function GET(request, { params }) {
   try {
     const { id } = await params;   // ✅ must await

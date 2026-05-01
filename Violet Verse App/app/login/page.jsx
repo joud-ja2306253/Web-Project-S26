@@ -1,32 +1,32 @@
 // app/client/auth/login/page.jsx
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { useUser } from '../AuthenticateUser'
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useUser } from "../AuthenticateUser";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const { login } = useUser()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const { login } = useUser();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const result = await login(email, password)
-    
+    const result = await login(email, password);
+
     if (result.success) {
-      router.push('/')
+      router.push("/");
     } else {
-      setError(result.error)
+      setError(result.error);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="form-container">
@@ -63,15 +63,23 @@ export default function LoginPage() {
         </fieldset>
 
         <button className="buttonF" type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
+          {loading ? "Logging in..." : "Login"}
         </button>
-        
-        {error && <p className="error-message" style={{ color: 'red', fontSize: '0.9rem', textAlign: 'center' }}>{error}</p>}
-        
+
+        {error && (
+          <p
+            className="error-message"
+            style={{ color: "red", fontSize: "0.9rem", textAlign: "center" }}
+          >
+            {error}
+          </p>
+        )}
+
         <p className="switch">
-          Don't have an account? <Link href="/client/auth/register">Register</Link>
+          Don't have an account?{" "}
+          <Link href="/client/auth/register">Register</Link>
         </p>
       </form>
     </div>
-  )
+  );
 }
