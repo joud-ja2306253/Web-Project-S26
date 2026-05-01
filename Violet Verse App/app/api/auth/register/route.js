@@ -1,7 +1,7 @@
 // app/api/auth/register/route.js
 import prisma from '../../../lib/prisma'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import { signJwt } from '../../../lib/jwt'
 import { cookies } from 'next/headers'
 
 console.log("✅ Register API route loaded")  // ← ADD THIS LINE
@@ -55,11 +55,12 @@ export async function POST(request) {
   })
 
   // Create JWT token
-  const token = jwt.sign(
-    { id: newUser.id, email: newUser.email, displayName: newUser.displayName },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: '7d' }
-  )
+   const token = signJwt({
+    id: newUser.id,
+    email: newUser.email,
+    displayName: newUser.displayName,
+    username: newUser.username
+  })
 
   // Set cookie
   cookies().set('token', token, {
