@@ -1,0 +1,62 @@
+[
+    {
+        "id": "comment_1",
+        "content": "This is awesome! Congrats on the launch 🎉",
+        "authorId": "user_1",
+        "postId": "post_1"
+    },
+    {
+        "id": "comment_2",
+        "content": "Starred it on GitHub. Really clean implementation!",
+        "authorId": "user_2",
+        "postId": "post_1"
+    },
+    {
+        "id": "comment_3",
+        "content": "Where is this? Looks absolutely stunning!",
+        "authorId": "user_5",
+        "postId": "post_2"
+    },
+    {
+        "id": "comment_4",
+        "content": "Spaces. Always spaces. Fight me 😂",
+        "authorId": "user_3",
+        "postId": "post_3"
+    },
+    {
+        "id": "comment_5",
+        "content": "Tabs gang for life 🙌",
+        "authorId": "user_2",
+        "postId": "post_3"
+    },
+    {
+        "id": "comment_6",
+        "content": "This UI looks incredible! What tools are you using?",
+        "authorId": "user_4",
+        "postId": "post_4"
+    },
+    {
+        "id": "comment_7",
+        "content": "Figma + custom tokens? Would love a breakdown post!",
+        "authorId": "user_1",
+        "postId": "post_4"
+    },
+    {
+        "id": "comment_8",
+        "content": "The ramen looks AMAZING. Recipe please!",
+        "authorId": "user_3",
+        "postId": "post_5"
+    },
+    {
+        "id": "comment_9",
+        "content": "I re-read Pragmatic Programmer every year. Timeless.",
+        "authorId": "user_5",
+        "postId": "post_6"
+    },
+    {
+        "id": "comment_10",
+        "content": "Needed this today. Thank you! 🔥",
+        "authorId": "user_4",
+        "postId": "post_7"
+    }
+]

@@ -1,0 +1,42 @@
+[
+    {
+        "id": "post_1",
+        "content": "Just shipped my first open source project! 🚀 Been working on it for months. Check it out and let me know what you think.",
+        "authorId": "user_3"
+    },
+    {
+        "id": "post_2",
+        "content": "Beautiful sunset at the beach today. Sometimes you just need to unplug and enjoy the moment. 🌅",
+        "authorId": "user_4"
+    },
+    {
+        "id": "post_3",
+        "content": "Hot take: tabs are better than spaces. Change my mind.",
+        "authorId": "user_1"
+    },
+    {
+        "id": "post_4",
+        "content": "Working on a new UI design system. Clean, minimal, accessible. Can't wait to share it with you all! ✨",
+        "authorId": "user_2"
+    },
+    {
+        "id": "post_5",
+        "content": "Just tried making homemade ramen from scratch. Took 6 hours but absolutely worth it 🍜",
+        "authorId": "user_4"
+    },
+    {
+        "id": "post_6",
+        "content": "Reading 'Clean Code' again for the third time. Always find something new. What's a book you re-read regularly?",
+        "authorId": "user_3"
+    },
+    {
+        "id": "post_7",
+        "content": "Monday motivation: the best time to start was yesterday. The second best time is now. Let's go! 💪",
+        "authorId": "user_5"
+    },
+    {
+        "id": "post_8",
+        "content": "Finally got my dark mode design looking perfect. Light mode users, I don't understand you 😄",
+        "authorId": "user_2"
+    }
+]

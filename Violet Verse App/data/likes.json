@@ -1,0 +1,97 @@
+[
+    {
+        "id": "like_1",
+        "userId": "user_1",
+        "postId": "post_1"
+    },
+    {
+        "id": "like_2",
+        "userId": "user_2",
+        "postId": "post_1"
+    },
+    {
+        "id": "like_3",
+        "userId": "user_4",
+        "postId": "post_1"
+    },
+    {
+        "id": "like_4",
+        "userId": "user_5",
+        "postId": "post_1"
+    },
+    {
+        "id": "like_5",
+        "userId": "user_1",
+        "postId": "post_2"
+    },
+    {
+        "id": "like_6",
+        "userId": "user_3",
+        "postId": "post_2"
+    },
+    {
+        "id": "like_7",
+        "userId": "user_5",
+        "postId": "post_2"
+    },
+    {
+        "id": "like_8",
+        "userId": "user_2",
+        "postId": "post_3"
+    },
+    {
+        "id": "like_9",
+        "userId": "user_4",
+        "postId": "post_3"
+    },
+    {
+        "id": "like_10",
+        "userId": "user_1",
+        "postId": "post_4"
+    },
+    {
+        "id": "like_11",
+        "userId": "user_3",
+        "postId": "post_4"
+    },
+    {
+        "id": "like_12",
+        "userId": "user_5",
+        "postId": "post_4"
+    },
+    {
+        "id": "like_13",
+        "userId": "user_1",
+        "postId": "post_5"
+    },
+    {
+        "id": "like_14",
+        "userId": "user_2",
+        "postId": "post_5"
+    },
+    {
+        "id": "like_15",
+        "userId": "user_3",
+        "postId": "post_6"
+    },
+    {
+        "id": "like_16",
+        "userId": "user_4",
+        "postId": "post_7"
+    },
+    {
+        "id": "like_17",
+        "userId": "user_1",
+        "postId": "post_7"
+    },
+    {
+        "id": "like_18",
+        "userId": "user_2",
+        "postId": "post_8"
+    },
+    {
+        "id": "like_19",
+        "userId": "user_4",
+        "postId": "post_8"
+    }
+]
