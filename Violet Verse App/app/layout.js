@@ -1,8 +1,15 @@
+"use client";
+import { usePathname } from "next/navigation";
 import { AuthenticateUserProvider } from "./AuthenticateUser";
 import NavBar from "./components/NavBar";
 import "./globals.css";
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  
+  // Hide NavBar on login and register pages
+  const hideNavBar = pathname === "/login" || pathname === "/register";
+
   return (
     <html lang="en">
       <head>
@@ -15,7 +22,7 @@ export default function RootLayout({ children }) {
         <AuthenticateUserProvider>
           <div className="container">
             <main className="main">{children}</main>
-            <NavBar />
+            {!hideNavBar && <NavBar />}
           </div>
         </AuthenticateUserProvider>
       </body>
