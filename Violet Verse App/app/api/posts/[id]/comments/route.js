@@ -1,28 +1,29 @@
 import { NextResponse } from "next/server";
+
 import interactionRepo from "../../../../../repos/InteractionRepository";
+
+import { getCommentsByPost, createComment } from "@/repos/InteractionRepository";
 
 export async function GET(request, { params }) {
   try {
-    const { id } = await params;   // ✅ must await
-
-    const comments = await interactionRepo.getComments(id); // ✅ string id
-
+    const { id } = await params;
+    const comments = await getCommentsByPost(id);
     return NextResponse.json(comments);
-
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Failed to load comments" },
+      { status: 500 }
+    );
   }
 }
 
-
-// ==================== POST
 export async function POST(request, { params }) {
   try {
-    const { id } = await params;   // ✅ get postId
-
+    const { id } = await params;
     const body = await request.json();
+    const content = (body.content || body.comment || "").trim();
 
-    if (!body.comment || !body.comment.trim()) {
+    if (!content) {
       return NextResponse.json(
         { error: "comment is required" },
         { status: 400 }
@@ -36,15 +37,12 @@ export async function POST(request, { params }) {
       );
     }
 
-    const newComment = await interactionRepo.addComment({
-      comment: body.comment,
-      postId: id,            // ✅ use string id
-      userId: body.userId    // ✅ dynamic user
-    });
-
+    const newComment = await createComment(body.userId, id, content);
     return NextResponse.json(newComment, { status: 201 });
-
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Failed to add comment" },
+      { status: 500 }
+    );
   }
 }

@@ -7,13 +7,22 @@ export function AuthenticateUserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // On page load, get user from localStorage
+  // On page load, get user from API (cookie)
   useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('/api/auth/me')
+        if (res.ok) {
+          const userData = await res.json()
+          setUser(userData)
+        }
+      } catch (error) {
+        console.error('Failed to fetch user', error)
+      } finally {
+        setLoading(false)
+      }
     }
-    setLoading(false)
+    fetchUser()
   }, [])
 
   const login = async (email, password) => {
@@ -27,7 +36,6 @@ export function AuthenticateUserProvider({ children }) {
 
     if (response.ok) {
       setUser(data.user)
-      localStorage.setItem('user', JSON.stringify(data.user))
       return { success: true }
     } else {
       return { success: false, error: data.error }
@@ -45,7 +53,6 @@ export function AuthenticateUserProvider({ children }) {
 
     if (response.ok) {
       setUser(data.user)
-      localStorage.setItem('user', JSON.stringify(data.user))
       return { success: true }
     } else {
       return { success: false, error: data.error }
@@ -55,12 +62,10 @@ export function AuthenticateUserProvider({ children }) {
   const logout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
     setUser(null)
-    localStorage.removeItem('user')
   }
 
   const updateUser = (updatedUser) => {
     setUser(updatedUser)
-    localStorage.setItem('user', JSON.stringify(updatedUser))
   }
 
   return (
