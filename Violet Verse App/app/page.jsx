@@ -17,7 +17,7 @@ export default function HomePage() {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch('/server/api/posts/feed');
+      const res = await fetch('/api/posts/feed');
       const data = await res.json();
       setPosts(data);
     } catch (err) {
