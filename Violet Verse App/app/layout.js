@@ -1,21 +1,19 @@
 // app/layout.js
-import { AuthProvider } from './contexts/AuthContext'
-import NavBar from './components/NavBar'
-import './globals.css'
+import { AuthenticateUserProvider } from "./client/auth/AuthenticateUser";
+import NavBar from "./client/components/NavBar";
+import "./globals.css";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="profile-page">
-        <AuthProvider>
+        <AuthenticateUserProvider>
           <div className="container">
-            <main className="main">
-              {children}
-            </main>
+            <main className="main">{children}</main>
             <NavBar />
           </div>
-        </AuthProvider>
+        </AuthenticateUserProvider>
       </body>
     </html>
-  )
+  );
 }

@@ -8,32 +8,14 @@ export function AuthenticateUserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // On page load, get user from localStorage
   useEffect(() => {
-    checkUser()
+    const savedUser = localStorage.getItem('user')
+    if (savedUser) {
+      setUser(JSON.parse(savedUser))
+    }
+    setLoading(false)
   }, [])
-
-  const checkUser = async () => {
-    const userId = localStorage.getItem('currentUser')
-    
-    if (!userId) {
-      setLoading(false)
-      return
-    }
-
-    try {
-      const response = await fetch(`/api/users/${userId}`)
-      if (response.ok) {
-        const userData = await response.json()
-        setUser(userData)
-      } else {
-        localStorage.removeItem('currentUser')
-      }
-    } catch (error) {
-      console.error('Failed to get user:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const login = async (email, password) => {
     const response = await fetch('/api/auth/login', {
@@ -42,14 +24,14 @@ export function AuthenticateUserProvider({ children }) {
       body: JSON.stringify({ email, password })
     })
 
+    const data = await response.json()
+
     if (response.ok) {
-      const data = await response.json()
-      localStorage.setItem('currentUser', data.userId)
       setUser(data.user)
+      localStorage.setItem('user', JSON.stringify(data.user))
       return { success: true }
     } else {
-      const error = await response.json()
-      return { success: false, error: error.error }
+      return { success: false, error: data.error }
     }
   }
 
@@ -60,24 +42,26 @@ export function AuthenticateUserProvider({ children }) {
       body: JSON.stringify(userData)
     })
 
+    const data = await response.json()
+
     if (response.ok) {
-      const data = await response.json()
-      localStorage.setItem('currentUser', data.userId)
       setUser(data.user)
+      localStorage.setItem('user', JSON.stringify(data.user))
       return { success: true }
     } else {
-      const error = await response.json()
-      return { success: false, error: error.error }
+      return { success: false, error: data.error }
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem('currentUser')
+  const logout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
     setUser(null)
+    localStorage.removeItem('user')
   }
 
   const updateUser = (updatedUser) => {
     setUser(updatedUser)
+    localStorage.setItem('user', JSON.stringify(updatedUser))
   }
 
   return (
