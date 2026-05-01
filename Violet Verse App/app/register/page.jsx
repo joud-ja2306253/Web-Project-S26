@@ -166,7 +166,7 @@ export default function RegisterPage() {
         )}
 
         <p className="switch">
-          Already have an account? <Link href="/client/auth/login">Login</Link>
+          Already have an account? <Link href="/login">Login</Link>
         </p>
       </form>
     </div>

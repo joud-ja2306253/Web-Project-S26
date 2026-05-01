@@ -1,8 +1,10 @@
 // app/api/auth/register/route.js
-import prisma from '@/app/lib/prisma'
+import prisma from '../../../lib/prisma'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
+
+console.log("✅ Register API route loaded")  // ← ADD THIS LINE
 
 export async function POST(request) {
   const { firstName, lastName, username, email, password } = await request.json()

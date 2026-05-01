@@ -17,7 +17,7 @@ export function AuthenticateUserProvider({ children }) {
   }, [])
 
   const login = async (email, password) => {
-    const response = await fetch('/server/api/auth/login', {
+    const response = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -35,7 +35,7 @@ export function AuthenticateUserProvider({ children }) {
   }
 
   const register = async (userData) => {
-    const response = await fetch('/server/api/auth/register', {
+    const response = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
@@ -53,7 +53,7 @@ export function AuthenticateUserProvider({ children }) {
   }
 
   const logout = async () => {
-    await fetch('/server/api/auth/logout', { method: 'POST' })
+    await fetch('/api/auth/logout', { method: 'POST' })
     setUser(null)
     localStorage.removeItem('user')
   }

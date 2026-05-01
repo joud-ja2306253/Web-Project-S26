@@ -1,11 +1,8 @@
 
-// import interactionRepo from "@/repos/InteractionRepository";
-// repo/InteractionRepository.js
+// repos/InteractionRepository.js
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-
+// import the shared instance of prisma client
+import prisma from '../../lib/prisma';
 
 class InteractionRepository {
 

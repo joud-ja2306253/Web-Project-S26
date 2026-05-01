@@ -1,5 +1,5 @@
 // app/api/auth/login/route.js
-import prisma from '@/app/lib/prisma'
+import prisma from '../../lib/prisma'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'

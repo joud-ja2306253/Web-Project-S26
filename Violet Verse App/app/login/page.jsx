@@ -77,7 +77,7 @@ export default function LoginPage() {
 
         <p className="switch">
           Don't have an account?{" "}
-          <Link href="/client/auth/register">Register</Link>
+          <Link href="/register">Register</Link>
         </p>
       </form>
     </div>
