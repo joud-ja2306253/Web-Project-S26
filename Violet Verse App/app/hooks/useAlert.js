@@ -1,30 +1,33 @@
-// app/hooks/useAlert.js
 'use client';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Alert from '../components/Alert';
 
 export function useAlert() {
-  const [alert, setAlert] = useState({ show: false, message: '', type: 'info', callback: null });
-  const [confirm, setConfirm] = useState({ show: false, message: '', onConfirm: null });
+  const [alert, setAlert] = useState(null);
+  const [confirm, setConfirm] = useState(null);
 
-  const showAlert = (message, type = 'info', callback = null) => {
-    setAlert({ show: true, message, type, callback });
-  };
+  const showAlert = useCallback((message, type = 'info', callback = null) => {
+    setAlert({ message, type, callback });
+  }, []);
 
-  const closeAlert = () => {
-    if (alert.callback) {
+  const showConfirm = useCallback((message, onConfirm) => {
+    setConfirm({ message, onConfirm, isLogout: false });
+  }, []);
+
+  const showLogoutConfirm = useCallback((message, onConfirm) => {
+    setConfirm({ message, onConfirm, isLogout: true });
+  }, []);
+
+  const closeAlert = useCallback(() => {
+    if (alert?.callback) {
       alert.callback();
     }
-    setAlert({ show: false, message: '', type: 'info', callback: null });
-  };
-
-  const showConfirm = (message, onConfirm) => {
-    setConfirm({ show: true, message, onConfirm });
-  };
+    setAlert(null);
+  }, [alert]);
 
   const AlertComponent = () => (
     <>
-      {alert.show && (
+      {alert && (
         <Alert 
           message={alert.message} 
           type={alert.type} 
@@ -32,20 +35,21 @@ export function useAlert() {
           onCancel={closeAlert}
         />
       )}
-      {confirm.show && (
+      {confirm && (
         <Alert 
           message={confirm.message} 
           type="warning" 
           isConfirm={true}
+          isLogout={confirm.isLogout}
           onConfirm={() => {
-            setConfirm({ show: false, message: '', onConfirm: null });
             confirm.onConfirm();
+            setConfirm(null);
           }}
-          onCancel={() => setConfirm({ show: false, message: '', onConfirm: null })}
+          onCancel={() => setConfirm(null)}
         />
       )}
     </>
   );
 
-  return { showAlert, showConfirm, AlertComponent };
+  return { showAlert, showConfirm, showLogoutConfirm, AlertComponent };
 }
