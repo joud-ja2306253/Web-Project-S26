@@ -42,34 +42,33 @@ export default function AddPostPage() {
   };
 
   const handleSubmit = async () => {
-    if (!caption.trim() && images.length === 0) {
-      showAlert("Please add a photo or write a caption.", "warning");
-      return;
-    }
+  if (!caption.trim() && images.length === 0) {
+    showAlert("Please add a photo or write a caption.", "warning");
+    return;
+  }
 
-    setSubmitting(true);
-    try {
-      const res = await fetch('/api/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: caption, images: images }),
-      });
+  setSubmitting(true);
+  try {
+    const res = await fetch('/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: caption, imageUrls: images }),
+    });
 
-      if (res.ok) {
-        showAlert("Post shared!", "success", () => {
-          router.push('/');
-        });
-      } else {
-        const error = await res.json();
-        showAlert(error.error || "Failed to create post", "error");
-      }
-    } catch (error) {
-      console.error('Failed to create post', error);
-      showAlert("Failed to create post", "error");
-    } finally {
-      setSubmitting(false);
+    if (res.ok) {
+      // ← redirect immediately, don't wait for alert
+      window.location.href = '/';
+    } else {
+      const error = await res.json();
+      showAlert(error.error || "Failed to create post", "error");
     }
-  };
+  } catch (error) {
+    console.error('Failed to create post', error);
+    showAlert("Failed to create post", "error");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const updateCharCount = (text) => {
     const len = text.length;

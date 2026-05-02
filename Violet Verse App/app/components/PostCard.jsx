@@ -1,4 +1,5 @@
 // app/components/PostCard.jsx
+
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,6 +7,7 @@ import { useUser } from '../AuthenticateUser';
 import { useAlert } from '../hooks/useAlert';
 import LikeButton from './LikeButton';
 import CommentSection from './CommentSection';
+import ImageCarousel from './ImageCarousel';
 
 export default function PostCard({ post, onPostDeleted }) {
   const { user } = useUser();
@@ -133,16 +135,16 @@ export default function PostCard({ post, onPostDeleted }) {
         {hasImages && (
           <div className="post-carousel" id={`carousel-${post.id}`}>
             <div className="post-carousel-track" id={`track-${post.id}`} style={{ display: 'flex' }}>
-              {post.images.map((src, i) => (
-                <div key={i} className="post-carousel-slide" style={{ minWidth: '100%' }}>
-                  <img src={src} className="post-image" alt={`post image ${i + 1}`} />
-                </div>
-              ))}
+              {post.images.map((img, i) => (
+              <div key={img.id || i} className="post-carousel-slide" style={{ minWidth: '100%' }}>
+              <img src={img.url} className="post-image" alt={`post image ${i + 1}`} />
+              </div>
+            ))}
             </div>
             {post.images.length > 1 && (
-              <>
-                <button className="post-carousel-arrow post-carousel-prev" onClick={() => {}}>❮</button>
-                <button className="post-carousel-arrow post-carousel-next" onClick={() => {}}>❯</button>
+              <>{hasImages && (<ImageCarousel 
+                  images={post.images.map(img => img.url)} onImagesChange={() => {}} />
+                )}
                 <div className="post-carousel-dots">
                   {post.images.map((_, i) => (
                     <span key={i} className={`post-dot ${i === 0 ? 'active' : ''}`}></span>

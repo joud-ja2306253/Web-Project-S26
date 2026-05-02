@@ -39,7 +39,7 @@ export default function ProfilePage() {
       
       const postsRes = await fetch(`/api/posts/user/${userId}`);
       const postsData = await postsRes.json();
-      setPosts(postsData);
+      setPosts(Array.isArray(postsData) ? postsData : []);
     } catch (error) {
       console.error('Failed to load profile', error);
       showAlert('Failed to load profile', 'error');
@@ -60,10 +60,14 @@ export default function ProfilePage() {
     setPosts(posts.filter(p => p.id !== postId));
   };
 
-  const filteredPosts = activeTab === 'photos' 
-    ? posts.filter(post => post.images && post.images.length > 0)
-    : posts;
+  // const filteredPosts = activeTab === 'photos' 
+  //   ? posts.filter(post => post.images && post.images.length > 0)
+  //   : posts;
+  const filteredPosts = activeTab === 'photos'
+  ? posts.filter(post => post.images && post.images.length > 0)
+  : posts.filter(post => post.content && post.content.trim() !== '');
 
+  
   if (loading) return <div className="loading">Loading profile...</div>;
   if (!profileUser) return <div className="error">User not found</div>;
 
