@@ -157,7 +157,7 @@ export async function getFeedPosts(userId) {
   const followingIds = following.map((f) => f.followingId);
   const allowedIds = [userId, ...followingIds];
 
-  return prisma.post.findMany({
+  const posts = await prisma.post.findMany({
     where: { authorId: { in: allowedIds } },
     orderBy: { createdAt: "desc" },
     include: {
@@ -165,14 +165,23 @@ export async function getFeedPosts(userId) {
         select: { id: true, username: true, displayName: true, profilePic: true },
       },
       images: { select: { id: true, url: true } },
+      likes: {
+        where: { userId },
+        select: { userId: true },
+      },
       _count: { select: { likes: true, comments: true } },
     },
   });
+
+  return posts.map(({ likes, ...post }) => ({
+    ...post,
+    isLiked: likes.length > 0,
+  }));
 }
 
 // Get posts by a specific user (for profile page)
-export async function getPostsByUser(userId) {
-  return prisma.post.findMany({
+export async function getPostsByUser(userId, viewerId = null) {
+  const posts = await prisma.post.findMany({
     where: { authorId: userId },
     orderBy: { createdAt: "desc" },
     include: {
@@ -180,9 +189,22 @@ export async function getPostsByUser(userId) {
         select: { id: true, username: true, displayName: true, profilePic: true },
       },
       images: { select: { id: true, url: true } },
+      ...(viewerId
+        ? {
+            likes: {
+              where: { userId: viewerId },
+              select: { userId: true },
+            },
+          }
+        : {}),
       _count: { select: { likes: true, comments: true } },
     },
   });
+
+  return posts.map(({ likes = [], ...post }) => ({
+    ...post,
+    isLiked: likes.length > 0,
+  }));
 }
 
 // Get a single post by ID

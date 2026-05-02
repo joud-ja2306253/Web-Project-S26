@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../AuthenticateUser";
 
 export default function LikeButton({ postId, initialLikes = 0, initialLiked = false }) {
@@ -8,6 +8,11 @@ export default function LikeButton({ postId, initialLikes = 0, initialLiked = fa
   const [liked, setLiked] = useState(initialLiked);
   const [likesCount, setLikesCount] = useState(initialLikes);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLiked(initialLiked);
+    setLikesCount(initialLikes);
+  }, [initialLiked, initialLikes]);
 
   const toggleLike = async () => {
     if (!user || loading) return;
@@ -37,13 +42,18 @@ export default function LikeButton({ postId, initialLikes = 0, initialLiked = fa
   };
 
   return (
-    <button
-      id={`likeBtn-${postId}`}
-      className={`menu_btn ${liked ? "liked" : ""}`}
-      onClick={toggleLike}
-      disabled={loading}
-    >
-      {liked ? "♥" : "♡"} {likesCount} likes
-    </button>
+    <div className="like_action">
+      <button
+        id={`likeBtn-${postId}`}
+        className={`menu_btn ${liked ? "liked" : ""}`}
+        onClick={toggleLike}
+        disabled={loading}
+        aria-label={liked ? "Unlike post" : "Like post"}
+        title={liked ? "Unlike post" : "Like post"}
+      >
+        {liked ? "\u2665" : "\u2661"}
+      </button>
+      <span className="like_count">{likesCount}</span>
+    </div>
   );
 }
