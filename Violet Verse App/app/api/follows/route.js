@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { toggleFollow } from "@/repo/InteractionRepository";
+import { toggleFollow } from "@/repos/InteractionRepository";
 
 export async function POST(req) {
   const { followerId, followingId } = await req.json();
