@@ -264,27 +264,50 @@ body {
 }
 
 /* Profile grid layout */
-.profile-page #postsContainer {
+/* .profile-page #postsContainer {
   display: grid;
   gap: 10px;
   grid-template-columns: 1fr;
+} */
+
+.profile-page #postsContainer {
+  display: flex;               
+  flex-direction: column;      
+  gap: 16px;
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
+/* @media (min-width: 768px) and (max-width: 1023px) {
   .profile-page #postsContainer {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
   
+} */
+
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .profile-page #postsContainer {
+    grid-template-columns: 1fr;   /* ✅ force 1 column */
+  }
 }
 
+/* 
 @media (min-width: 1024px) {
   .profile-page #postsContainer {
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
   
-}
+} */
 
+
+
+@media (min-width: 1024px) {
+  .profile-page #postsContainer {
+     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+}
 
 /* Post Images */
 .post-images {
@@ -821,8 +844,10 @@ form {
 }
 
 /* comment  */
+
 .commentBox {
   display: flex;
+  flex-direction: column;
   background-color: rgb(233, 216, 245);
   border-radius: var(--radius-md);
   grid-template-columns: 1fr auto;
