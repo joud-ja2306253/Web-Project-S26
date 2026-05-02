@@ -3,8 +3,6 @@ import { toggleFollow, isFollowing } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
-export const runtime = 'nodejs';
-
 // POST /api/users/[id]/follow    follow user
 // DELETE /api/users/[id]/follow  unfollow user
 export async function POST(req, { params }) {

@@ -4,13 +4,11 @@ import bcrypt from "bcryptjs";
 import { signJwt } from "../../../lib/jwt";
 import { cookies } from "next/headers";
 
-export const runtime = 'nodejs';  
-
 export async function POST(request) {
   const { firstName, lastName, username, email, password } =
     await request.json();
 
-  // Validation 
+  // Validation
   if (!firstName || !lastName || !username || !email || !password) {
     return Response.json({ error: "Please fill all fields" }, { status: 400 });
   }
@@ -36,7 +34,7 @@ export async function POST(request) {
     return Response.json({ error: "Username already taken" }, { status: 400 });
   }
 
-  // Generate ID
+  // Generate ID 
   const generateId = () => {
     return Date.now() + "-" + Math.random().toString(36).substr(2, 6);
   };
@@ -44,7 +42,7 @@ export async function POST(request) {
   // Hash password 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Create user 
+  // Create user
   const newUser = await prisma.user.create({
     data: {
       id: generateId(),

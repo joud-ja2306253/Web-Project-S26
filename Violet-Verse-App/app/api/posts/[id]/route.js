@@ -3,8 +3,6 @@ import { getPostById, updatePost, deletePost } from "@/repos/InteractionReposito
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
-export const runtime = 'nodejs';
-
 function formatPost(post) {
   if (!post) return null;
 

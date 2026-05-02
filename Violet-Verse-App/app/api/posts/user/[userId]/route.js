@@ -3,8 +3,6 @@ import { getPostsByUser } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
-export const runtime = 'nodejs';
-
 // GET /api/posts/user/[userId]
 export async function GET(req, { params }) {
   try {
