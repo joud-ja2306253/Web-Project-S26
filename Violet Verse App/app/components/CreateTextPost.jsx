@@ -20,15 +20,14 @@ export default function CreateTextPost({ onPostCreated }) {
       const res = await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: text, images: [] }),
+        body: JSON.stringify({ content: text, imageUrls: [] }),
       });
 
       if (res.ok) {
         const newPost = await res.json();
         setContent('');
-        showAlert("Post shared!", "success", () => {
-          if (onPostCreated) onPostCreated(newPost);
-        });
+        if (onPostCreated) onPostCreated(newPost);
+        showAlert("Post shared!", "success");
       } else {
         const error = await res.json();
         showAlert(error.error || "Failed to create post", "error");
