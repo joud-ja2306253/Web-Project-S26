@@ -28,7 +28,7 @@ async function seed(name, model, items) {
 }
 
 async function main() {
-    // Order matters — seed parents before children
+    // seed in order of dependencies (users first)
     await seed("users",    prisma.user,    await readJson("users.json"));
     await seed("posts",    prisma.post,    await readJson("posts.json"));
     await seed("images",   prisma.image,   await readJson("images.json"));

@@ -7,7 +7,6 @@ import CreateTextPost from "./components/CreateTextPost";
 import PostCard from "./components/PostCard";
 
 export default function HomePage() {
-  const { user } = useUser();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 

@@ -7,7 +7,7 @@ export function AuthenticateUserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // On page load, get user from API (cookie)
+  // On page load, get user from API token
   useEffect(() => {
     const fetchUser = async () => {
       try {

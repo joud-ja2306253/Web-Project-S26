@@ -4,8 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useUser } from '../AuthenticateUser';
 
 export default function NavBar() {
-  const { user } = useUser();
-  const pathname = usePathname(); // ← gets current URL
+  const pathname = usePathname(); // current URL
 
   return (
     <footer>

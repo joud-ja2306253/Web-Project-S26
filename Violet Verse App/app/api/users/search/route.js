@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { searchUsers } from "@/repos/InteractionRepository";
 
-// GET /api/users/search?q=john
+// GET /api/users/search?q=name
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);

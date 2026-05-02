@@ -59,7 +59,7 @@ export default function ProfilePage() {
   const handlePostDeleted = (postId) => {
     setPosts(posts.filter((p) => p.id !== postId));
 
-    /*this is new*/
+    // decrement post count in profile user data without reload
     setProfileUser((prev) => ({
       ...prev,
       _count: {
@@ -73,18 +73,8 @@ export default function ProfilePage() {
     activeTab === "photos"
       ? posts.filter((post) => post.images && post.images.length > 0)
       : posts.filter((post) => !post.images || post.images.length === 0);
-  // const filteredPosts = activeTab === 'photos'
-  //   ? posts.filter(post => post.images && post.images.length > 0)
-  //   : posts;
 
-  //  const filteredPost = activeTab === 'posts'
-  // ? posts.filter(post => post.content && post.content.length > 0)
-  // : posts;
-
-  // const filteredPosts = activeTab === 'photos'
-  // ? posts.filter(post => post.images && post.images.length > 0)
-  // : posts.filter(post => post.content && post.content.trim() !== '');
-
+      
   if (loading) return <div className="loading">Loading profile...</div>;
   if (!profileUser) return <div className="error">User not found</div>;
 
