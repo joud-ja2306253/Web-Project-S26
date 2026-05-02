@@ -17,22 +17,16 @@ export default function PostCard({ post, onPostDeleted }) {
   const [editContent, setEditContent] = useState(post.comment || post.content);
   const [deleting, setDeleting] = useState(false);
 
-  // Check if current user is the post owner
   const isOwner = user?.id === post.authorId;
-
-  // Check if post has images
   const hasImages = post.images && post.images.length > 0;
 
   const handleEdit = async () => {
     const updatedText = editContent.trim();
 
-    // Check if post is empty AND has no images
     if (updatedText === "" && !hasImages) {
       showAlert("Post cannot be empty!", "warning");
-
-      // Roll back to original content (stay in edit mode)
       setEditContent(post.comment || post.content);
-      return; // Keep edit mode open
+      return;
     }
 
     try {
@@ -58,7 +52,6 @@ export default function PostCard({ post, onPostDeleted }) {
   };
 
   const handleDelete = () => {
-    // show confirmation before deleting
     showConfirm("Are you sure you want to delete this post?", async () => {
       setDeleting(true);
       try {
@@ -83,12 +76,9 @@ export default function PostCard({ post, onPostDeleted }) {
   };
 
   const toggleMenu = () => {
-    if (menuOpen) {
-      if (isEditing) {
-        // Cancel edit mode when closing menu
-        setIsEditing(false);
-        setEditContent(post.comment || post.content);
-      }
+    if (menuOpen && isEditing) {
+      setIsEditing(false);
+      setEditContent(post.comment || post.content);
     }
     setMenuOpen(!menuOpen);
   };
@@ -115,6 +105,7 @@ export default function PostCard({ post, onPostDeleted }) {
             />
             <h4>{post.author?.displayName || "Unknown User"}</h4>
           </div>
+
           <span className="time">
             {post.time || new Date(post.createdAt).toLocaleString()}
           </span>
@@ -124,15 +115,11 @@ export default function PostCard({ post, onPostDeleted }) {
               <button className="menu_btn" onClick={toggleMenu}>
                 ⋮
               </button>
+
               {menuOpen && (
-                <ul
-                  id={`menuList-${post.id}`}
-                  className="menu_li"
-                  style={{ display: "block" }}
-                >
+                <ul className="menu_li" style={{ display: "block" }}>
                   <li>
                     <button
-                      id={`edit_post-${post.id}`}
                       className="menu_li"
                       onClick={() => {
                         setIsEditing(true);
@@ -144,7 +131,6 @@ export default function PostCard({ post, onPostDeleted }) {
                   </li>
                   <li>
                     <button
-                      id={`delete_post-${post.id}`}
                       className="menu_li"
                       onClick={handleDelete}
                       disabled={deleting}
@@ -170,37 +156,17 @@ export default function PostCard({ post, onPostDeleted }) {
             {isEditing ? (
               <>
                 <textarea
-                  id={`postText-${post.id}`}
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  className="edit-textarea"
+                  className="post-text-editing"
                 />
-                <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
-                  <button
-                    id={`savePost-${post.id}`}
-                    className="postSaveBtn"
-                    onClick={handleEdit}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="postCancelBtn"
-                    onClick={handleCancelEdit}
-                    style={{
-                      background: "#888",
-                      color: "white",
-                      border: "none",
-                      padding: "6px 12px",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </div>
+
+                <button className="postSaveBtn" onClick={handleEdit}>
+                  Save
+                </button>
               </>
             ) : (
-              <p id={`postText-${post.id}`}>{post.comment || post.content}</p>
+              <p>{post.comment || post.content}</p>
             )}
           </div>
         </div>
@@ -208,23 +174,19 @@ export default function PostCard({ post, onPostDeleted }) {
         <div className="post-actions">
           <div className="post_actions">
             <LikeButton postId={post.id} />
-            <p id={`likeCount-${post.id}`}>{post.likes?.length || 0} likes</p>
+            <p>{post.likes?.length || 0} likes</p>
           </div>
-          <div>
-            <button
-              id={`commentBtn-${post.id}`}
-              className="menu_btn"
-              onClick={() => setShowComments(!showComments)}
-            >
-              🗨️
-            </button>
-          </div>
+
+          <button
+            className="menu_btn"
+            onClick={() => setShowComments(!showComments)}
+          >
+            🗨️
+          </button>
         </div>
 
         {showComments && (
-          <div className="commentBox" style={{ display: "block" }}>
-            <CommentSection postId={post.id} postAuthorId={post.authorId} />
-          </div>
+          <CommentSection postId={post.id} postAuthorId={post.authorId} />
         )}
       </div>
 
