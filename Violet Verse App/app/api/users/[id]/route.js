@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserById, updateUser } from "@/repos/InteractionRepository";
+import { getUserById, updateUser, isFollowing } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "../../../lib/jwt";
 
@@ -12,11 +12,41 @@ export async function GET(req, { params }) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(user);
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    let following = false;
+
+    if (token) {
+      const currentUser = verifyJwt(token);
+
+      if (currentUser && currentUser.id !== id) {
+        following = await isFollowing(currentUser.id, id);
+      }
+    }
+
+    return NextResponse.json({
+      ...user,
+      isFollowing: following,
+    });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+// export async function GET(req, { params }) {
+//   try {
+//     const { id } = await params;
+//     const user = await getUserById(id);
+
+//     if (!user) {
+//       return NextResponse.json({ error: "User not found" }, { status: 404 });
+//     }
+
+//     return NextResponse.json(user);
+//   } catch (error) {
+//     return NextResponse.json({ error: error.message }, { status: 500 });
+//   }
+// }
 
 export async function PUT(req, { params }) {
   try {

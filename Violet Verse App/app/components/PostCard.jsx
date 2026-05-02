@@ -1,5 +1,3 @@
-// app/components/PostCard.jsx
-
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,18 +17,15 @@ export default function PostCard({ post, onPostDeleted }) {
   const [editContent, setEditContent] = useState(post.comment || post.content);
   const [deleting, setDeleting] = useState(false);
 
-  // Check if current user is the post owner (matches original)
-  const isOwner = user?.id === post.userId;
+  // Check if current user is the post owner
+  const isOwner = user?.id === post.authorId;
   
-  // Check if post has images (matches original data-has-images)
+  // Check if post has images
   const hasImages = post.images && post.images.length > 0;
 
-  // Handle edit - matches original editPost + savePostEdit logic
   const handleEdit = async () => {
     const updatedText = editContent.trim();
-    const hasImages = post.images && post.images.length > 0;
 
-    // Original logic: if empty text AND no images, show warning
     if (updatedText === "" && !hasImages) {
       showAlert("Post cannot be empty!", "warning");
       return;
@@ -55,7 +50,6 @@ export default function PostCard({ post, onPostDeleted }) {
     }
   };
 
-  // Handle delete - matches original deletePost logic
   const handleDelete = () => {
     showConfirm("Are you sure you want to delete this post?", async () => {
       setDeleting(true);
@@ -74,15 +68,13 @@ export default function PostCard({ post, onPostDeleted }) {
     });
   };
 
-  // View user profile - matches original viewUserProfile
+  // View user profile - using authorId
   const viewUserProfile = () => {
-    router.push(`/profile?userId=${post.userId}`);
+    router.push(`/profile?userId=${post.authorId}`);
   };
 
-  // Toggle menu - matches original toggleMenu
   const toggleMenu = () => {
     if (menuOpen) {
-      // Cancel edit mode if open
       if (isEditing) {
         setIsEditing(false);
         setEditContent(post.comment || post.content);
@@ -131,28 +123,11 @@ export default function PostCard({ post, onPostDeleted }) {
       </div>
 
       <div className="post-content">
-        {/* Image Carousel - matches original structure */}
         {hasImages && (
-          <div className="post-carousel" id={`carousel-${post.id}`}>
-            <div className="post-carousel-track" id={`track-${post.id}`} style={{ display: 'flex' }}>
-              {post.images.map((img, i) => (
-              <div key={img.id || i} className="post-carousel-slide" style={{ minWidth: '100%' }}>
-              <img src={img.url} className="post-image" alt={`post image ${i + 1}`} />
-              </div>
-            ))}
-            </div>
-            {post.images.length > 1 && (
-              <>{hasImages && (<ImageCarousel 
-                  images={post.images.map(img => img.url)} onImagesChange={() => {}} />
-                )}
-                <div className="post-carousel-dots">
-                  {post.images.map((_, i) => (
-                    <span key={i} className={`post-dot ${i === 0 ? 'active' : ''}`}></span>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+          <ImageCarousel 
+            images={post.images.map(img => img.url || img)} 
+            onImagesChange={() => {}} 
+          />
         )}
 
         <div className="postEditContainer">
@@ -198,7 +173,7 @@ export default function PostCard({ post, onPostDeleted }) {
         <div className="commentBox" style={{ display: 'block' }}>
           <CommentSection 
             postId={post.id} 
-            postAuthorId={post.userId} 
+            postAuthorId={post.authorId} 
           />
         </div>
       )}
