@@ -4,7 +4,7 @@ import { verifyJwt } from '../../../lib/jwt'
 import prisma from '../../../lib/prisma'
 
 export async function GET() {
-  const token = cookies().get('token')?.value
+  const token = await cookies().get('token')?.value
   if (!token) {
     return Response.json({ error: 'Not authenticated' }, { status: 401 })
   }

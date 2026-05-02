@@ -1,4 +1,4 @@
-// app/add-post/page.jsx
+// app/create-post/page.jsx
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

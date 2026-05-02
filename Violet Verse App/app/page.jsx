@@ -19,10 +19,10 @@ export default function HomePage() {
     try {
       const res = await fetch("/api/posts/feed");
       const data = await res.json();
-      setPosts(data);
+      setPosts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Failed to load posts", err);
-      // Silent fail - matches original behavior
+      setPosts([]);
     } finally {
       setLoading(false);
     }
@@ -45,8 +45,8 @@ export default function HomePage() {
         <div className="feed-container">
           <CreateTextPost onPostCreated={handlePostCreated} />
           <div id="postsContainer">
-            {posts.length === 0 && <p>No posts yet.</p>}
-            {posts.map((post) => (
+            {(!posts || posts.length === 0) && <p>No posts yet.</p>}
+            {posts && posts.map((post) => (
               <PostCard
                 key={post.id}
                 post={post}

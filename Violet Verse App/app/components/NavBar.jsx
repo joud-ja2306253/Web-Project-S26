@@ -15,7 +15,7 @@ export default function NavBar() {
           <span className="nav-text">Home</span>
         </Link>
         
-        <Link href="/add-post" className="add-btn" aria-label="Add post">
+        <Link href="/create-post" className="add-btn" aria-label="Add post">
           <i className="fas fa-plus"></i>
           <span className="nav-text">Post</span>
         </Link>

@@ -7,17 +7,16 @@ import { cookies } from 'next/headers'
 export async function POST(request) {
   const { email, password } = await request.json()
 
-  // Find user by email (matches your matchedUser logic)
+  // Find user by email
   const user = await prisma.user.findUnique({
     where: { email: email.toLowerCase() }
   })
 
-  // No account found (matches your error message)
   if (!user) {
     return Response.json({ error: 'No account found with this email!' }, { status: 401 })
   }
 
-  // Compare password (matches your password check, but with hashing)
+  // Compare password
   const isValid = await bcrypt.compare(password, user.password)
 
   if (!isValid) {
@@ -25,10 +24,15 @@ export async function POST(request) {
   }
 
   // Create JWT token
- const token = signJwt({ id: user.id, email: user.email, displayName: user.displayName })
+  const token = signJwt({ 
+    id: user.id, 
+    email: user.email, 
+    displayName: user.displayName 
+  })
 
-  // Set cookie
-  cookies().set('token', token, {
+  // Set cookie 
+  const cookieStore = await cookies()
+  cookieStore.set('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
