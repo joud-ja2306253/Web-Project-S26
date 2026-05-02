@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 import { getUserById, updateUser, isFollowing } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "../../../lib/jwt";
@@ -19,7 +20,6 @@ export async function GET(req, { params }) {
 
     if (token) {
       const currentUser = verifyJwt(token);
-
       if (currentUser && currentUser.id !== id) {
         following = await isFollowing(currentUser.id, id);
       }
@@ -33,20 +33,6 @@ export async function GET(req, { params }) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-// export async function GET(req, { params }) {
-//   try {
-//     const { id } = await params;
-//     const user = await getUserById(id);
-
-//     if (!user) {
-//       return NextResponse.json({ error: "User not found" }, { status: 404 });
-//     }
-
-//     return NextResponse.json(user);
-//   } catch (error) {
-//     return NextResponse.json({ error: error.message }, { status: 500 });
-//   }
-// }
 
 export async function PUT(req, { params }) {
   try {
@@ -64,6 +50,21 @@ export async function PUT(req, { params }) {
     }
 
     const body = await req.json();
+
+    // Check if username already taken by another user
+    if (body.username) {
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          username: body.username,
+          id: { not: id }
+        }
+      });
+
+      if (existingUser) {
+        return NextResponse.json({ error: "Username already taken" }, { status: 400 });
+      }
+    }
+
     const updated = await updateUser(id, {
       username: body.username,
       displayName: body.displayName,
@@ -73,6 +74,13 @@ export async function PUT(req, { params }) {
 
     return NextResponse.json(updated);
   } catch (error) {
+    console.error("PUT user error:", error);
+    
+    // Prisma unique constraint error
+    if (error.code === 'P2002') {
+      return NextResponse.json({ error: "Username already taken" }, { status: 400 });
+    }
+    
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

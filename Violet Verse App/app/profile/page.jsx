@@ -1,25 +1,25 @@
 // app/profile/page.jsx
-'use client';
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { useUser } from '../AuthenticateUser';
-import { useAlert } from '../hooks/useAlert';
-import PostCard from '../components/PostCard';
-import ProfileInfo from '../components/ProfileInfo';
-import EditProfileModal from '../components/EditProfileModal';
-import ProfileTabs from '../components/ProfileTabs';
+"use client";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useUser } from "../AuthenticateUser";
+import { useAlert } from "../hooks/useAlert";
+import PostCard from "../components/PostCard";
+import ProfileInfo from "../components/ProfileInfo";
+import EditProfileModal from "../components/EditProfileModal";
+import ProfileTabs from "../components/ProfileTabs";
 
 export default function ProfilePage() {
   const { user: currentUser } = useUser();
   const { showAlert, AlertComponent } = useAlert();
   const searchParams = useSearchParams();
-  
-  const profileUserId = searchParams.get('userId');
+
+  const profileUserId = searchParams.get("userId");
   const [profileUser, setProfileUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('posts');
+  const [activeTab, setActiveTab] = useState("posts");
 
   const isOwnProfile = !profileUserId || profileUserId === currentUser?.id;
 
@@ -31,18 +31,18 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     const userId = isOwnProfile ? currentUser.id : profileUserId;
-    
+
     try {
       const res = await fetch(`/api/users/${userId}`);
       const data = await res.json();
       setProfileUser(data);
-      
+
       const postsRes = await fetch(`/api/posts/user/${userId}`);
       const postsData = await postsRes.json();
       setPosts(Array.isArray(postsData) ? postsData : []);
     } catch (error) {
-      console.error('Failed to load profile', error);
-      showAlert('Failed to load profile', 'error');
+      console.error("Failed to load profile", error);
+      showAlert("Failed to load profile", "error");
     } finally {
       setLoading(false);
     }
@@ -57,33 +57,31 @@ export default function ProfilePage() {
   };
 
   const handlePostDeleted = (postId) => {
-    setPosts(posts.filter(p => p.id !== postId));
+    setPosts(posts.filter((p) => p.id !== postId));
   };
 
   const filteredPosts =
-  activeTab === "photos"
-    ? posts.filter((post) => post.images && post.images.length > 0)
-    : posts.filter((post) => !post.images || post.images.length === 0);
-  // const filteredPosts = activeTab === 'photos' 
+    activeTab === "photos"
+      ? posts.filter((post) => post.images && post.images.length > 0)
+      : posts.filter((post) => !post.images || post.images.length === 0);
+  // const filteredPosts = activeTab === 'photos'
   //   ? posts.filter(post => post.images && post.images.length > 0)
   //   : posts;
 
-    //  const filteredPost = activeTab === 'posts' 
-    // ? posts.filter(post => post.content && post.content.length > 0)
-    // : posts;
-
+  //  const filteredPost = activeTab === 'posts'
+  // ? posts.filter(post => post.content && post.content.length > 0)
+  // : posts;
 
   // const filteredPosts = activeTab === 'photos'
   // ? posts.filter(post => post.images && post.images.length > 0)
   // : posts.filter(post => post.content && post.content.trim() !== '');
-
 
   if (loading) return <div className="loading">Loading profile...</div>;
   if (!profileUser) return <div className="error">User not found</div>;
 
   return (
     <>
-      <ProfileInfo 
+      <ProfileInfo
         profileUser={profileUser}
         isOwnProfile={isOwnProfile}
         currentUserId={currentUser?.id}
@@ -100,8 +98,8 @@ export default function ProfilePage() {
               <p>No posts yet.</p>
             </div>
           ) : (
-            filteredPosts.map(post => (
-              <PostCard 
+            filteredPosts.map((post) => (
+              <PostCard
                 key={post.id}
                 post={post}
                 onPostDeleted={handlePostDeleted}
@@ -112,13 +110,13 @@ export default function ProfilePage() {
       </div>
 
       {showEditModal && (
-        <EditProfileModal 
+        <EditProfileModal
           user={profileUser}
           onSave={handleUpdateUser}
           onClose={() => setShowEditModal(false)}
         />
       )}
-      
+
       <AlertComponent />
     </>
   );

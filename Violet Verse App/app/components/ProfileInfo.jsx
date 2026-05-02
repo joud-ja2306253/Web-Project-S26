@@ -35,7 +35,7 @@ export default function ProfileInfo({ profileUser, isOwnProfile, currentUserId, 
         </div>
 
         <div className="bio">
-          <p>{profileUser.bio || 'No bio yet'}</p>
+          <p>{profileUser.bio || ''}</p>
         </div>
 
         <div className="profile-data">

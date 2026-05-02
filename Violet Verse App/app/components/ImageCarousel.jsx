@@ -1,4 +1,3 @@
-// app/components/ImageCarousel.jsx
 'use client';
 import { useState, useEffect, useRef } from 'react';
 
@@ -6,12 +5,27 @@ export default function ImageCarousel({ images, onImagesChange }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
   const carouselTrackRef = useRef(null);
-  const dotsRef = useRef(null);
+  const carouselDotsRef = useRef(null);
 
-  // Update carousel when images change
   useEffect(() => {
+    // Reset to first slide when images change
     setCurrentSlide(0);
   }, [images]);
+
+  // Re-render carousel when currentSlide or images change
+  useEffect(() => {
+    if (carouselTrackRef.current && images.length > 0) {
+      carouselTrackRef.current.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      // Update dots
+      if (carouselDotsRef.current) {
+        const dots = carouselDotsRef.current.children;
+        for (let i = 0; i < dots.length; i++) {
+          dots[i].classList.toggle('active', i === currentSlide);
+        }
+      }
+    }
+  }, [currentSlide, images]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -28,8 +42,11 @@ export default function ImageCarousel({ images, onImagesChange }) {
     const newImages = [...images];
     newImages.splice(index, 1);
     onImagesChange(newImages);
-    if (currentSlide >= newImages.length) {
-      setCurrentSlide(Math.max(0, newImages.length - 1));
+    
+    if (newImages.length === 0) {
+      setCurrentSlide(0);
+    } else if (currentSlide >= newImages.length) {
+      setCurrentSlide(newImages.length - 1);
     }
   };
 
@@ -51,21 +68,24 @@ export default function ImageCarousel({ images, onImagesChange }) {
 
   if (!images || images.length === 0) return null;
 
+  const showArrows = images.length > 1;
+  const showDots = images.length > 1;
+
   return (
     <div className="carousel-wrapper" id="carouselWrapper">
       <div 
         className="carousel-track" 
         ref={carouselTrackRef}
         style={{ 
-          transform: `translateX(-${currentSlide * 100}%)`,
+          display: 'flex',
           transition: 'transform 0.35s ease'
         }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         {images.map((src, i) => (
-          <div key={i} className="carousel-slide">
-            <img src={src} alt={`Post image ${i + 1}`} />
+          <div key={i} className="carousel-slide" style={{ minWidth: '100%', boxSizing: 'border-box' }}>
+            <img src={src} alt={`Post image ${i + 1}`} style={{ width: '100%', objectFit: 'cover' }} />
             <button 
               className="remove-img-btn" 
               onClick={() => removeImage(i)}
@@ -77,11 +97,11 @@ export default function ImageCarousel({ images, onImagesChange }) {
         ))}
       </div>
 
-      <span className="img-count-badge">
+      <span className="img-count-badge" style={{ display: showArrows ? '' : 'none' }}>
         {currentSlide + 1} / {images.length}
       </span>
 
-      {images.length > 1 && (
+      {showArrows && (
         <>
           <button 
             className={`carousel-arrow prev ${currentSlide === 0 ? 'hidden' : ''}`}
@@ -98,15 +118,17 @@ export default function ImageCarousel({ images, onImagesChange }) {
         </>
       )}
 
-      <div className="carousel-dots" ref={dotsRef}>
-        {images.map((_, i) => (
-          <button
-            key={i}
-            className={`dot ${i === currentSlide ? 'active' : ''}`}
-            onClick={() => goToSlide(i)}
-          />
-        ))}
-      </div>
+      {showDots && (
+        <div className="carousel-dots" ref={carouselDotsRef}>
+          {images.map((_, i) => (
+            <button
+              key={i}
+              className={`dot ${i === currentSlide ? 'active' : ''}`}
+              onClick={() => goToSlide(i)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

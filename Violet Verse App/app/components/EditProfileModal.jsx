@@ -10,7 +10,8 @@ const DEFAULT_PROFILE_PIC =
 
 export default function EditProfileModal({ user, onSave, onClose }) {
   const { updateUser, logout } = useUser();
-  const { showAlert, showConfirm } = useAlert();
+  const { showAlert, showConfirm, showLogoutConfirm, AlertComponent } =
+    useAlert();
   const router = useRouter();
   const [formData, setFormData] = useState({
     username: user.username || "",
@@ -39,7 +40,7 @@ export default function EditProfileModal({ user, onSave, onClose }) {
 
   const handleDeletePhoto = () => {
     showConfirm(
-      "Remove your profile picture? It will be set to the default avatar.",
+      "Delete your profile picture? It will be set to the default avatar.",
       () => {
         setFormData({ ...formData, profilePic: DEFAULT_PROFILE_PIC });
       },
@@ -57,7 +58,12 @@ export default function EditProfileModal({ user, onSave, onClose }) {
       const res = await fetch(`/api/users/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username: formData.username,
+          displayName: formData.displayName,
+          bio: formData.bio,
+          profilePic: formData.profilePic,
+        }),
       });
 
       if (res.ok) {
@@ -85,8 +91,8 @@ export default function EditProfileModal({ user, onSave, onClose }) {
   };
 
   const handleLogout = () => {
-    showConfirm("Are you sure you want to logout?", async () => {
-      await logout(); 
+    showLogoutConfirm("Are you sure you want to logout?", async () => {
+      await logout();
       router.push("/login");
     });
   };
@@ -96,7 +102,7 @@ export default function EditProfileModal({ user, onSave, onClose }) {
       <div id="overlay" className="active" onClick={onClose}></div>
       <div id="settingsPanel" className="active">
         <div className="editProfileTop">
-          <button onClick={onClose}>
+          <button id="closeBtn" onClick={onClose}>
             <i className="fa-solid fa-angle-left"></i>
           </button>
           <p>Edit Profile</p>
@@ -180,6 +186,8 @@ export default function EditProfileModal({ user, onSave, onClose }) {
           </button>
         </div>
       </div>
+
+      <AlertComponent />
     </>
   );
 }
