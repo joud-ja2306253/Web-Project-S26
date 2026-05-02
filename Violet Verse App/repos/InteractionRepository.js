@@ -12,15 +12,7 @@ class InteractionRepository {
       where: { postId: postId }
     });
   }
-//   async getComments(postId) {
-//   return prisma.comment.findMany({
-//     where: {
-//       post: {
-//         id: postId   // ✅ relation filter
-//       }
-//     }
-//   });
-// }
+
 
   // ADD comment
 async addComment(data) {
@@ -29,11 +21,11 @@ async addComment(data) {
       content: data.comment,
 
       post: {
-        connect: { id: data.postId }   // ✅ FIX
+        connect: { id: data.postId }  
       },
 
       author: {
-        connect: { id: data.userId }   // ✅ FIX
+        connect: { id: data.userId }   
       }
     }
   });
