@@ -271,6 +271,28 @@ export async function isLiked(userId, postId) {
   return !!like;
 }
 
+// Get ALL posts (no user, no filter)
+export async function getAllPosts() {
+  return prisma.post.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+          displayName: true,
+          profilePic: true,
+        },
+      },
+      images: {
+        select: { id: true, url: true },
+      },
+      _count: {
+        select: { likes: true, comments: true },
+      },
+    },
+  });
+}
 // ============================================================
 //  COMMENT FUNCTIONS
 // ============================================================
