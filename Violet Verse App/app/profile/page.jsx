@@ -58,6 +58,15 @@ export default function ProfilePage() {
 
   const handlePostDeleted = (postId) => {
     setPosts(posts.filter((p) => p.id !== postId));
+
+    /*this is new*/
+    setProfileUser((prev) => ({
+      ...prev,
+      _count: {
+        ...prev._count,
+        posts: Math.max((prev._count?.posts || 1) - 1, 0),
+      },
+    }));
   };
 
   const filteredPosts =

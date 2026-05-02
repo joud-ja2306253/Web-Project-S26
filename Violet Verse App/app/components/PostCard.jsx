@@ -146,9 +146,9 @@ export default function PostCard({ post, onPostDeleted }) {
 
         <div className="post-content">
           {hasImages && (
+            /*this is new*/
             <ImageCarousel
               images={post.images.map((img) => img.url || img)}
-              onImagesChange={() => {}}
             />
           )}
 
@@ -173,8 +173,11 @@ export default function PostCard({ post, onPostDeleted }) {
 
         <div className="post-actions">
           <div className="post_actions">
-            <LikeButton postId={post.id} />
-            <p>{post.likes?.length || 0} likes</p>
+            <LikeButton
+  postId={post.id}
+  initialLikes={post._count?.likes || 0}
+  initialLiked={post.isLiked || false}
+/>
           </div>
 
           <button
