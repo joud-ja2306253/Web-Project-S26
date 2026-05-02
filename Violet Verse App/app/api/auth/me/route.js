@@ -4,7 +4,9 @@ import { verifyJwt } from '../../../lib/jwt'
 import prisma from '../../../lib/prisma'
 
 export async function GET() {
-  const token = await cookies().get('token')?.value
+  const cookieStore = await cookies()  
+  const token = cookieStore.get('token')?.value
+  
   if (!token) {
     return Response.json({ error: 'Not authenticated' }, { status: 401 })
   }
@@ -16,8 +18,19 @@ export async function GET() {
 
   const user = await prisma.user.findUnique({
     where: { id: decoded.id },
-    select: { id: true, username: true, email: true, displayName: true, bio: true, profilePic: true }
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      displayName: true,
+      bio: true,
+      profilePic: true,
+    }
   })
+
+  if (!user) {
+    return Response.json({ error: 'User not found' }, { status: 401 })
+  }
 
   return Response.json(user)
 }
