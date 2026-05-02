@@ -1,4 +1,3 @@
-
 // repos/InteractionRepository.js
 
 // import the shared instance of prisma client
