@@ -1305,7 +1305,7 @@ form {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #000;
+  background: transparent;
   aspect-ratio: 1 / 1;
   margin-bottom: var(--spacing-sm);
 }
@@ -1344,7 +1344,13 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
   transition: background-color 0.2s;
+}
+
+.carousel-wrapper:hover .remove-img-btn,
+.carousel-wrapper:focus-within .remove-img-btn {
+  opacity: 1;
 }
 
 .carousel-slide .remove-img-btn:hover {
@@ -1369,7 +1375,15 @@ form {
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-sm);
-  transition: background-color 0.2s;
+  opacity: 0;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
+}
+
+.carousel-wrapper:hover .carousel-arrow,
+.carousel-wrapper:focus-within .carousel-arrow {
+  opacity: 1;
 }
 
 .carousel-arrow:hover {
@@ -1389,17 +1403,29 @@ form {
 
 /* Dots */
 .carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   gap: 6px;
-  margin-bottom: var(--spacing-sm);
+  z-index: 10;
+  margin-bottom: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.carousel-wrapper:hover .carousel-dots,
+.carousel-wrapper:focus-within .carousel-dots {
+  opacity: 1;
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--color-light-grey);
+  background: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition:
     background-color 0.2s,
@@ -1424,6 +1450,13 @@ form {
   padding: 3px 9px;
   border-radius: var(--radius-lg);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.carousel-wrapper:hover .img-count-badge,
+.carousel-wrapper:focus-within .img-count-badge {
+  opacity: 1;
 }
 
 /* Add more images button inside preview */
@@ -1494,7 +1527,7 @@ form {
 .submit-post-btn {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--color-primary);
+  background: var(--color-primary-dark);
   color: white;
   border: none;
   border-radius: var(--radius-lg);
@@ -1507,7 +1540,7 @@ form {
 }
 
 .submit-post-btn:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-darker);
   transform: translateY(-2px);
 }
 
@@ -1517,7 +1550,9 @@ form {
 }
 
 .submit-post-btn:disabled {
-  background: var(--color-light-grey);
+  background: var(--color-primary-darker);
+  color: white;
+  opacity: 1;
   cursor: not-allowed;
   transform: none;
 }

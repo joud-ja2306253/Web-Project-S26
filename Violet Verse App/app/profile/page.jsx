@@ -74,7 +74,6 @@ export default function ProfilePage() {
       ? posts.filter((post) => post.images && post.images.length > 0)
       : posts.filter((post) => !post.images || post.images.length === 0);
 
-      
   if (loading) return <div className="loading">Loading profile...</div>;
   if (!profileUser) return <div className="error">User not found</div>;
 
@@ -94,7 +93,9 @@ export default function ProfilePage() {
         <div id="postsContainer">
           {filteredPosts.length === 0 ? (
             <div className="no-posts">
-              <p>No posts yet.</p>
+              <p>
+                {activeTab === "photos" ? "No photos yet." : "No posts yet."}
+              </p>
             </div>
           ) : (
             filteredPosts.map((post) => (

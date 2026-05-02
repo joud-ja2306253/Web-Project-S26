@@ -1,24 +1,24 @@
 // app/create-post/page.jsx
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUser } from '../AuthenticateUser';
-import { useAlert } from '../hooks/useAlert';
-import ImageCarousel from '../components/ImageCarousel';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "../AuthenticateUser";
+import { useAlert } from "../hooks/useAlert";
+import ImageCarousel from "../components/ImageCarousel";
 
 export default function AddPostPage() {
   const router = useRouter();
   const { user } = useUser();
   const { showAlert } = useAlert();
   const [images, setImages] = useState([]);
-  const [caption, setCaption] = useState('');
+  const [caption, setCaption] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
 
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
-    const imageFiles = files.filter(f => f.type.startsWith('image/'));
-    
+    const imageFiles = files.filter((f) => f.type.startsWith("image/"));
+
     if (imageFiles.length === 0) return;
 
     const remaining = 10 - images.length;
@@ -31,55 +31,64 @@ export default function AddPostPage() {
     toProcess.forEach((file) => {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setImages(prev => [...prev, event.target.result]);
+        setImages((prev) => [...prev, event.target.result]);
         setShowPreview(true);
       };
       reader.readAsDataURL(file);
     });
 
     // Reset input so same file can be re-added
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleSubmit = async () => {
-  if (!caption.trim() && images.length === 0) {
-    showAlert("Please add a photo or write a caption.", "warning");
-    return;
-  }
-
-  setSubmitting(true);
-  try {
-    const res = await fetch('/api/posts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: caption, imageUrls: images }),
-    });
-
-    if (res.ok) {
-      // ← redirect immediately, don't wait for alert
-      window.location.href = '/';
-    } else {
-      const error = await res.json();
-      showAlert(error.error || "Failed to create post", "error");
+    if (!caption.trim() && images.length === 0) {
+      showAlert("Please add a photo or write a caption.", "warning");
+      return;
     }
-  } catch (error) {
-    console.error('Failed to create post', error);
-    showAlert("Failed to create post", "error");
-  } finally {
-    setSubmitting(false);
-  }
-};
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: caption, imageUrls: images }),
+      });
+
+      if (res.ok) {
+        // redirect to home page after posting
+        window.location.href = "/";
+      } else {
+        const error = await res.json();
+        showAlert(error.error || "Failed to create post", "error");
+      }
+    } catch (error) {
+      console.error("Failed to create post", error);
+      showAlert("Failed to create post", "error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const updateCharCount = (text) => {
     const len = text.length;
     return `${len} / 2200`;
   };
 
+  const handleImagesChange = (newImages) => {
+    setImages(newImages);
+    setShowPreview(newImages.length > 0);
+  };
+
   return (
     <main>
       <div className="add-post-container">
         <div className="add-post-header">
-          <button className="back-btn" onClick={() => router.back()} title="Go back">
+          <button
+            className="back-btn"
+            onClick={() => router.back()}
+            title="Go back"
+          >
             <i className="fa-solid fa-angle-left"></i>
           </button>
           <h2>New Post</h2>
@@ -87,8 +96,14 @@ export default function AddPostPage() {
 
         {/* Upload Zone */}
         {!showPreview && (
-          <div className="upload-zone" id="uploadZone" onClick={() => document.getElementById('imageInput').click()}>
-            <p><strong>Tap to add photos</strong></p>
+          <div
+            className="upload-zone"
+            id="uploadZone"
+            onClick={() => document.getElementById("imageInput").click()}
+          >
+            <p>
+              <strong>Tap to add photos</strong>
+            </p>
           </div>
         )}
 
@@ -97,17 +112,20 @@ export default function AddPostPage() {
           id="imageInput"
           accept="image/*"
           multiple
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           onChange={handleFileSelect}
         />
 
         {/* Preview Section with Carousel */}
         {showPreview && images.length > 0 && (
           <div className="preview-section has-images">
-            <ImageCarousel images={images} onImagesChange={setImages} />
-            <button 
+            <ImageCarousel
+              images={images}
+              onImagesChange={handleImagesChange}
+            />
+            <button
               className="add-more-btn"
-              onClick={() => document.getElementById('imageInput').click()}
+              onClick={() => document.getElementById("imageInput").click()}
             >
               <i className="fa-solid fa-plus"></i> Add more photos
             </button>
@@ -126,13 +144,13 @@ export default function AddPostPage() {
           <div className="char-counter" id="charCounter">
             {updateCharCount(caption)}
           </div>
-          <button 
-            className="submit-post-btn" 
-            id="submitBtn" 
+          <button
+            className="submit-post-btn"
+            id="submitBtn"
             onClick={handleSubmit}
             disabled={submitting}
           >
-            {submitting ? 'Sharing...' : 'Share Post'}
+            {submitting ? "Sharing..." : "Share Post"}
           </button>
         </div>
       </div>

@@ -7,17 +7,12 @@ export default function ImageCarousel({ images, onImagesChange }) {
   const carouselTrackRef = useRef(null);
   const carouselDotsRef = useRef(null);
 
-  useEffect(() => {
-    // Reset to first slide when images change
-    setCurrentSlide(0);
-  }, [images]);
-
-  // Re-render carousel when currentSlide or images change
+  
   useEffect(() => {
     if (carouselTrackRef.current && images.length > 0) {
       carouselTrackRef.current.style.transform = `translateX(-${currentSlide * 100}%)`;
       
-      // Update dots
+      // Update active dot
       if (carouselDotsRef.current) {
         const dots = carouselDotsRef.current.children;
         for (let i = 0; i < dots.length; i++) {
@@ -68,9 +63,11 @@ export default function ImageCarousel({ images, onImagesChange }) {
 
   if (!images || images.length === 0) return null;
 
+  // Show dots and arrows only if there is more than one photo
   const showArrows = images.length > 1;
   const showDots = images.length > 1;
-  /*this is new*/
+
+  // Show X only in create post
   const canRemoveImages = typeof onImagesChange === 'function';
 
   return (
