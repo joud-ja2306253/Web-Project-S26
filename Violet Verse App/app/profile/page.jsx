@@ -60,9 +60,13 @@ export default function ProfilePage() {
     setPosts(posts.filter(p => p.id !== postId));
   };
 
-  const filteredPosts = activeTab === 'photos' 
-    ? posts.filter(post => post.images && post.images.length > 0)
-    : posts;
+  const filteredPosts =
+  activeTab === "photos"
+    ? posts.filter((post) => post.images && post.images.length > 0)
+    : posts.filter((post) => !post.images || post.images.length === 0);
+  // const filteredPosts = activeTab === 'photos' 
+  //   ? posts.filter(post => post.images && post.images.length > 0)
+  //   : posts;
 
     //  const filteredPost = activeTab === 'posts' 
     // ? posts.filter(post => post.content && post.content.length > 0)
