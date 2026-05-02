@@ -46,11 +46,9 @@ export default function CommentSection({ postId, postAuthorId }) {
         const added = await res.json();
         setComments([added, ...comments]);
         setNewComment("");
-        showAlert("Comment added!", "success");
       }
     } catch (error) {
       console.error("Failed to add comment", error);
-      showAlert("Failed to add comment", "error");
     }
   };
 
@@ -63,13 +61,11 @@ export default function CommentSection({ postId, postAuthorId }) {
         });
         if (res.ok) {
           setComments(comments.filter((c) => c.id !== commentId));
-          showAlert("Comment deleted!", "success");
         } else {
-          showAlert("Failed to delete comment", "error");
+        console.error("Failed to delete comment", error);
         }
       } catch (error) {
         console.error("Failed to delete comment", error);
-        showAlert("Failed to delete comment", "error");
       }
     });
   };
@@ -150,7 +146,7 @@ export default function CommentSection({ postId, postAuthorId }) {
             Send
           </button>
         </div>
-        <p className="loadedCommnetText" id={`loadedCommnetText-${postId}`}>
+        <div className="loadedCommnetText" id={`loadedCommnetText-${postId}`}>
           {comments.map((comment) => (
             <div key={comment.id} className="comment_row">
               {editingCommentId === comment.id ? (
@@ -173,7 +169,7 @@ export default function CommentSection({ postId, postAuthorId }) {
                 </div>
               ) : (
                 <>
-                  <p className="box" id={`comment-${comment.id}`}>
+                  <div className="box" id={`comment-${comment.id}`}>
                     <strong>{comment.author?.displayName || comment.name}</strong>
                     :
                     <span
@@ -182,7 +178,7 @@ export default function CommentSection({ postId, postAuthorId }) {
                     >
                       {comment.content}
                     </span>
-                  </p>
+                  </div>
                   {(user?.id === comment.authorId ||
                     user?.id === postAuthorId) && (
                     <button
@@ -205,7 +201,7 @@ export default function CommentSection({ postId, postAuthorId }) {
               )}
             </div>
           ))}
-        </p>
+        </div>
       </div>
       
       <AlertComponent />
