@@ -128,7 +128,7 @@ export default function CommentSection({ postId, postAuthorId }) {
 
   return (
     <>
-      <adiv className="commentBox">
+      <div className="commentBox">
         {/* Add comment */}
         <div className="write-send-comment">
           <input
@@ -154,7 +154,12 @@ export default function CommentSection({ postId, postAuthorId }) {
         {/* Comments list */}
         <div className="loadedCommnetText">
           {comments.map((comment) => (
-            <div key={comment.id} className="comment_row">
+            <div
+              key={comment.id}
+              className={`comment_row ${
+                editingCommentId === comment.id ? "comment_row_editing" : ""
+              }`}
+            >
               
               <div className="box">
                 <strong>{getUserName(comment.authorId)}</strong>:
@@ -189,7 +194,8 @@ export default function CommentSection({ postId, postAuthorId }) {
                 )}
               </div>
 
-              {(user?.id === comment.authorId ||
+              {editingCommentId !== comment.id &&
+                (user?.id === comment.authorId ||
                 user?.id === postAuthorId) && (
                 <button
                   className="menu_btn CommentBtn"
@@ -211,7 +217,7 @@ export default function CommentSection({ postId, postAuthorId }) {
             </div>
           ))}
         </div>
-      </adiv>
+      </div>
 
       <AlertComponent />
     </>

@@ -76,9 +76,11 @@ export default function PostCard({ post, onPostDeleted }) {
   };
 
   const toggleMenu = () => {
-    if (menuOpen && isEditing) {
+    if (isEditing) {
       setIsEditing(false);
       setEditContent(post.comment || post.content);
+      setMenuOpen(false);
+      return;
     }
     setMenuOpen(!menuOpen);
   };
