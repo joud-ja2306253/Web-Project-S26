@@ -6,6 +6,8 @@ import { useAlert } from "../hooks/useAlert";
 export default function CommentSection({ postId, postAuthorId }) {
   const { user } = useUser();
   const { showAlert, showConfirm, AlertComponent } = useAlert();
+  /*get the users */
+  const [users, setusers] = useState([]);
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -28,6 +30,23 @@ export default function CommentSection({ postId, postAuthorId }) {
       setLoading(false);
     }
   };
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(`/api/users`);
+      const data = await res.json();
+      /*this is new*/
+      setusers(data);
+    } catch (error) {
+      console.error("Failed to load users", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, [postId]);
 
   const addComment = async () => {
     const text = newComment.trim();
@@ -59,6 +78,8 @@ export default function CommentSection({ postId, postAuthorId }) {
 
         if (res.ok) {
           setComments(comments.filter((c) => c.id !== commentId));
+        } else {
+          console.error("Failed to delete comment");
         }
       } catch (error) {
         console.error("Failed to delete comment", error);
@@ -89,8 +110,8 @@ export default function CommentSection({ postId, postAuthorId }) {
       if (res.ok) {
         setComments(
           comments.map((c) =>
-            c.id === commentId ? { ...c, content: updated } : c
-          )
+            c.id === commentId ? { ...c, content: updated } : c,
+          ),
         );
         setEditingCommentId(null);
         setEditContent("");
@@ -104,13 +125,18 @@ export default function CommentSection({ postId, postAuthorId }) {
     setEditingCommentId(null);
     setEditContent("");
   };
+  /*this is new*/
+  const getUserName = (authorId) => {
+    const u = Array.isArray(users)
+      ? users.find((user) => user.id === authorId)
+      : null;
+    return u ? u.displayName : "Unknown";
+  };
 
   if (loading) return <div>Loading comments...</div>;
-
   return (
     <>
       <div className="commentBox">
-        {/* input */}
         <div className="write-send-comment">
           <input
             className="enterComment"
@@ -126,70 +152,65 @@ export default function CommentSection({ postId, postAuthorId }) {
             Send
           </button>
         </div>
-
-        {/* comments */}
-        {comments.map((comment) => (
-          <div key={comment.id} className="comment_row">
-            {editingCommentId === comment.id ? (
-              <>
-                {/* ✅ uses your CSS */}
-                <input
-                  type="text"
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                  className="comment-text-editing"
-                />
-
-                <button
-                  onClick={() => saveEdit(comment.id)}
-                  className="menu_btn CommentBtn"
-                >
-                  Save
-                </button>
-
-                <button
-                  onClick={cancelEdit}
-                  className="menu_btn CommentBtn"
-                >
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="box">
-                  <strong>
-                    {comment.author?.displayName || comment.name}
-                  </strong>
-                  :
-                  <span className="comment-text">
-                    {comment.content}
-                  </span>
+        <div className="loadedCommnetText" id={`loadedCommnetText-${postId}`}>
+          {comments.map((comment) => (
+            <div key={comment.id} className="comment_row">
+              {editingCommentId === comment.id ? (
+                <div className="comment-edit">
+                  <input
+                    type="text"
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    className="edit-comment-input"
+                  />
+                  <button
+                    onClick={() => saveEdit(comment.id)}
+                    className="save-edit-btn"
+                  >
+                    Save
+                  </button>
+                  <button onClick={cancelEdit} className="cancel-edit-btn">
+                    Cancel
+                  </button>
                 </div>
-
-                {(user?.id === comment.authorId ||
-                  user?.id === postAuthorId) && (
-                  <button
-                    className="menu_btn CommentBtn"
-                    onClick={() => deleteComment(comment.id)}
-                  >
-                    Delete
-                  </button>
-                )}
-
-                {user?.id === comment.authorId && (
-                  <button
-                    className="menu_btn CommentBtn edit-save-btn"
-                    onClick={() => startEdit(comment)}
-                  >
-                    Edit
-                  </button>
-                )}
-              </>
-            )}
-          </div>
-        ))}
+              ) : (
+                <>
+                  <div className="box" id={`comment-${comment.id}`}>
+                    <strong>
+                      {comment.author?.displayName || comment.name}
+                    </strong>
+                    :
+                    <span
+                      className="comment-text"
+                      id={`commentText-${comment.id}`}
+                    >
+                      {comment.content}
+                    </span>
+                  </div>
+                  {(user?.id === comment.authorId ||
+                    user?.id === postAuthorId) && (
+                    <button
+                      className="menu_btn CommentBtn"
+                      onClick={() => deleteComment(comment.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
+                  {user?.id === comment.authorId && (
+                    <button
+                      className="menu_btn CommentBtn edit-save-btn"
+                      id={`editBtn-${comment.id}`}
+                      onClick={() => startEdit(comment)}
+                    >
+                      Edit
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-
       <AlertComponent />
     </>
   );

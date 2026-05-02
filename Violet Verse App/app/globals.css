@@ -904,6 +904,7 @@ form {
 .comment_row {
   display: grid;
   grid-template-columns: 1fr auto auto;
+   min-height: 32px;  
   align-items: center;
   gap: 8px;
   margin-bottom: var(--spacing-sm);
