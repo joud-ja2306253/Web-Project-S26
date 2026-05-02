@@ -834,6 +834,17 @@ form {
 .liked {
   color: red;
 }
+
+.like_action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.like_count {
+  color: var(--color-primary-darker);
+  font-size: 16px;
+}
 /* keep it the same name as the js  */
 
 .dis_none {
