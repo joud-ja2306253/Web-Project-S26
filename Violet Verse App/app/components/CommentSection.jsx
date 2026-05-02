@@ -4,8 +4,13 @@ import { useUser } from "../AuthenticateUser";
 import { useAlert } from "../hooks/useAlert";
 
 export default function CommentSection({ postId, postAuthorId }) {
+
   const { user } = useUser();
   const { showAlert } = useAlert();
+  /*get the useres */
+  const [users, setusers] = useState([]);
+
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
@@ -15,6 +20,8 @@ export default function CommentSection({ postId, postAuthorId }) {
   useEffect(() => {
     fetchComments();
   }, [postId]);
+
+
 
   const fetchComments = async () => {
     try {
@@ -27,6 +34,26 @@ export default function CommentSection({ postId, postAuthorId }) {
       setLoading(false);
     }
   };
+
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(`/api/users`);
+      const data = await res.json();
+      /*this is new*/
+      setusers(data);
+    } catch (error) {
+      console.error("Failed to load users", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+  fetchUsers();
+}, [postId]);
+ 
+
 
   const addComment = async () => {
     const text = newComment.trim();
@@ -101,6 +128,13 @@ export default function CommentSection({ postId, postAuthorId }) {
     setEditingCommentId(null);
     setEditContent("");
   };
+  //this is new
+  const getUserName = (authorId) => {
+  const u = users.find((user) => user.id === authorId);
+  return u ? u.displayName : "Unknown";
+
+};
+console.log("users:", users);
 
   if (loading) return <div>Loading comments...</div>;
 
@@ -126,6 +160,7 @@ export default function CommentSection({ postId, postAuthorId }) {
       <p className="loadedCommnetText" id={`loadedCommnetText-${postId}`}>
         {comments.map((comment) => (
           <div key={comment.id} className="comment_row">
+
             {editingCommentId === comment.id ? (
               <div className="comment-edit">
                 <input
@@ -147,7 +182,8 @@ export default function CommentSection({ postId, postAuthorId }) {
             ) : (
               <>
                 <p className="box" id={`comment-${comment.id}`}>
-                  <strong>{comment.author?.displayName || comment.name}</strong>
+                  {/* <strong>{comment.author?.displayName || comment.name}</strong> */}
+                  <strong>{getUserName(comment.authorId)}</strong>
                   :
                   <span
                     className="comment-text"
