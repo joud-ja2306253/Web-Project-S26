@@ -160,9 +160,9 @@ export default function PostCard({ post, onPostDeleted }) {
 
         <div className="post-content">
           {hasImages && (
+            /*this is new*/
             <ImageCarousel
               images={post.images.map((img) => img.url || img)}
-              onImagesChange={() => {}}
             />
           )}
 

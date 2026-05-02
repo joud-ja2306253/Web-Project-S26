@@ -70,6 +70,8 @@ export default function ImageCarousel({ images, onImagesChange }) {
 
   const showArrows = images.length > 1;
   const showDots = images.length > 1;
+  /*this is new*/
+  const canRemoveImages = typeof onImagesChange === 'function';
 
   return (
     <div className="carousel-wrapper" id="carouselWrapper">
@@ -86,13 +88,15 @@ export default function ImageCarousel({ images, onImagesChange }) {
         {images.map((src, i) => (
           <div key={i} className="carousel-slide" style={{ minWidth: '100%', boxSizing: 'border-box' }}>
             <img src={src} alt={`Post image ${i + 1}`} style={{ width: '100%', objectFit: 'cover' }} />
-            <button 
-              className="remove-img-btn" 
-              onClick={() => removeImage(i)}
-              title="Remove photo"
-            >
-              <i className="fa-solid fa-xmark"></i>
-            </button>
+            {canRemoveImages && (
+              <button 
+                className="remove-img-btn" 
+                onClick={() => removeImage(i)}
+                title="Remove photo"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            )}
           </div>
         ))}
       </div>
