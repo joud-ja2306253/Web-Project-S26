@@ -1,29 +1,38 @@
 'use client'
 import { createContext, useContext, useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 const AuthenticateUserContext = createContext()
 
 export function AuthenticateUserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const pathname = usePathname()
 
-  // On page load, get user from API token
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('/api/auth/me')
-        if (res.ok) {
-          const userData = await res.json()
-          setUser(userData)
-        }
-      } catch (error) {
-        console.error('Failed to fetch user', error)
-      } finally {
-        setLoading(false)
+  const fetchUser = async () => {
+    try {
+      const res = await fetch('/api/auth/me')
+      if (res.ok) {
+        const userData = await res.json()
+        setUser(userData)
       }
+    } catch (error) {
+      console.error('Failed to fetch user', error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    const isAuthPage = pathname === '/login' || pathname === '/register'
+    
+    if (isAuthPage) {
+      setLoading(false)
+      return
+    }
+    
     fetchUser()
-  }, [])
+  }, [pathname])
 
   const login = async (email, password) => {
     const response = await fetch('/api/auth/login', {
