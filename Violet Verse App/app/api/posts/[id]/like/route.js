@@ -3,6 +3,8 @@ import { toggleLike } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
+export const runtime = 'nodejs';
+
 // POST /api/posts/[id]/like
 export async function POST(request, { params }) {
   try {

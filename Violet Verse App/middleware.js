@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const runtime = 'nodejs';
+
 // if logged in user tries to access /login or /register, redirect to home
 //if not logged in and tries to access protected routes, redirect to /login
 

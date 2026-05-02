@@ -3,6 +3,8 @@ import interactionRepo from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
+export const runtime = 'nodejs';
+
 // GET /api/posts/[id]/comments
 // ================= GET COMMENTS =================
 export async function GET(request, { params }) {

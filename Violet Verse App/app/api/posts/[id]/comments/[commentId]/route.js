@@ -3,6 +3,8 @@ import { getCommentById, updateComment, deleteComment } from "@/repos/Interactio
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
+export const runtime = 'nodejs';
+
 // PUT /api/posts/[id]/comments/[commentId]
 export async function PUT(request, { params }) {
   try {

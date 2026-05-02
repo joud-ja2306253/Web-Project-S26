@@ -3,6 +3,8 @@ import { createPost } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
 import { verifyJwt } from "@/lib/jwt";
 
+export const runtime = 'nodejs';
+
 export async function POST(req) {
   try {
     const cookieStore = await cookies();

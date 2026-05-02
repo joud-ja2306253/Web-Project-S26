@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAllUsers } from "@/repos/InteractionRepository";
 
+export const runtime = 'nodejs';
 
 export async function GET() {
   try {

@@ -4,18 +4,18 @@ import bcrypt from "bcryptjs";
 import { signJwt } from "../../../lib/jwt";
 import { cookies } from "next/headers";
 
-console.log("✅ Register API route loaded"); // ← ADD THIS LINE
+export const runtime = 'nodejs';  
 
 export async function POST(request) {
   const { firstName, lastName, username, email, password } =
     await request.json();
 
-  // Validation (matches your frontend)
+  // Validation 
   if (!firstName || !lastName || !username || !email || !password) {
     return Response.json({ error: "Please fill all fields" }, { status: 400 });
   }
 
-  // Check if email already exists (matches your allUsers.find logic)
+  // Check if email already exists 
   const existingEmail = await prisma.user.findUnique({
     where: { email: email.toLowerCase() },
   });
@@ -36,21 +36,21 @@ export async function POST(request) {
     return Response.json({ error: "Username already taken" }, { status: 400 });
   }
 
-  // Generate ID (matches your generateId function)
+  // Generate ID
   const generateId = () => {
     return Date.now() + "-" + Math.random().toString(36).substr(2, 6);
   };
 
-  // Hash password (SECURITY - not plain text like your original)
+  // Hash password 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Create user (matches your newUser object)
+  // Create user 
   const newUser = await prisma.user.create({
     data: {
       id: generateId(),
       username: username.toLowerCase(),
       email: email.toLowerCase(),
-      password: hashedPassword, // ← HASHED, not plain text!
+      password: hashedPassword, 
       displayName: `${firstName} ${lastName}`,
       bio: "",
       profilePic:

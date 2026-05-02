@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { searchUsers } from "@/repos/InteractionRepository";
 
+export const runtime = 'nodejs';
+
 // GET /api/users/search?q=name
 export async function GET(req) {
   try {
