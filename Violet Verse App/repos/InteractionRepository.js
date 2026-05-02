@@ -310,6 +310,23 @@ export async function getCommentsByPost(postId) {
   });
 }
 
+// Get a single comment by ID
+export async function getCommentById(commentId) {
+  return prisma.comment.findUnique({
+    where: { id: commentId },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+          displayName: true,
+          profilePic: true,
+        },
+      },
+    },
+  });
+}
+
 // Add a comment
 export async function createComment(authorId, postId, content) {
   return prisma.comment.create({
@@ -393,7 +410,7 @@ export async function getFollowers(userId) {
 }
 
 // ============================================================
-//  STATISTICS FUNCTIONS (for the stats page — 40% of grade!)
+//  STATISTICS FUNCTIONS
 // ============================================================
 
 // 1. Average number of followers per user

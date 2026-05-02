@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../repos/InteractionRepository";
+import interactionRepo from "@/repos/InteractionRepository";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/lib/jwt";
 
+// GET /api/posts/[id]/comments
 // ================= GET COMMENTS =================
 export async function GET(request, { params }) {
   try {
@@ -20,13 +23,30 @@ export async function GET(request, { params }) {
   }
 }
 
-
+// POST /api/posts/[id]/comments
 // ================= CREATE COMMENT =================
 export async function POST(request, { params }) {
   try {
     const { id } = await params;
-    const body = await request.json();
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
 
+    if (!token) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const user = verifyJwt(token);
+    if (!user) {
+      return NextResponse.json(
+        { error: "Invalid token" },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
     const content = (body.content || body.comment || "").trim();
 
     // validation
@@ -37,18 +57,11 @@ export async function POST(request, { params }) {
       );
     }
 
-    if (!body.userId) {
-      return NextResponse.json(
-        { error: "userId is required" },
-        { status: 400 }
-      );
-    }
-
-    // create comment
+    // create comment using authenticated user's ID
     const newComment = await interactionRepo.addComment({
       comment: content,
       postId: id,
-      userId: body.userId
+      userId: user.id
     });
 
     return NextResponse.json(newComment, { status: 201 });

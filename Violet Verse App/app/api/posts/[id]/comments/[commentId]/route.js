@@ -1,63 +1,91 @@
 import { NextResponse } from "next/server";
-import interactionRepo from "../../../../../../repos/InteractionRepository";
+import { getCommentById, updateComment, deleteComment } from "@/repos/InteractionRepository";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/lib/jwt";
 
-
-// ==================== GET (single comment)
-export async function GET(request, { params }) {
-  const { commentId } = await params;
-
-  const comment = await interactionRepo.getCommentById(commentId);
-
-  if (!comment) {
-    return NextResponse.json(
-      { error: "Comment not found" },
-      { status: 404 }
-    );
-  }
-
-  return NextResponse.json(comment);
-}
-
-
-// ==================== PUT (update comment)
+// PUT /api/posts/[id]/comments/[commentId]
 export async function PUT(request, { params }) {
-  const { commentId } = await params;
-  const body = await request.json();
+  try {
+    const { id, commentId } = await params;
+    
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
 
-  if (!body.comment || !body.comment.trim()) {
-    return NextResponse.json(
-      { error: "Comment is required" },
-      { status: 400 }
-    );
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const user = verifyJwt(token);
+    if (!user) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const content = body.comment || body.content;
+
+    if (!content || !content.trim()) {
+      return NextResponse.json({ error: "Comment is required" }, { status: 400 });
+    }
+
+    const existingComment = await getCommentById(commentId);
+    
+    if (!existingComment) {
+      return NextResponse.json({ error: "Comment not found" }, { status: 404 });
+    }
+
+    if (existingComment.postId !== id) {
+      return NextResponse.json({ error: "Comment does not belong to this post" }, { status: 400 });
+    }
+
+    if (existingComment.authorId !== user.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const updated = await updateComment(commentId, content);
+
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error("PUT comment error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-  const updated = await interactionRepo.updateComment(commentId, {
-    comment: body.comment
-  });
-
-  if (!updated) {
-    return NextResponse.json(
-      { error: "Comment not found" },
-      { status: 404 }
-    );
-  }
-
-  return NextResponse.json(updated);
 }
 
-
-// ==================== DELETE
+// DELETE /api/posts/[id]/comments/[commentId]
 export async function DELETE(request, { params }) {
-  const { commentId } = await params;
+  try {
+    const { id, commentId } = await params;
+    
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
 
-  const success = await interactionRepo.deleteComment(commentId);
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  if (!success) {
-    return NextResponse.json(
-      { error: "Comment not found" },
-      { status: 404 }
-    );
+    const user = verifyJwt(token);
+    if (!user) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    const existingComment = await getCommentById(commentId);
+    
+    if (!existingComment) {
+      return NextResponse.json({ error: "Comment not found" }, { status: 404 });
+    }
+
+    if (existingComment.postId !== id) {
+      return NextResponse.json({ error: "Comment does not belong to this post" }, { status: 400 });
+    }
+
+    if (existingComment.authorId !== user.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    await deleteComment(commentId);
+
+    return NextResponse.json({ message: "Comment deleted" });
+  } catch (error) {
+    console.error("DELETE comment error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-  return NextResponse.json({ message: "Comment deleted" });
 }

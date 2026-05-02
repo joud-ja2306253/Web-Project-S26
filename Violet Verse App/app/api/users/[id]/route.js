@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getUserById, updateUser } from "@/repos/InteractionRepository";
 import { cookies } from "next/headers";
+import { verifyJwt } from "../../../lib/jwt";
 
-// GET /api/users/[id]
 export async function GET(req, { params }) {
   try {
     const { id } = await params;
@@ -18,17 +18,18 @@ export async function GET(req, { params }) {
   }
 }
 
-// PUT /api/users/[id]  body: { username?, displayName?, bio?, profilePic? }
 export async function PUT(req, { params }) {
   try {
     const { id } = await params;
     const cookieStore = await cookies();
-    const userId = cookieStore.get("userId")?.value;
+    const token = cookieStore.get("token")?.value;
 
-    if (!userId) {
+    if (!token) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
-    if (userId !== id) {
+
+    const user = verifyJwt(token);
+    if (!user || user.id !== id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
