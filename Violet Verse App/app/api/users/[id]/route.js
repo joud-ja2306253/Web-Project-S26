@@ -4,8 +4,6 @@ import { getUserById, updateUser, isFollowing } from "@/repos/InteractionReposit
 import { cookies } from "next/headers";
 import { verifyJwt } from "../../../lib/jwt";
 
-export const runtime = 'nodejs';
-
 export async function GET(req, { params }) {
   try {
     const { id } = await params;

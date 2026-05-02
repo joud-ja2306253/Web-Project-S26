@@ -8,8 +8,6 @@ import {
   topFollowedUsers,
 } from "@/repos/InteractionRepository";
 
-export const runtime = 'nodejs';
-
 // GET /api/statistics
 export async function GET() {
   try {

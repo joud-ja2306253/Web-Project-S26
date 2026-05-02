@@ -4,8 +4,6 @@ import bcrypt from 'bcryptjs'
 import { signJwt } from '../../../lib/jwt'  
 import { cookies } from 'next/headers'
 
-export const runtime = 'nodejs';  
-
 export async function POST(request) {
   const { email, password } = await request.json()
 
