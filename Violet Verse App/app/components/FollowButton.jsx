@@ -78,7 +78,8 @@ export default function FollowButton({
       onClick={toggleFollow}
       disabled={loading}
     >
-      <i className="fas fa-plus"></i> {isFollowing ? "Following" : "Follow"}
+      {!isFollowing && <i className="fas fa-plus"></i>}
+{isFollowing ? "Following" : "Follow"}
     </button>
   );
 }
